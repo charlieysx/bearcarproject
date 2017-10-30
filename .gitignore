@@ -24,4 +24,4 @@ composer.lock
 /tests/tests/
 /tests/results/
 
-gitpush.sh
+gitpull.sh
