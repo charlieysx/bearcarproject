@@ -1,4 +1,5 @@
 <?php
 
-$route['admin'] = 'admin';
-$route['admin/test'] = 'admin';
+$route['admin']['get'] = 'admin';
+$route['admin']['post'] = '404';
+$route['admin/test']['get'] = 'admin';
