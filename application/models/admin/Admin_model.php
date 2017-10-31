@@ -33,15 +33,22 @@ class Admin_model extends Base_Model
             return fail_result('用户名不能为空');
         }
 
-        // 检查用户名是否纯在
+        if(strlen($opt['password']) < 6) {
+            return fail_result('密码不能少于6位');
+        }
+
+        // 检查用户名是否存在
         $isEx = $this->db->where('user_name', $opt['userName'])->count_all_results(self::TABLE_NAME);
         if ($isEx) {
             return fail_result('该用户名已经存在，不能重复添加');
         }
 
+        $encrypt = cb_encrypt($opt['password']);
+
         $data = array(
             'user_name' => $opt['userName'],
-            'password' => $opt['password'],
+            'password' => $encrypt['password'],
+            'salt' => $encrypt['salt'],
             'user_id' => create_id()
         );
 
@@ -52,7 +59,11 @@ class Admin_model extends Base_Model
             return fail_result('添加管理员失败');
         }
 
-        return success_result('添加管理员成功');
+        return success_result('添加管理员成功',
+                            array(
+                                'userId' => $data['user_id']
+                            )
+        );
     }
 
     /**
@@ -75,24 +86,29 @@ class Admin_model extends Base_Model
         if ('' == $opt['password']) {
             return fail_result('密码不能为空');
         }
-        // 检查用户名是否存在
-        $isEx = $this->db->where('user_name', $opt['userName'])->count_all_results(self::TABLE_NAME);
-        if (!$isEx) {
-            return fail_result('该用户不存在');
+
+        if(strlen($opt['password']) < 6) {
+            return fail_result('密码不能少于6位');
         }
+
         $adminInfo = $this->db->where('user_name', $opt['userName'])
                             ->from(self::TABLE_NAME)
+                            ->select('user_id as userId, password, user_name as userName, salt')
                             ->get()
-                            ->result_array();
+                            ->row_array();
 
-        $result = array(
-            'userId' => $adminInfo[0]['user_id'],
-            'password' => $adminInfo[0]['password'],
-            'userName' => $adminInfo[0]['user_name']
-        );
-        if($result['password'] != $opt['password']) {
+        if('' == $adminInfo['userId']) {
+            return fail_result('该用户不存在');
+        }
+
+        if(!cb_passwordEqual($adminInfo['password'], $adminInfo['salt'], $opt['password'])) {
             return fail_result('密码错误');
         }
-        return success_result('登录成功', $result);
+        $k = array(
+            'userId',
+            'userName'
+        );
+        $adminInfo = elements($k, $adminInfo, '');
+        return success_result('登录成功', $adminInfo);
     }
 }

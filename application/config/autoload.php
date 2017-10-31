@@ -92,7 +92,8 @@ $autoload['drivers'] = array();
 $autoload['helper'] = array(
     'result',
     'status_code',
-    'id_create'
+    'id_create',
+    'cb_encrypt'
 );
 
 /*

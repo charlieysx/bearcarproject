@@ -1,15 +1,27 @@
 <?php
 
+/**
+ * 创建63进制的唯一id
+ * @method create_id
+ * @return [type]    [description]
+ */
+function create_id() {
+    return decTo63(base_convert(md5(uniqid()), 16, 10));
+}
 
-function create_id()
+/**
+ * 十进制的字符串转63进制
+ * @method decTo63
+ * @param  [type]  $str [description]
+ * @return [type]       [description]
+ */
+function decTo63($str)
 {
     $array63 = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                     'a','b','c','d','e','f','g','h','i','j','k','l',
                     'm','n','o','p','q','r','s','t','u','v','w','x','y','z',
                     'A','B','C','D','E','F','G','H','I','J','K','L',
                     'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
-
-    $str = base_convert(md5(uniqid()), 16, 10);
 
     $result = '';
     $quotient = $str;
