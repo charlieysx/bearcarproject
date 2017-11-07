@@ -33,7 +33,7 @@ class Admin_model extends Base_Model
             return fail_result('用户名不能为空');
         }
 
-        if(strlen($opt['password']) < 6) {
+        if (strlen($opt['password']) < 6) {
             return fail_result('密码不能少于6位');
         }
 
@@ -49,7 +49,8 @@ class Admin_model extends Base_Model
             'user_name' => $opt['userName'],
             'password' => $encrypt['password'],
             'salt' => $encrypt['salt'],
-            'user_id' => create_id()
+            'user_id' => create_id(),
+            'last_login_time' => time()
         );
 
         // 添加数据
@@ -59,11 +60,18 @@ class Admin_model extends Base_Model
             return fail_result('添加管理员失败');
         }
 
-        return success_result('添加管理员成功',
-                            array(
-                                'userId' => $data['user_id']
-                            )
+        $adminInfo = $this->db->where('user_name', $opt['userName'])
+                            ->from(self::TABLE_NAME)
+                            ->select('user_id as userId, user_name as userName, last_login_time as lastLoginTime')
+                            ->get()
+                            ->row_array();
+        $k = array(
+            'userId',
+            'userName',
+            'lastLoginTime'
         );
+        $adminInfo = elements($k, $adminInfo, '');
+        return success_result('添加管理员成功', $adminInfo);
     }
 
     /**
@@ -72,7 +80,8 @@ class Admin_model extends Base_Model
      * @param  array  $opt [description]
      * @return [type]      [description]
      */
-    public function login($opt = array()) {
+    public function login($opt = array())
+    {
         $k = array(
             'userName',
             'password',
@@ -87,26 +96,46 @@ class Admin_model extends Base_Model
             return fail_result('密码不能为空');
         }
 
-        if(strlen($opt['password']) < 6) {
+        if (strlen($opt['password']) < 6) {
             return fail_result('密码不能少于6位');
         }
 
         $adminInfo = $this->db->where('user_name', $opt['userName'])
                             ->from(self::TABLE_NAME)
-                            ->select('user_id as userId, password, user_name as userName, salt')
+                            ->select('user_id, password, user_name, salt, login_count, status')
                             ->get()
                             ->row_array();
 
-        if('' == $adminInfo['userId']) {
+        if ('' == $adminInfo['user_id']) {
             return fail_result('该用户不存在');
         }
 
-        if(!cb_passwordEqual($adminInfo['password'], $adminInfo['salt'], $opt['password'])) {
+        if(!('1' == $adminInfo['status'])) {
+            return fail_result('该账号已被删除，请先申请恢复账号');
+        }
+
+        if (!cb_passwordEqual($adminInfo['password'], $adminInfo['salt'], $opt['password'])) {
             return fail_result('密码错误');
         }
+
+        $data = array(
+            'last_login_time' => time(),
+            'login_count' => intval($adminInfo['login_count']) + 1
+        );
+
+        // 更新数据
+        $this->db->where('user_id', $adminInfo['user_id'])->update(self::TABLE_NAME, $data);
+
+
+        $adminInfo = $this->db->where('user_name', $opt['userName'])
+                            ->from(self::TABLE_NAME)
+                            ->select('user_id as userId, user_name as userName, last_login_time as lastLoginTime')
+                            ->get()
+                            ->row_array();
         $k = array(
             'userId',
-            'userName'
+            'userName',
+            'lastLoginTime'
         );
         $adminInfo = elements($k, $adminInfo, '');
         return success_result('登录成功', $adminInfo);
