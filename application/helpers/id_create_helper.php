@@ -23,6 +23,7 @@ function decTo63($str)
                     'A','B','C','D','E','F','G','H','I','J','K','L',
                     'M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 
+    $ayyayLen = count($array63);
     $result = '';
     $quotient = $str;
     $divisor = $str;
@@ -35,15 +36,15 @@ function decTo63($str)
         $remainder = $div[0];
         while ($pos < $len) {
             $div = $remainder == 0 ? $divisor[$pos] : $remainder.$divisor[$pos];
-            $remainder = $div % 63;
-            $quotient = $quotient.floor($div / 63);
+            $remainder = $div % $ayyayLen;
+            $quotient = $quotient.floor($div / $ayyayLen);
             $pos++;
         }
         $quotient = trim_left_zeros($quotient);
         $divisor = "$quotient";
         $result = $array63[$remainder].$result;
         if (strlen($divisor) <= 2) {
-            if ($divisor<62) {
+            if ($divisor < $ayyayLen - 1) {
                 $flag = false;
             }
         }
