@@ -126,18 +126,12 @@ class Admin_model extends Base_Model
         // 更新数据
         $this->db->where('user_id', $adminInfo['user_id'])->update(self::TABLE_NAME, $data);
 
-
         $adminInfo = $this->db->where('user_name', $opt['userName'])
                             ->from(self::TABLE_NAME)
                             ->select('user_id as userId, user_name as userName, last_login_time as lastLoginTime')
                             ->get()
                             ->row_array();
-        $k = array(
-            'userId',
-            'userName',
-            'lastLoginTime'
-        );
-        $adminInfo = elements($k, $adminInfo, '');
+                            
         return success_result('登录成功', $adminInfo);
     }
 }

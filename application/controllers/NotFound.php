@@ -7,6 +7,6 @@ class NotFound extends Base_Controller
 {
     public function index()
     {
-		$this->fail_response(fail_result("Error Not Found", null, NOT_FOUND), NOT_FOUND);
+        $this->fail_response(fail_result("Error Not Found", null, NOT_FOUND), NOT_FOUND);
     }
 }
