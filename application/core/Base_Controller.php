@@ -7,7 +7,7 @@ class Base_Controller extends CI_Controller {
 
         $isDebug = $this->input->get_request_header('isDebug', false);
         if(!$isDebug) {
-            // $this->fail_response(fail_result("Error", null, -1000003), FAIL);
+            $this->fail_response(fail_result("Error", null, -1000003), FAIL);
         }
     }
 
