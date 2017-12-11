@@ -5,7 +5,7 @@ require APPPATH. 'core/Base_Model.php';
 
 class Admin_model extends Base_Model
 {
-    const TABLE_NAME = 'car_admin';
+    const TABLE_NAME = 'admin_user';
 
     public function __construct()
     {

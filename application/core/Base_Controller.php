@@ -7,7 +7,7 @@ class Base_Controller extends CI_Controller {
 
         $isDebug = $this->input->get_request_header('isDebug', false);
         if(!$isDebug) {
-            $this->fail_response(fail_result("Error No-Debug", null, -1000003), FAIL);
+            // $this->fail_response(fail_result("Error", null, -1000003), FAIL);
         }
     }
 
@@ -34,5 +34,13 @@ class Base_Controller extends CI_Controller {
                     ->set_output(json_encode($data))
                     ->_display();
         exit;
+    }
+
+    protected function return_result($result) {
+        if($result['status']) {
+            $this->success_response($result);
+        } else {
+            $this->fail_response($result);
+        }
     }
 }

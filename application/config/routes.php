@@ -64,9 +64,12 @@ $route['translate_uri_dashes'] = FALSE;
  $route['admin/login']['post'] = 'admin/admin/admin_login';
 
 /**
- * company
- */
-
-/**
  * user
  */
+
+
+/**
+ * common
+ */
+ $route['common/province']['get'] = 'common/city/get_province';
+ $route['common/city']['get'] = 'common/city/get_city';
