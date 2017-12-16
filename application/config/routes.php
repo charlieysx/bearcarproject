@@ -50,7 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'welcome';
-$route['404_override'] = 'welcome';
+$route['404_override'] = 'notfound';
 $route['translate_uri_dashes'] = FALSE;
 
 /**
@@ -67,18 +67,16 @@ $route['translate_uri_dashes'] = FALSE;
  * user
  */
 
-
 /**
  * common
  */
  $route['common/get_province']['get'] = 'common/city/get_province';
  $route['common/get_city']['get'] = 'common/city/get_city';
 
-
  /**
   * car
   */
- $route['car/get_brand']['get'] = 'car/car_info/get_brand';
- $route['car/get_series_by_brand_id']['get'] = 'car/car_info/get_series_by_brand_id';
- $route['car/get_model_by_series_id']['get'] = 'car/car_info/get_model_by_series_id';
+ $route['car/get_brand']['get'] = 'car/Car_info/get_brand';
+ $route['car/get_series_by_brand_id']['get'] = 'car/Car_info/get_series_by_brand_id';
+ $route['car/get_model_by_series_id']['get'] = 'car/Car_info/get_model_by_series_id';
   
