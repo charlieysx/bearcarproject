@@ -40,31 +40,31 @@ class City_model extends Base_Model
         return success_result('查询成功', $province_list);
     }
 
-    // public function get_city($province_id) {
-    //     $data = array();
-    //     if('' == $province_id) {
-    //         $province_info = $this->db->from(self::TABLE_NAME_PROVINCE)
-    //                         ->select('id, name')
-    //                         ->get()
-    //                         ->result_array();
+    public function get_city($province_id) {
+        $data = array();
+        if('' == $province_id) {
+            $province_info = $this->db->from(self::TABLE_NAME_PROVINCE)
+                            ->select('id, name')
+                            ->get()
+                            ->result_array();
             
-    //         foreach($province_info as $province) {
-    //             $list = $this->get_city_by_province_id($province['id']);
-    //             array_push($data, $list);
-    //         }
-    //     } else {
-    //         $city = $this->get_city_by_province_id($province_id);
-    //         if(!isset($city['status'])) {
-    //             array_push($data, $city);
-    //         } else {
-    //             return $city;
-    //         }
-    //     }
+            foreach($province_info as $province) {
+                $list = $this->get_city_by_province_id($province['id']);
+                array_push($data, $list);
+            }
+        } else {
+            $city = $this->get_city_by_province_id($province_id);
+            if(!isset($city['status'])) {
+                array_push($data, $city);
+            } else {
+                return $city;
+            }
+        }
 
-    //     $city_list = array('list' => $data);
+        $city_list = array('list' => $data);
         
-    //     return success_result('查询成功', $city_list);
-    // }
+        return success_result('查询成功', $city_list);
+    }
 
     private function get_city_by_province_id($province_id) {
         $province_info = $this->db->where('id', $province_id)
