@@ -71,5 +71,14 @@ $route['translate_uri_dashes'] = FALSE;
 /**
  * common
  */
- $route['common/province']['get'] = 'common/city/get_province';
- $route['common/city']['get'] = 'common/city/get_city';
+ $route['common/get_province']['get'] = 'common/city/get_province';
+ $route['common/get_city']['get'] = 'common/city/get_city';
+
+
+ /**
+  * car
+  */
+ $route['car/get_brand']['get'] = 'car/car_info/get_brand';
+ $route['car/get_series_by_brand_id']['get'] = 'car/car_info/get_series_by_brand_id';
+ $route['car/get_model_by_series_id']['get'] = 'car/car_info/get_model_by_series_id';
+  
