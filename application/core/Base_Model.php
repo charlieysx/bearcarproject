@@ -21,7 +21,7 @@ class Base_Model extends CI_Model
                     ->get()
                     ->row_array();
         //查得到数据并且token在效期内
-        $result = !empty($this->userInfo) && $this->userInfo['tokenExpiresIn'] <= time();
+        $result = !empty($this->userInfo) && $this->userInfo['token_expiresIn'] <= time();
 
         return $result;
     }
