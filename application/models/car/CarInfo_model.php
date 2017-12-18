@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 require APPPATH. 'core/Base_Model.php';
 
-class Car_Info_model extends Base_Model
+class CarInfo_model extends Base_Model
 {
     //车品牌
     const TABLE_NAME_CAR_BRAND = 'car_brand';

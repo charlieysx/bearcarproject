@@ -3,14 +3,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 require APPPATH. 'core/Base_Controller.php';
 
-class Car_Info extends Base_Controller
+class CarInfo extends Base_Controller
 {
     public function __construct() {
         parent::__construct();
-        $this->load->model('car/Car_Info_model', 'car_info');
+        $this->load->model('car/CarInfo_model', 'car_info');
     }
 
     public function get_brand() {
+        $this->check_token($this->car_info);
         $param = $this->input->get();
         $brand_id = '';
         if(isset($param['brandId'])) {
@@ -21,6 +22,7 @@ class Car_Info extends Base_Controller
     }
 
     public function get_series_by_brand_id() {
+        $this->check_token($this->car_info);
         $param = $this->input->get();
         $brand_id = '';
         if(isset($param['brandId'])) {
@@ -31,6 +33,7 @@ class Car_Info extends Base_Controller
     }
 
     public function get_model_by_series_id() {
+        $this->check_token($this->car_info);
         $param = $this->input->get();
         $series_id = '';
         if(isset($param['seriesId'])) {

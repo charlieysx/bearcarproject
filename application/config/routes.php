@@ -60,12 +60,14 @@ $route['translate_uri_dashes'] = FALSE;
 /**
  * admin
  */
- $route['admin/add']['post'] = 'admin/admin/admin_add';
- $route['admin/login']['post'] = 'admin/admin/admin_login';
+ $route['admin/add']['post'] = 'admin/Admin/admin_add';
+ $route['admin/login']['post'] = 'admin/Admin/admin_login';
 
 /**
  * user
  */
+ $route['user/add']['post'] = 'user/User/user_add';
+ $route['user/login']['post'] = 'user/User/user_login';
 
 /**
  * common
@@ -76,7 +78,7 @@ $route['translate_uri_dashes'] = FALSE;
  /**
   * car
   */
- $route['car/get_brand']['get'] = 'car/Car_Info/get_brand';
- $route['car/get_series_by_brand_id']['get'] = 'car/Car_Info/get_series_by_brand_id';
- $route['car/get_model_by_series_id']['get'] = 'car/Car_Info/get_model_by_series_id';
+ $route['car/get_brand']['get'] = 'car/CarInfo/get_brand';
+ $route['car/get_series_by_brand_id']['get'] = 'car/CarInfo/get_series_by_brand_id';
+ $route['car/get_model_by_series_id']['get'] = 'car/CarInfo/get_model_by_series_id';
   

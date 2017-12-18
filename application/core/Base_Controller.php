@@ -2,13 +2,18 @@
 
 class Base_Controller extends CI_Controller {
 
+    protected $accessToken = '';
+    protected $isAdmin = false;
+
     public function __construct() {
         parent::__construct();
 
         $isDebug = $this->input->get_request_header('isDebug', false);
-        if(!$isDebug) {
+        if(!$isDebug || $isDebug != 'true') {
             $this->fail_response(fail_result("Error", null, -1000003), FAIL);
         }
+        $this->accessToken = $this->input->get_request_header('accessToken', '');
+        $this->isAdmin = $this->input->get_request_header('isAdmin', false);
     }
 
     protected function success_response($data = array(), $status_code = SUCCESS)
@@ -41,6 +46,12 @@ class Base_Controller extends CI_Controller {
             $this->success_response($result);
         } else {
             $this->fail_response($result);
+        }
+    }
+
+    protected function check_token($model) {
+        if(!$model->check_token($this->accessToken, $this->isAdmin == 'true')) {
+            $this->return_result(fail_result('无效的token', null, TOKEN_INVALID));
         }
     }
 }
