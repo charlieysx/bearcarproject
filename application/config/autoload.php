@@ -94,7 +94,8 @@ $autoload['helper'] = array(
     'status_code',
     'id_create',
     'cb_encrypt',
-    'cb_string'
+    'cb_string',
+    'cb_time'
 );
 
 /*

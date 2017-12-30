@@ -58,7 +58,7 @@ class User_model extends Base_Model
             'user_id' => create_id(),
             'last_login_time' => $time,
             'access_token' => create_id(),
-            'token_expiresIn' => $time + 1000 * 10
+            'token_expiresIn' => $time + WEEK
         );
 
         // 添加数据
@@ -138,7 +138,7 @@ class User_model extends Base_Model
         $data = array(
             'last_login_time' => $time,
             'access_token' => create_id(),
-            'token_expiresIn' => $time + 1000 * 10,
+            'token_expiresIn' => $time + WEEK,
             'login_count' => intval($adminInfo['login_count']) + 1
         );
 

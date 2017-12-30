@@ -11,7 +11,7 @@ class CarInfo extends Base_Controller
     }
 
     public function get_brand() {
-        $this->check_token($this->car_info);
+        $this->check_token();
         $param = $this->input->get();
         $brand_id = '';
         if(isset($param['brandId'])) {
@@ -22,7 +22,7 @@ class CarInfo extends Base_Controller
     }
 
     public function get_series_by_brand_id() {
-        $this->check_token($this->car_info);
+        $this->check_token();
         $param = $this->input->get();
         $brand_id = '';
         if(isset($param['brandId'])) {
@@ -33,7 +33,7 @@ class CarInfo extends Base_Controller
     }
 
     public function get_model_by_series_id() {
-        $this->check_token($this->car_info);
+        $this->check_token();
         $param = $this->input->get();
         $series_id = '';
         if(isset($param['seriesId'])) {

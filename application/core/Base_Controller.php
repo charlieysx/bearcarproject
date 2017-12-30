@@ -14,6 +14,8 @@ class Base_Controller extends CI_Controller {
         }
         $this->accessToken = $this->input->get_request_header('accessToken', '');
         $this->isAdmin = $this->input->get_request_header('isAdmin', false);
+
+        $this->load->model('common/Token_model', 'token');
     }
 
     protected function success_response($data = array(), $status_code = SUCCESS)
@@ -49,8 +51,8 @@ class Base_Controller extends CI_Controller {
         }
     }
 
-    protected function check_token($model) {
-        if(!$model->check_token($this->accessToken, $this->isAdmin == 'true')) {
+    protected function check_token() {
+        if(!$this->token->check_token($this->accessToken, $this->isAdmin == 'true')) {
             $this->return_result(fail_result('无效的token', null, TOKEN_INVALID));
         }
     }
