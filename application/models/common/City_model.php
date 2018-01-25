@@ -93,12 +93,23 @@ class City_model extends Base_Model
         $data = array();
         for($i = ord("A"); $i <= ord("Z"); $i++){
             $letter = chr($i);
-            $city_info = $this->db->where('first_char', $letter)
+            $city_info = $this->db->where('first_char',  $letter)
+                                ->not_like('name', '自治州', 'before')
+                                ->not_like('name', '特别行政区', 'before')
                                 ->from(self::TABLE_NAME_CITY)
                                 ->select('id as cityId, name as cityName, first_char as firstChar')
                                 ->get()
                                 ->result_array();
             if(!empty($city_info)) {
+                foreach($city_info as $k => $v){
+                    $pos = strpos($v['cityName'], '市');
+                    if(!$pos) {
+                        $pos = strpos($v['cityName'], '地区');
+                    }
+                    if($pos) {
+                        $city_info[$k]['cityName'] = substr($v['cityName'], 0, $pos);
+                    }
+                }
                 $data[$letter] = $city_info;
             }
         }
