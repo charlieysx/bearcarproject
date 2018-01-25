@@ -99,7 +99,7 @@ class City_model extends Base_Model
                                 ->get()
                                 ->result_array();
             if(!empty($city_info)) {
-                array_push($data, array($letter=>$city_info));
+                $data[$letter] = $city_info;
             }
         }
 
