@@ -11,7 +11,6 @@ class City extends Base_Controller
     }
 
     public function get_province() {
-        $this->check_token();
         $param = $this->input->get();
         $province_id = '';
         if(isset($param['provinceId'])) {
@@ -22,13 +21,17 @@ class City extends Base_Controller
     }
 
     public function get_city() {
-        $this->check_token();
         $param = $this->input->get();
         $province_id = '';
         if(isset($param['provinceId'])) {
             $province_id = $param['provinceId'];
         }
         $result = $this->city->get_city($province_id);
+        $this->return_result($result);
+    }
+
+    public function get_city_sort() {
+        $result = $this->city->get_city_sort();
         $this->return_result($result);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-require APPPATH. 'core/Base_Model.php';
+// require APPPATH. 'core/Base_Model.php';
 
 class City_model extends Base_Model
 {
@@ -87,5 +87,22 @@ class City_model extends Base_Model
         );
 
         return $data;
+    }
+
+    public function get_city_sort() {
+        $data = array();
+        for($i = ord("A"); $i <= ord("Z"); $i++){
+            $letter = chr($i);
+            $city_info = $this->db->where('first_char', $letter)
+                                ->from(self::TABLE_NAME_CITY)
+                                ->select('id as cityId, name as cityName, first_char as firstChar')
+                                ->get()
+                                ->result_array();
+            if(!empty($city_info)) {
+                array_push($data, array($letter=>$city_info));
+            }
+        }
+
+        return success_result('查询成功', array('list'=>$data));
     }
 }
