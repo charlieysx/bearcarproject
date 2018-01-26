@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-require APPPATH. 'core/Base_Model.php';
+// require APPPATH. 'core/Base_Model.php';
 
 class User_model extends Base_Model
 {
