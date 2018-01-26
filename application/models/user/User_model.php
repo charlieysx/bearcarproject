@@ -79,7 +79,8 @@ class User_model extends Base_Model
             'lastLoginTime' => $adminInfo['last_login_time'],
             'token' => array(
                 'accessToken' => $adminInfo['access_token'],
-                'tokenExpiresIn' => $adminInfo['token_expiresIn']
+                'tokenExpiresIn' => $adminInfo['token_expiresIn'],
+                'exp' => WEEK
             )
         );
         return success_result('注册成功', $userResult);
@@ -156,7 +157,8 @@ class User_model extends Base_Model
             'lastLoginTime' => $adminInfo['last_login_time'],
             'token' => array(
                 'accessToken' => $adminInfo['access_token'],
-                'tokenExpiresIn' => $adminInfo['token_expiresIn']
+                'tokenExpiresIn' => $adminInfo['token_expiresIn'],
+                'exp' => WEEK
             )
         );
                             
