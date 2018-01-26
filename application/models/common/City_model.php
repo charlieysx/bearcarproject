@@ -126,6 +126,15 @@ class City_model extends Base_Model
                             ->select('id as cityId, name as cityName, first_char as firstChar, count as searchCount')
                             ->get()
                             ->result_array();
+        foreach($city_info as $k => $v){
+            $pos = strpos($v['cityName'], '市');
+            if(!$pos) {
+                $pos = strpos($v['cityName'], '地区');
+            }
+            if($pos) {
+                $city_info[$k]['cityName'] = substr($v['cityName'], 0, $pos);
+            }
+        }
 
         return success_result('查询成功', array('list'=>$city_info));
     }
