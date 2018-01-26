@@ -34,4 +34,9 @@ class City extends Base_Controller
         $result = $this->city->get_city_sort();
         $this->return_result($result);
     }
+
+    public function get_hot_city() {
+        $result = $this->city->get_hot_city();
+        $this->return_result($result);
+    }
 }

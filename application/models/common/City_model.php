@@ -11,6 +11,8 @@ class City_model extends Base_Model
     const TABLE_NAME_CITY = 'city';
     //地区
     const TABLE_NAME_DISTRICT = 'district';
+    //热门城市
+    const TABLE_NAME_HOT_CITY = 'hot_city';
 
     public function __construct()
     {
@@ -115,5 +117,16 @@ class City_model extends Base_Model
         }
 
         return success_result('查询成功', array('list'=>$data));
+    }
+
+    public function get_hot_city() {
+        $city_info = $this->db->order_by('count', 'DESC')
+                            ->limit(12)
+                            ->from(self::TABLE_NAME_HOT_CITY)
+                            ->select('id as cityId, name as cityName, first_char as firstChar, count as searchCount')
+                            ->get()
+                            ->result_array();
+
+        return success_result('查询成功', array('list'=>$city_info));
     }
 }
