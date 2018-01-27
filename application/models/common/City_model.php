@@ -11,8 +11,6 @@ class City_model extends Base_Model
     const TABLE_NAME_CITY = 'city';
     //地区
     const TABLE_NAME_DISTRICT = 'district';
-    //热门城市
-    const TABLE_NAME_HOT_CITY = 'hot_city';
 
     public function __construct()
     {
@@ -120,10 +118,10 @@ class City_model extends Base_Model
     }
 
     public function get_hot_city() {
-        $city_info = $this->db->order_by('count', 'DESC')
+        $city_info = $this->db->order_by('search_count', 'DESC')
                             ->limit(12)
-                            ->from(self::TABLE_NAME_HOT_CITY)
-                            ->select('id as cityId, name as cityName, first_char as firstChar, count as searchCount')
+                            ->from(self::TABLE_NAME_CITY)
+                            ->select('id as cityId, name as cityName, first_char as firstChar, search_count as searchCount')
                             ->get()
                             ->result_array();
         foreach($city_info as $k => $v){
