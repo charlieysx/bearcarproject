@@ -60,13 +60,13 @@ $route['translate_uri_dashes'] = FALSE;
 /**
  * admin
  */
- $route['admin/add']['post'] = 'admin/Admin/admin_add';
+ $route['admin/register']['post'] = 'admin/Admin/admin_add';
  $route['admin/login']['post'] = 'admin/Admin/admin_login';
 
 /**
  * user
  */
- $route['user/add']['post'] = 'user/User/user_add';
+ $route['user/register']['post'] = 'user/User/user_add';
  $route['user/login']['post'] = 'user/User/user_login';
 
 /**
