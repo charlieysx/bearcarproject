@@ -26,7 +26,14 @@ class CarInfo extends Base_Controller
     }
 
     public function get_hot_brand() {
-        $result = $this->car_info->get_hot_brand();
+        $param = $this->input->get();
+        $count = '';
+        if(isset($param['count'])) {
+            $count = $param['count'];
+        } else {
+            $count = '10';
+        }
+        $result = $this->car_info->get_hot_brand($count);
         $this->return_result($result);
     }
 

@@ -97,9 +97,9 @@ class CarInfo_model extends Base_Model
         return success_result('查询成功', array('list'=>$data));
     }
 
-    public function get_hot_brand() {
+    public function get_hot_brand($count) {
         $car_info = $this->db->order_by('search_count', 'DESC')
-                            ->limit(16)
+                            ->limit($count)
                             ->from(self::TABLE_NAME_CAR_BRAND)
                             ->select('brand_id as brandId, brand_name as brandName, first_char as firstChar')
                             ->get()
