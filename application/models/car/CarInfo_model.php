@@ -79,4 +79,32 @@ class CarInfo_model extends Base_Model
             
         return success_result('查询成功', $province_list);
     }
+
+    public function get_brand_sort() {
+        $data = array();
+        for($i = ord("A"); $i <= ord("Z"); $i++){
+            $letter = chr($i);
+            $car_info = $this->db->where('first_char',  $letter)
+                                ->from(self::TABLE_NAME_CAR_BRAND)
+                                ->select('brand_id as brandId, brand_name as brandName, first_char as firstChar')
+                                ->get()
+                                ->result_array();
+            if(!empty($car_info)) {
+                $data[$letter] = $car_info;
+            }
+        }
+
+        return success_result('查询成功', array('list'=>$data));
+    }
+
+    public function get_hot_brand() {
+        $car_info = $this->db->order_by('search_count', 'DESC')
+                            ->limit(16)
+                            ->from(self::TABLE_NAME_CAR_BRAND)
+                            ->select('brand_id as brandId, brand_name as brandName, first_char as firstChar')
+                            ->get()
+                            ->result_array();
+
+        return success_result('查询成功', array('list'=>$car_info));
+    }
 }

@@ -81,6 +81,8 @@ $route['translate_uri_dashes'] = FALSE;
   * car
   */
  $route['car/get_brand']['get'] = 'car/CarInfo/get_brand';
+ $route['car/get_brand_sort']['get'] = 'car/CarInfo/get_brand_sort';
+ $route['car/get_hot_brand']['get'] = 'car/CarInfo/get_hot_brand';
  $route['car/get_series_by_brand_id']['get'] = 'car/CarInfo/get_series_by_brand_id';
  $route['car/get_model_by_series_id']['get'] = 'car/CarInfo/get_model_by_series_id';
   

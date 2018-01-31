@@ -20,6 +20,16 @@ class CarInfo extends Base_Controller
         $this->return_result($result);
     }
 
+    public function get_brand_sort() {
+        $result = $this->car_info->get_brand_sort();
+        $this->return_result($result);
+    }
+
+    public function get_hot_brand() {
+        $result = $this->car_info->get_hot_brand();
+        $this->return_result($result);
+    }
+
     public function get_series_by_brand_id() {
         $param = $this->input->get();
         $brand_id = '';
