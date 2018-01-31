@@ -107,4 +107,15 @@ class CarInfo_model extends Base_Model
 
         return success_result('查询成功', array('list'=>$car_info));
     }
+
+    public function get_hot_series($count) {
+        $car_info = $this->db->order_by('search_count', 'DESC')
+                            ->limit($count)
+                            ->from(self::TABLE_NAME_CAR_SERIES)
+                            ->select('brand_id as brandId, series_id as seriesId, series_name as seriesName')
+                            ->get()
+                            ->result_array();
+
+        return success_result('查询成功', array('list'=>$car_info));
+    }
 }
