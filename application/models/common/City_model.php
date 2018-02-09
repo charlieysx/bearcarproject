@@ -56,7 +56,7 @@ class City_model extends Base_Model
         } else {
             $city = $this->get_city_by_province_id($province_id);
             if(!isset($city['status'])) {
-                array_push($data, $city);
+                return success_result('查询成功', $city);
             } else {
                 return $city;
             }
@@ -111,10 +111,8 @@ class City_model extends Base_Model
             'cityName' => $city_info['name'],
             'list' => $district_info
         );
-
-        $district_list = array('list' => $data);
         
-        return success_result('查询成功', $district_list);
+        return success_result('查询成功', $data);
     }
 
     public function get_city_sort() {
