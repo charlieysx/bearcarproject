@@ -30,6 +30,16 @@ class City extends Base_Controller
         $this->return_result($result);
     }
 
+    public function get_district() {
+        $param = $this->input->get();
+        $city_id = '';
+        if(isset($param['cityId'])) {
+            $city_id = $param['cityId'];
+        }
+        $result = $this->city->get_district_by_city_id($city_id);
+        $this->return_result($result);
+    }
+
     public function get_city_sort() {
         $result = $this->city->get_city_sort();
         $this->return_result($result);

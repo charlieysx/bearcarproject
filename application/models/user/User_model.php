@@ -92,7 +92,7 @@ class User_model extends Base_Model
      * @param  array  $opt [description]
      * @return [type]      [description]
      */
-    public function login($opt = array())
+    public function login($isDebug, $opt = array())
     {
         $k = array(
             'userName',

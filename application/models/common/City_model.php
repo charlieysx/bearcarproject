@@ -21,6 +21,7 @@ class City_model extends Base_Model
         $data = array();
         if('' == $province_id) {
             $data = $this->db->from(self::TABLE_NAME_PROVINCE)
+                            ->not_like('name', '特别行政区', 'before')
                             ->select('id as provinceId, name as provinceName')
                             ->get()
                             ->result_array();
@@ -66,8 +67,10 @@ class City_model extends Base_Model
         return success_result('查询成功', $city_list);
     }
 
-    private function get_city_by_province_id($province_id) {
+    public function get_city_by_province_id($province_id) {
         $province_info = $this->db->where('id', $province_id)
+                        ->not_like('name', '自治州', 'before')
+                        ->not_like('name', '特别行政区', 'before')
                         ->from(self::TABLE_NAME_PROVINCE)
                         ->select('id, name')
                         ->get()
@@ -87,6 +90,31 @@ class City_model extends Base_Model
         );
 
         return $data;
+    }
+
+    public function get_district_by_city_id($city_id) {
+        $city_info = $this->db->where('id', $city_id)
+                        ->from(self::TABLE_NAME_CITY)
+                        ->select('id, name')
+                        ->get()
+                        ->row_array();
+        if(empty($city_info)) {
+            return fail_result('无效的 cityId : '.$city_id);
+        }
+        $district_info = $this->db->where('city_id', $city_id)
+                        ->from(self::TABLE_NAME_DISTRICT)
+                        ->select('id as districtId, name as districtName')
+                        ->get()
+                        ->result_array();
+        $data = array(
+            'cityId' => $city_id,
+            'cityName' => $city_info['name'],
+            'list' => $district_info
+        );
+
+        $district_list = array('list' => $data);
+        
+        return success_result('查询成功', $district_list);
     }
 
     public function get_city_sort() {
