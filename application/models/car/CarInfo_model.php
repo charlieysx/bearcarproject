@@ -135,7 +135,7 @@ class CarInfo_model extends Base_Model
                 array_push($m, array('value' => $j.'月' ));
             }
             $item = array(
-                'value' => ($year + $i).'年',
+                'value' => ($year - $i).'年',
                 'month' => $m
             );
             array_push($license_time, $item);
