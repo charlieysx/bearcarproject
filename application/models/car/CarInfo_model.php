@@ -189,13 +189,14 @@ class CarInfo_model extends Base_Model
             )
         );
         $hour = intval(date("H"));
-        if($hour > 11) {
+        $minute = intval(date("i"));
+        if($hour > 11 || ($hour == 11 && $minute > 30)) {
             $data[0]['disable'] = false;
         };
-        if($hour > 17) {
+        if($hour > 17 || ($hour == 17 && $minute > 30)) {
             $data[1]['disable'] = false;
         }
         
-        return success_result('查询成功', $hour);
+        return success_result('查询成功', $data);
     }
 }
