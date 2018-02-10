@@ -40,6 +40,16 @@ class City extends Base_Controller
         $this->return_result($result);
     }
 
+    public function get_info_by_city() {
+        $param = $this->input->get();
+        $city_id = '';
+        if(isset($param['cityId'])) {
+            $city_id = $param['cityId'];
+        }
+        $result = $this->city->get_info_by_city($city_id);
+        $this->return_result($result);
+    }
+
     public function get_city_sort() {
         $result = $this->city->get_city_sort();
         $this->return_result($result);

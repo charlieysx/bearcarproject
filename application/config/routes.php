@@ -77,6 +77,7 @@ $route['translate_uri_dashes'] = FALSE;
  $route['common/get_city_sort']['get'] = 'common/city/get_city_sort';
  $route['common/get_hot_city']['get'] = 'common/city/get_hot_city';
  $route['common/get_district']['get'] = 'common/city/get_district';
+ $route['common/get_info_by_city']['get'] = 'common/city/get_info_by_city';
 
  /**
   * car
