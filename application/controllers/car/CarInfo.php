@@ -68,4 +68,14 @@ class CarInfo extends Base_Controller
         $result = $this->car_info->get_model_by_series_id($series_id);
         $this->return_result($result);
     }
+
+    public function get_sell_info() {
+        $result = $this->car_info->get_sell_info();
+        $this->return_result($result);
+    }
+
+    public function get_check_time() {
+        $result = $this->car_info->get_check_time();
+        $this->return_result($result);
+    }
 }

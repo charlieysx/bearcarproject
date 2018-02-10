@@ -11,6 +11,10 @@ class CarInfo_model extends Base_Model
     const TABLE_NAME_CAR_SERIES = 'car_series';
     //车型
     const TABLE_NAME_CAR_MODEL = 'car_model';
+    //车况
+    const TABLE_NAME_CONDITION = 'car_condition';
+    //预期出售时间
+    const TABLE_NAME_EXPIRE_DATE = 'expire_date';
 
     public function __construct()
     {
@@ -117,5 +121,81 @@ class CarInfo_model extends Base_Model
                             ->result_array();
 
         return success_result('查询成功', array('list'=>$car_info));
+    }
+
+    public function get_sell_info() {
+        //上牌时间
+        $year = intval(date( "Y"));
+        $month = intval(date( "n"));
+        $license_time = array();
+        for($i = 0;$i < 5;$i++) {
+            
+            $m = array();
+            for($j = 1;$j <= ($i == 0 ? $month : 12);$j++) {
+                array_push($m, array('value' => $j.'月' ));
+            }
+            $item = array(
+                'value' => ($year + $i).'年',
+                'month' => $m
+            );
+            array_push($license_time, $item);
+        }
+        //车况
+        $car_condition = $this->db->from(self::TABLE_NAME_CONDITION)
+                            ->select('condition_id as conditionId, condition_name as value')
+                            ->get()
+                            ->result_array();
+        //预期出售时间
+        $expire_date = $this->db->from(self::TABLE_NAME_EXPIRE_DATE)
+                            ->select('expire_date_id as expireDateId, expire_date_name as value')
+                            ->get()
+                            ->result_array();
+
+        $data = array(
+            'licenseTime' => $license_time,
+            'condition' => $car_condition,
+            'expireDate' => $expire_date
+        );
+
+        return success_result('查询成功', $data);
+    }
+
+    public function get_check_time() {
+        $data = array(
+            array(
+                'id' => 0,
+                'value' => '今天上午9:00-12:00',
+                'disable' => true
+            ),
+            array(
+                'id' => 1,
+                'value' => '今天下午12:00-18:00',
+                'disable' => true
+            ),
+            array(
+                'id' => 2,
+                'value' => '明天上午9:00-12:00',
+                'disable' => true
+            ),
+            array(
+                'id' => 3,
+                'value' => '明天下午12:00-18:00',
+                'disable' => true
+            ),
+            array(
+                'id' => 4,
+                'value' => '以上时间均不方便，请客服联系我',
+                'disable' => true
+            )
+        );
+        $hour = intval(date("H"));
+        if($hour > 11) {
+            $data[0]['disable'] = false;
+        };
+        if($hour > 17) {
+            $data[1]['disable'] = false;
+        }
+        
+        return success_result('查询成功', $hour);
     }
 }
