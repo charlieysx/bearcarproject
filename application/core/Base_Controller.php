@@ -49,6 +49,9 @@ class Base_Controller extends CI_Controller {
         if($result['status']) {
             $this->success_response($result);
         } else {
+            if($result['code'] != -1) {
+                $this->fail_response($result, $result['code']);
+            }
             $this->fail_response($result);
         }
     }
