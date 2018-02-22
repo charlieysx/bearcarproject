@@ -18,7 +18,7 @@ class User extends Base_Controller
 
     public function user_login() {
         $param = $this->input->post();
-        $result = $this->user->login($this->debug, $param);
+        $result = $this->user->login($param);
         $this->return_result($result);
     }
 }

@@ -5,7 +5,7 @@ class Base_Model extends CI_Model
     const USER_TOKEN_TABLE_NAME = 'user';
     const ADMIN_TOKEN_TABLE_NAME = 'admin_user';
 
-    protected $userInfo = '';
+    public $userInfo = '';
 
     public function __construct(){
         parent::__construct();

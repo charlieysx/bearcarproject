@@ -8,6 +8,14 @@
 function create_id() {
     return decTo63(base_convert(md5(uniqid()), 16, 10));
 }
+/**
+ * 创建63进制的唯一二手车id
+ * @method create_id
+ * @return [type]    [description]
+ */
+function create_car_id($user_id) {
+    return decTo63(base_convert(md5(uniqid().$user_id), 16, 10));
+}
 
 /**
  * 十进制的字符串转63进制

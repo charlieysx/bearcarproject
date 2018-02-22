@@ -21,7 +21,7 @@ class User_model extends Base_Model
     {
         $k = array(
             'userName',
-            'password',
+            'password'
         );
         $opt = elements($k, $opt, '');
         // 数据校验
@@ -92,11 +92,11 @@ class User_model extends Base_Model
      * @param  array  $opt [description]
      * @return [type]      [description]
      */
-    public function login($isDebug, $opt = array())
+    public function login($opt = array())
     {
         $k = array(
             'userName',
-            'password',
+            'password'
         );
         $opt = elements($k, $opt, '');
         // 数据校验

@@ -13,6 +13,8 @@ class CarInfo_model extends Base_Model
     const TABLE_NAME_CONDITION = 'car_condition';
     //预期出售时间
     const TABLE_NAME_EXPIRE_DATE = 'expire_date';
+    //验车时间
+    const TABLE_NAME_CHECK_TIME = 'check_time';
 
     public function __construct()
     {
@@ -159,42 +161,27 @@ class CarInfo_model extends Base_Model
     }
 
     public function get_check_time() {
-        $data = array(
-            array(
-                'id' => 0,
-                'value' => '今天上午9:00-12:00',
-                'disable' => true
-            ),
-            array(
-                'id' => 1,
-                'value' => '今天下午12:00-18:00',
-                'disable' => true
-            ),
-            array(
-                'id' => 2,
-                'value' => '明天上午9:00-12:00',
-                'disable' => true
-            ),
-            array(
-                'id' => 3,
-                'value' => '明天下午12:00-18:00',
-                'disable' => true
-            ),
-            array(
-                'id' => 4,
-                'value' => '以上时间均不方便，请客服联系我',
-                'disable' => true
-            )
-        );
+        //验车时间
+        $check_time = $this->db->from(self::TABLE_NAME_CHECK_TIME)
+                            ->select('check_time_id as id, value')
+                            ->get()
+                            ->result_array();
+                            
+        $check_time[0]['disable'] = true;
+        $check_time[1]['disable'] = true;
+        $check_time[2]['disable'] = true;
+        $check_time[3]['disable'] = true;
+        $check_time[4]['disable'] = true;
+
         $hour = intval(date("H"));
         $minute = intval(date("i"));
         if($hour > 11 || ($hour == 11 && $minute > 30)) {
-            $data[0]['disable'] = false;
+            $check_time[0]['disable'] = false;
         };
         if($hour > 17 || ($hour == 17 && $minute > 30)) {
-            $data[1]['disable'] = false;
+            $check_time[1]['disable'] = false;
         }
         
-        return success_result('查询成功', $data);
+        return success_result('查询成功', $check_time);
     }
 }
