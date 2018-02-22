@@ -7,4 +7,4 @@ const FAIL = 400;
 //找不到
 const NOT_FOUND = 404;
 //token失效
-const TOKEN_INVALID = 201;
+const TOKEN_INVALID = 401;

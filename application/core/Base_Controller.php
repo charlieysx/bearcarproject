@@ -9,11 +9,11 @@ class Base_Controller extends CI_Controller {
     public function __construct() {
         parent::__construct();
 
-        $isDebug = $this->input->get_request_header('isDebug', false);
-        if(!$isDebug || $isDebug != 'true') {
-            $this->debug = false;
-            $this->fail_response(fail_result("Error", null, -1000003), FAIL);
-        }
+        // $isDebug = $this->input->get_request_header('isDebug', false);
+        // if(!$isDebug || $isDebug != 'true') {
+        //     $this->debug = false;
+        //     $this->fail_response(fail_result("Error", null, -1000003), FAIL);
+        // }
         $this->accessToken = $this->input->get_request_header('accessToken', '');
         $this->isAdmin = $this->input->get_request_header('isAdmin', false);
 
