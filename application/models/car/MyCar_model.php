@@ -84,7 +84,7 @@ class MyCar_model extends Base_Model
           return success_result('没有该辆车信息或该辆车不属于您');
         }
 
-        if($car.status != 0) {
+        if($car['status'] != 0) {
           return success_result('该辆二手车的状态不能下架');
         }
 
