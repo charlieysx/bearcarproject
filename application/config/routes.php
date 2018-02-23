@@ -93,5 +93,5 @@ $route['translate_uri_dashes'] = FALSE;
  $route['car/get_check_time']['get'] = 'car/CarInfo/get_check_time';
  $route['car/sell_car']['post'] = 'car/SellCar/sell_car';
  $route['car/get_my_car']['get'] = 'car/MyCar/get_my_car';
- $route['car/under']['get'] = 'car/MyCar/under';
+ $route['car/under']['post'] = 'car/MyCar/under';
   

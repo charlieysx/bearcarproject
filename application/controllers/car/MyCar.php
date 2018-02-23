@@ -33,7 +33,7 @@ class MyCar extends Base_Controller
 
     public function under() {
       $this->check_token();
-      $param = $this->input->get();
+      $param = $this->input->post();
       $k = array(
         'carId'
       );
