@@ -35,7 +35,7 @@ class CarInfo_model extends Base_Model
                             ->get()
                             ->result_array();
             if(empty($data)) {
-                return fail_result('无效的 brandId : '.$brand_id);
+                return success_result('无效的 brandId : '.$brand_id);
             }
         }
 
@@ -55,7 +55,7 @@ class CarInfo_model extends Base_Model
                             ->get()
                             ->result_array();
             if(empty($data)) {
-                return fail_result('无效的 brandId : '.$brand_id);
+                return success_result('无效的 brandId : '.$brand_id);
             }
         }
         
@@ -75,7 +75,7 @@ class CarInfo_model extends Base_Model
                             ->get()
                             ->result_array();
             if(empty($data)) {
-                return fail_result('无效的 seriesId : '.$series_id);
+                return success_result('无效的 seriesId : '.$series_id);
             }
         }
     
@@ -166,7 +166,7 @@ class CarInfo_model extends Base_Model
                             ->select('check_time_id as id, value')
                             ->get()
                             ->result_array();
-                            
+
         $check_time[0]['disable'] = true;
         $check_time[1]['disable'] = true;
         $check_time[2]['disable'] = true;
