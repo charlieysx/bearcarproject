@@ -30,4 +30,15 @@ class MyCar extends Base_Controller
         $result = $this->my_car->get_my_car($this->token->userInfo['user_id'], $opt['type'], $opt['page'], $opt['pageSize']);
         $this->return_result($result);
     }
+
+    public function under() {
+      $this->check_token();
+      $param = $this->input->get();
+      $k = array(
+        'carId'
+      );
+      $opt = elements($k, $param, '');
+      $result = $this->my_car->under($this->token->userInfo['user_id'], $opt['carId']);
+      $this->return_result($result);
+    }
 }
