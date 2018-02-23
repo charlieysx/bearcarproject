@@ -21,4 +21,15 @@ class User extends Base_Controller
         $result = $this->user->login($param);
         $this->return_result($result);
     }
+
+    public function add() {
+        for($i = 0;$i < 200;$i++) {
+            $param = array(
+                'userName'=> 13000000004 + $i,
+                'password'=> '000000'
+            );
+            $this->user->add($param);
+        }
+        $this->return_result(success_result('添加完成'));
+    }
 }

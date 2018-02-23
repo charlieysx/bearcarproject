@@ -68,6 +68,7 @@ $route['translate_uri_dashes'] = FALSE;
  */
  $route['user/register']['post'] = 'user/User/user_add';
  $route['user/login']['post'] = 'user/User/user_login';
+//  $route['user/add']['post'] = 'user/User/add';
 
 /**
  * common
@@ -91,4 +92,5 @@ $route['translate_uri_dashes'] = FALSE;
  $route['car/get_sell_info']['get'] = 'car/CarInfo/get_sell_info';
  $route['car/get_check_time']['get'] = 'car/CarInfo/get_check_time';
  $route['car/sell_car']['post'] = 'car/SellCar/sell_car';
+ $route['car/get_my_car']['get'] = 'car/MyCar/get_my_car';
   

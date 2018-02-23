@@ -13,6 +13,56 @@ class User_model extends Base_Model
     }
 
     /**
+     * 批量添加用户，暂时开放
+     */
+    public function add($opt = array()) {
+        $k = array(
+            'userName',
+            'password'
+        );
+        $opt = elements($k, $opt, '');
+        // 数据校验
+        if ('' == $opt['userName']) {
+            return fail_result('手机号码不能为空');
+        }
+        
+        if (!is_phone($opt['userName'])) {
+            return fail_result('手机号格式错误');
+        }
+
+        if ('' == $opt['password']) {
+            return fail_result('密码不能为空');
+        }
+
+        if (strlen($opt['password']) < 6) {
+            return fail_result('密码不能少于6位');
+        }
+
+        // 检查用户名是否存在
+        $isEx = $this->db->where('phone', $opt['userName'])->count_all_results(self::TABLE_NAME);
+        if ($isEx) {
+            return fail_result('该手机号已经注册');
+        }
+
+        $encrypt = cb_encrypt($opt['password']);
+
+        $time = time();
+
+        $data = array(
+            'phone' => $opt['userName'],
+            'password' => $encrypt['password'],
+            'salt' => $encrypt['salt'],
+            'user_id' => create_id(),
+            'last_login_time' => $time,
+            'access_token' => create_id(),
+            'token_expiresIn' => $time + WEEK
+        );
+
+        // 添加数据
+        $suc = $this->db->insert(self::TABLE_NAME, $data);
+    }
+
+    /**
      * 添加一个用户
      * @method add_user
      * @param  array     $opt [description]
