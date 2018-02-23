@@ -41,9 +41,9 @@ class MyCar_model extends Base_Model
 
         $car_db = $this->db->from(self::TABLE_CAR)
                             ->select('car_id as carId, car_brand.brand_name as brandName, car_series.series_name as seriesName, car_model.model_name as modelName, 
-                                    city.name as cityName, licensed_year, licensed_month, 
+                                    city.name as cityName, licensed_year as licensedYear, licensed_month as licensedMonth, 
                                     car_condition.condition_name as conditionName, expire_date.expire_date_name as expireDateName, mileage, 
-                                    transfer_time, status, publish_time, see_count')
+                                    transfer_time as transferTime, status, publish_time as publishTime, see_count as seeCount')
                             ->join(self::TABLE_CITY, 'city.id = car.licensed_city_id')
                             ->join(self::TABLE_BRAND, 'car_brand.brand_id = car.brand_id')
                             ->join(self::TABLE_SERIES, 'car_series.series_id = car.series_id')
