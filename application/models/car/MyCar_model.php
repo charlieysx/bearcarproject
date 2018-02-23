@@ -50,23 +50,49 @@ class MyCar_model extends Base_Model
                             ->join(self::TABLE_MODEL, 'car_model.model_id = car.model_id', 'LEFT')
                             ->join(self::TABLE_CONDITION, 'car_condition.condition_id = car.car_condition_id')
                             ->join(self::TABLE_EXPIRE_DATE, 'expire_date.expire_date_id = car.expire_date_id')
-                            ->where('user_id', $user_id);
+                            ->where('user_id', $user_id)
+                            ->where('status', $car_status);
         if($car_status == 3) {
-          $car_db = $car_db->or_group_start()
-                            ->where('status', 3)
-                            ->or_where('status', 4)
-                           ->group_end();
-        } else {
-          $car_db = $car_db->where('status', $car_status);
+          $car_db = $car_db->or_where('status', 4)->or_where('status', 5);
         }
-        $car = $car_db->limit($pageSize, $page)->get()->result_array();
+        $car = $car_db->limit($pageSize, $page*$pageSize)->order_by('publish_time', 'DESC')->get()->result_array();
+        $count_all = $this->db->from(self::TABLE_CAR)
+                              ->where('user_id', $user_id)
+                              ->where('status', $car_status);
+        if($car_status == 3) {
+            $count_all = $count_all->or_where('status', 4)->or_where('status', 5);
+        }
+        $count_all = $count_all->count_all_results();
 
         $result = array(
           'type'=> $type,
           'page'=> $page,
           'pageSize'=> $pageSize,
+          'sizeAll'=> $count_all,
           'list'=> $car
         );
         return success_result('查询成功', $result);
+    }
+
+    public function under($user_id, $car_id) {
+        $car = $this->db->from(self::TABLE_CAR)
+                          ->where('user_id', $user_id)
+                          ->where('car_id', $car_id)
+                          ->get()
+                          ->row_array();
+        if(empty($car)) {
+          return success_result('没有该辆车信息或该辆车不属于您');
+        }
+
+        if($car.status != 0) {
+          return success_result('该辆二手车的状态不能下架');
+        }
+
+        $newStatus = array(
+          'status'=> 5
+        );
+        $this->db->where('car_id', $car_id)->update(self::TABLE_CAR, $newStatus);
+
+        return success_result('下架成功');
     }
 }

@@ -32,7 +32,7 @@ class City_model extends Base_Model
                             ->get()
                             ->result_array();
             if(empty($data)) {
-                return fail_result('无效的 provinceId : '.$province_id);
+                return success_result('无效的 provinceId : '.$province_id);
             }
         }
 
@@ -76,7 +76,7 @@ class City_model extends Base_Model
                         ->get()
                         ->row_array();
         if(empty($province_info)) {
-            return fail_result('无效的 provinceId : '.$province_id);
+            return success_result('无效的 provinceId : '.$province_id);
         }
         $city_info = $this->db->where('province_id', $province_id)
                         ->from(self::TABLE_NAME_CITY)
@@ -108,7 +108,7 @@ class City_model extends Base_Model
                         ->get()
                         ->row_array();
         if(empty($city_info)) {
-            return fail_result('无效的 cityId : '.$city_id);
+            return success_result('无效的 cityId : '.$city_id);
         }
         $district_info = $this->db->where('city_id', $city_id)
                         ->from(self::TABLE_NAME_DISTRICT)
@@ -131,7 +131,7 @@ class City_model extends Base_Model
                         ->get()
                         ->row_array();
         if(empty($city_info)) {
-            return fail_result('无效的 cityId : '.$city_id);
+            return success_result('无效的 cityId : '.$city_id);
         }
         $province_info = $this->db->where('id', $city_id)
                         ->from(self::TABLE_NAME_CITY)
