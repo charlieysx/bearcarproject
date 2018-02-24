@@ -63,12 +63,20 @@ $route['translate_uri_dashes'] = FALSE;
  $route['admin/register']['post'] = 'admin/Admin/admin_add';
  $route['admin/login']['post'] = 'admin/Admin/admin_login';
 
+
 /**
  * user
  */
  $route['user/register']['post'] = 'user/User/user_add';
  $route['user/login']['post'] = 'user/User/user_login';
 //  $route['user/add']['post'] = 'user/User/add';
+
+ $route['admin/carlist/get_car']['get'] = 'admin/CarList/get_car_list';
+
+
+
+
+//------------------------------- admin结束 ---------------------------
 
 /**
  * common
