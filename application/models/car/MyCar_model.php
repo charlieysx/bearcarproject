@@ -43,7 +43,7 @@ class MyCar_model extends Base_Model
                             ->select('car_id as carId, car_brand.brand_name as brandName, car_series.series_name as seriesName, car_model.model_name as modelName, 
                                     city.name as cityName, licensed_year as licensedYear, licensed_month as licensedMonth, 
                                     car_condition.condition_name as conditionName, expire_date.expire_date_name as expireDateName, mileage, 
-                                    transfer_time as transferTime, status, publish_time as publishTime, see_count as seeCount')
+                                    transfer_time as transferTime, status, publish_time as publishTime, see_count as seeCount, under_reason as underReason')
                             ->join(self::TABLE_CITY, 'city.id = car.licensed_city_id')
                             ->join(self::TABLE_BRAND, 'car_brand.brand_id = car.brand_id')
                             ->join(self::TABLE_SERIES, 'car_series.series_id = car.series_id')
@@ -64,6 +64,15 @@ class MyCar_model extends Base_Model
         }
         $count_all = $count_all->count_all_results();
 
+        for($i = 0;$i < count($car);$i++) {
+          if($car[$i]['modelName'] == null) {
+            unset($car[$i]['modelName']);
+          }
+          if($car[$i]['status'] != 5) {
+            unset($car[$i]['underReason']);
+          }
+        }
+
         $result = array(
           'type'=> $type,
           'page'=> $page,
@@ -81,11 +90,11 @@ class MyCar_model extends Base_Model
                           ->get()
                           ->row_array();
         if(empty($car)) {
-          return success_result('没有该辆车信息或该辆车不属于您');
+          return fail_result('没有该辆车信息或该辆车不属于您');
         }
 
         if($car['status'] != 0) {
-          return success_result('该辆二手车的状态不能下架');
+          return fail_result('该辆二手车的状态不能下架');
         }
 
         $newStatus = array(
