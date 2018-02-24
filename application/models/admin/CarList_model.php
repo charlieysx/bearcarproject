@@ -33,6 +33,9 @@ class CarList_model extends Base_Model
           case 'under':
             $car_status = 3;
             break;
+          case 'checking':
+            $car_status = 6;
+            break;
           default:
             $type = 'waiting';
             $car_status = 0;
