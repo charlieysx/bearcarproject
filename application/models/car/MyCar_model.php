@@ -98,7 +98,7 @@ class MyCar_model extends Base_Model
         }
 
         $newStatus = array(
-          'status'=> 5
+          'status'=> 4
         );
         $this->db->where('car_id', $car_id)->update(self::TABLE_CAR, $newStatus);
 
