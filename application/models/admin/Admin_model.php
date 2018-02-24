@@ -20,13 +20,18 @@ class Admin_model extends Base_Model
     public function add_admin($opt = array())
     {
         $k = array(
+            'phone',
             'userName',
             'password',
         );
         $opt = elements($k, $opt, '');
         // 数据校验
-        if ('' == $opt['userName']) {
+        if ('' == $opt['phone']) {
             return fail_result('登录名不能为空');
+        }
+
+        if ('' == $opt['userName']) {
+            return fail_result('用户名不能为空');
         }
 
         if ('' == $opt['password']) {
@@ -38,9 +43,9 @@ class Admin_model extends Base_Model
         }
 
         // 检查用户名是否存在
-        $isEx = $this->db->where('user_name', $opt['userName'])->count_all_results(self::TABLE_NAME);
+        $isEx = $this->db->where('phone', $opt['phone'])->count_all_results(self::TABLE_NAME);
         if ($isEx) {
-            return fail_result('该用户名已经存在，不能重复添加');
+            return fail_result('该登录名已经存在，不能重复添加');
         }
 
         $encrypt = cb_encrypt($opt['password']);
@@ -48,6 +53,7 @@ class Admin_model extends Base_Model
         $time = time();
 
         $data = array(
+            'phone' => $opt['phone'],
             'user_name' => $opt['userName'],
             'password' => $encrypt['password'],
             'salt' => $encrypt['salt'],
@@ -64,13 +70,14 @@ class Admin_model extends Base_Model
             return fail_result('添加管理员失败');
         }
 
-        $adminInfo = $this->db->where('user_name', $opt['userName'])
+        $adminInfo = $this->db->where('phone', $opt['phone'])
                             ->from(self::TABLE_NAME)
                             ->get()
                             ->row_array();
 
         $userResult = array(
             'userId' => $adminInfo['user_id'],
+            'phone' => $adminInfo['phone'],
             'userName' => $adminInfo['user_name'],
             'lastLoginTime' => $adminInfo['last_login_time'],
             'token' => array(
@@ -91,12 +98,12 @@ class Admin_model extends Base_Model
     public function login($opt = array())
     {
         $k = array(
-            'userName',
+            'phone',
             'password',
         );
         $opt = elements($k, $opt, '');
         // 数据校验
-        if ('' == $opt['userName']) {
+        if ('' == $opt['phone']) {
             return fail_result('用户名不能为空');
         }
 
@@ -108,9 +115,9 @@ class Admin_model extends Base_Model
             return fail_result('密码不能少于6位');
         }
 
-        $adminInfo = $this->db->where('user_name', $opt['userName'])
+        $adminInfo = $this->db->where('phone', $opt['phone'])
                             ->from(self::TABLE_NAME)
-                            ->select('user_id, password, user_name, salt, login_count, status')
+                            ->select('user_id, password, phone, user_name, salt, login_count, status')
                             ->get()
                             ->row_array();
 
@@ -138,13 +145,14 @@ class Admin_model extends Base_Model
         // 更新数据
         $this->db->where('user_id', $adminInfo['user_id'])->update(self::TABLE_NAME, $data);
 
-        $adminInfo = $this->db->where('user_name', $opt['userName'])
+        $adminInfo = $this->db->where('phone', $opt['phone'])
                             ->from(self::TABLE_NAME)
                             ->get()
                             ->row_array();
 
         $userResult = array(
             'userId' => $adminInfo['user_id'],
+            'phone' => $adminInfo['phone'],
             'userName' => $adminInfo['user_name'],
             'lastLoginTime' => $adminInfo['last_login_time'],
             'token' => array(
