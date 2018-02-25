@@ -51,4 +51,23 @@ class News_model extends Base_Model
         
         return success_result('发布完成', array('newsId'=> $news_id));
     }
+
+    public function get_news_list($page = 0, $pageSize = 15) {
+        $news_list = $this->db->from(self::TABLE_NAME)
+                              ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, 
+                                        news_img as newImg, news_info as newsInfo, see_count as seeCount,
+                                        news_content as newsContent')
+                              ->limit($pageSize, $page*$pageSize)
+                              ->get()
+                              ->result_array();
+        $count_all = $this->db->from(self::TABLE_NAME)->count_all_results();
+        
+        $result = array(
+          'page'=> $page,
+          'pageSize'=> $pageSize,
+          'sizeAll'=> $count_all,
+          'list'=> $news_list
+        );
+        return success_result('查询成功', $result);
+    }
 }

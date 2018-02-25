@@ -89,6 +89,7 @@ $route['translate_uri_dashes'] = FALSE;
  $route['common/get_info_by_city']['get'] = 'common/city/get_info_by_city';
  $route['qiniu/get_upload_token']['get'] = 'common/qiniu/get_qiniu_token';
  $route['news/publish']['post'] = 'common/news/publish';
+ $route['news/get_news_list']['get'] = 'common/news/get_news_list';
 
  /**
   * car
