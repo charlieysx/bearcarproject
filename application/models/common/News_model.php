@@ -55,7 +55,7 @@ class News_model extends Base_Model
     public function get_news_list($page = 0, $pageSize = 15) {
         $news_list = $this->db->from(self::TABLE_NAME)
                               ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, 
-                                        news_img as newImg, news_info as newsInfo, see_count as seeCount')
+                                        news_img as newsImg, news_info as newsInfo, see_count as seeCount')
                               ->limit($pageSize, $page*$pageSize)
                               ->get()
                               ->result_array();
