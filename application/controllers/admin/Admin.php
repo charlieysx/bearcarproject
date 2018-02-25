@@ -7,6 +7,7 @@ class Admin extends Base_Controller
 {
     public function __construct() {
         parent::__construct();
+        $this->isAdmin = 'true';
         $this->load->model('admin/Admin_model', 'admin');
     }
 
