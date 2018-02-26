@@ -71,7 +71,7 @@ class News_model extends Base_Model
         return success_result('查询成功', $result);
     }
 
-    public function get_news_info($news_id) {
+    public function get_news_info($news_id, $is_admin = 'false') {
         $isEx = $this->db->where('news_id', $news_id)->count_all_results(self::TABLE_NAME);
         if ($isEx == 0) {
             return fail_result('文章不存在');
@@ -82,14 +82,16 @@ class News_model extends Base_Model
                         ->get()
                         ->row_array();
         
-        $data = array(
-            'see_count' => intval($news['seeCount']) + 1
-        );
+        if (!($is_admin == 'true')) {
+            $data = array(
+                'see_count' => intval($news['seeCount']) + 1
+            );
 
-        // 更新数据
-        $this->db->where('news_id', $news_id)->update(self::TABLE_NAME, $data);
+            // 更新数据
+            $this->db->where('news_id', $news_id)->update(self::TABLE_NAME, $data);
 
-        $news['seeCount'] = intval($news['seeCount']) + 1;
+            $news['seeCount'] = intval($news['seeCount']) + 1;
+        }
 
         $news['newsContent'] = str_replace("src=\"", "src=\"http://bearcarapi.codebear.cn/index.php/img?imageUrl=", $news['newsContent']);
         

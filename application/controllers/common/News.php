@@ -43,7 +43,7 @@ class News extends Base_Controller
         if(isset($param['newsId'])) {
             $news_id = $param['newsId'];
         }
-        $result = $this->news->get_news_info($news_id);
+        $result = $this->news->get_news_info($news_id, $this->isAdmin);
         $this->return_result($result);
     }
 
