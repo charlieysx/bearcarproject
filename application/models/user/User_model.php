@@ -93,6 +93,7 @@ class User_model extends Base_Model
 
         // 检查用户名是否存在
         $isEx = $this->db->where('phone', $opt['userName'])->count_all_results(self::TABLE_NAME);
+        return fail_result($isEx);
         if ($isEx) {
             return fail_result('该手机号已经注册');
         }
