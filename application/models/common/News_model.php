@@ -69,4 +69,17 @@ class News_model extends Base_Model
         );
         return success_result('查询成功', $result);
     }
+
+    public function get_news_info($news_id) {
+        $isEx = $this->db->where('news_id', $news_id)->count_all_results(self::TABLE_NAME);
+        if ($isEx == 0) {
+            return fail_result('文章不存在');
+        }
+        $news = $this->db->from(self::TABLE_NAME)
+                        ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, see_count as seeCount, news_content as newsContent')
+                        ->where('news_id', $news_id)
+                        ->get()
+                        ->row_array();
+        return success_result('查询成功', $news);
+    }
 }
