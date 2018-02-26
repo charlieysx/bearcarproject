@@ -78,11 +78,10 @@ class News_model extends Base_Model
         $news_list = $this->db->from(self::TABLE_NAME)
                               ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, 
                                         news_img as newsImg, news_info as newsInfo, see_count as seeCount, from')
-                              ->order_by('see_count', 'DESC')
                               ->limit(8)
+                              ->order_by('see_count', 'DESC')
                               ->get()
                               ->result_array();
-        $count_all = $this->db->from(self::TABLE_NAME)->count_all_results();
         
         $result = array(
           'list'=> $news_list
