@@ -90,6 +90,8 @@ class News_model extends Base_Model
         $this->db->where('news_id', $news_id)->update(self::TABLE_NAME, $data);
 
         $news['seeCount'] = intval($news['seeCount']) + 1;
+
+        $news['newsContent'] = str_replace("src=\"", "src=\"http://bearcarapi.codebear.cn/index.php/img?imageUrl=", $news['newsContent']);
         
         return success_result('查询成功', $news);
     }
