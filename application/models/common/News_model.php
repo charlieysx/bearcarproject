@@ -82,4 +82,13 @@ class News_model extends Base_Model
                         ->row_array();
         return success_result('查询成功', $news);
     }
+
+    public function delete($news_id) {
+        $isEx = $this->db->where('news_id', $news_id)->count_all_results(self::TABLE_NAME);
+        if ($isEx == 0) {
+            return fail_result('文章不存在');
+        }
+        $this->db->where('news_id', $news_id)->delete(self::TABLE_NAME);
+        return success_result('已删除');
+    }
 }

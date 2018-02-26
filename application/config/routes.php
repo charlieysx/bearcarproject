@@ -91,6 +91,7 @@ $route['translate_uri_dashes'] = FALSE;
  $route['news/publish']['post'] = 'common/news/publish';
  $route['news/get_news_list']['get'] = 'common/news/get_news_list';
  $route['news/get_news_info']['get'] = 'common/news/get_news_info';
+ $route['news/delete']['post'] = 'common/news/delete';
 
  /**
   * car

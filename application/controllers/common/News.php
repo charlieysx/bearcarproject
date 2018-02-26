@@ -46,4 +46,16 @@ class News extends Base_Controller
         $result = $this->news->get_news_info($news_id);
         $this->return_result($result);
     }
+
+    public function delete() {
+        $this->isAdmin = 'true';
+        $this->check_token();
+        $param = $this->input->get();
+        $news_id = '';
+        if(isset($param['newsId'])) {
+            $news_id = $param['newsId'];
+        }
+        $result = $this->news->delete($news_id);
+        $this->return_result($result);
+    }
 }
