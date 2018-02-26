@@ -90,8 +90,8 @@ $route['translate_uri_dashes'] = FALSE;
  $route['qiniu/get_upload_token']['get'] = 'common/qiniu/get_qiniu_token';
  $route['news/publish']['post'] = 'common/news/publish';
  $route['news/get_news_list']['get'] = 'common/news/get_news_list';
- $route['news/get_news_list']['get'] = 'common/news/get_news_list';
  $route['news/get_hot_news_list']['get'] = 'common/news/get_hot_news_list';
+ $route['news/get_news_info']['get'] = 'common/news/get_news_info';
  $route['news/delete']['post'] = 'common/news/delete';
  $route['img']['get'] = 'common/image/get_image';
 
