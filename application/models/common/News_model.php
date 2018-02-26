@@ -57,6 +57,7 @@ class News_model extends Base_Model
                               ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, 
                                         news_img as newsImg, news_info as newsInfo, see_count as seeCount')
                               ->limit($pageSize, $page*$pageSize)
+                              ->order_by('news_time', 'DESC')
                               ->get()
                               ->result_array();
         $count_all = $this->db->from(self::TABLE_NAME)->count_all_results();
