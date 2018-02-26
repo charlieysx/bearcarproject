@@ -3,8 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class News_model extends Base_Model
 {
-    const TABLE_NAME = 'news';
-
     public function __construct()
     {
         parent::__construct();
@@ -46,7 +44,7 @@ class News_model extends Base_Model
             'from' => $opt['from']
         );
         // 添加数据
-        $suc = $this->db->insert(self::TABLE_NAME, $data);
+        $suc = $this->db->insert(TABLE_NEWS, $data);
 
         if (!$suc) {
             return fail_result('提交失败');
@@ -55,19 +53,19 @@ class News_model extends Base_Model
         return success_result('发布完成', array('newsId'=> $news_id));
     }
 
-    public function get_news_list($page = 0, $pageSize = 15) {
-        $news_list = $this->db->from(self::TABLE_NAME)
+    public function get_news_list($opt) {
+        $news_list = $this->db->from(TABLE_NEWS)
                               ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, 
                                         news_img as newsImg, news_info as newsInfo, see_count as seeCount, from')
-                              ->limit($pageSize, $page*$pageSize)
+                              ->limit($opt['pageSize'], $opt['page']*$opt['pageSize'])
                               ->order_by('news_time', 'DESC')
                               ->get()
                               ->result_array();
-        $count_all = $this->db->from(self::TABLE_NAME)->count_all_results();
+        $count_all = $this->db->from(TABLE_NEWS)->count_all_results();
         
         $result = array(
-          'page'=> $page,
-          'pageSize'=> $pageSize,
+          'page'=> $opt['page'],
+          'pageSize'=> $opt['pageSize'],
           'sizeAll'=> $count_all,
           'list'=> $news_list
         );
@@ -75,7 +73,7 @@ class News_model extends Base_Model
     }
 
     public function get_hot_news_list() {
-        $news_list = $this->db->from(self::TABLE_NAME)
+        $news_list = $this->db->from(TABLE_NEWS)
                               ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, 
                                         news_img as newsImg, news_info as newsInfo, see_count as seeCount, from')
                               ->limit(8)
@@ -90,11 +88,11 @@ class News_model extends Base_Model
     }
 
     public function get_news_info($news_id, $is_admin = 'false') {
-        $isEx = $this->db->where('news_id', $news_id)->count_all_results(self::TABLE_NAME);
+        $isEx = $this->db->where('news_id', $news_id)->count_all_results(TABLE_NEWS);
         if ($isEx == 0) {
             return fail_result('文章不存在');
         }
-        $news = $this->db->from(self::TABLE_NAME)
+        $news = $this->db->from(TABLE_NEWS)
                         ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, see_count as seeCount, from, news_content as newsContent')
                         ->where('news_id', $news_id)
                         ->get()
@@ -106,22 +104,20 @@ class News_model extends Base_Model
             );
 
             // 更新数据
-            $this->db->where('news_id', $news_id)->update(self::TABLE_NAME, $data);
+            $this->db->where('news_id', $news_id)->update(TABLE_NEWS, $data);
 
             $news['seeCount'] = intval($news['seeCount']) + 1;
         }
-
-        // $news['newsContent'] = str_replace("src=\"", "src=\"http://bearcarapi.codebear.cn/index.php/img?imageUrl=", $news['newsContent']);
         
         return success_result('查询成功', $news);
     }
 
     public function delete($news_id) {
-        $isEx = $this->db->where('news_id', $news_id)->count_all_results(self::TABLE_NAME);
+        $isEx = $this->db->where('news_id', $news_id)->count_all_results(TABLE_NEWS);
         if ($isEx == 0) {
             return fail_result('文章不存在');
         }
-        $this->db->where('news_id', $news_id)->delete(self::TABLE_NAME);
+        $this->db->where('news_id', $news_id)->delete(TABLE_NEWS);
         return success_result('已删除');
     }
 }
