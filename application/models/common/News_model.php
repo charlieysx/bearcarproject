@@ -81,6 +81,16 @@ class News_model extends Base_Model
                         ->where('news_id', $news_id)
                         ->get()
                         ->row_array();
+        
+        $data = array(
+            'see_count' => intval($news['seeCount']) + 1
+        );
+
+        // 更新数据
+        $this->db->where('news_id', $news_id)->update(self::TABLE_NAME, $data);
+
+        $news['seeCount'] = intval($news['seeCount']) + 1;
+        
         return success_result('查询成功', $news);
     }
 
