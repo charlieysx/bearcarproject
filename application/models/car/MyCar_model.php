@@ -51,17 +51,21 @@ class MyCar_model extends Base_Model
                             ->join(self::TABLE_CONDITION, 'car_condition.condition_id = car.car_condition_id')
                             ->join(self::TABLE_EXPIRE_DATE, 'expire_date.expire_date_id = car.expire_date_id')
                             ->where('user_id', $user_id)
-                            ->where('status', $car_status);
+                            ->group_start()
+                              ->where('status', $car_status);
         if($car_status == 3) {
           $car_db = $car_db->or_where('status', 4)->or_where('status', 5);
         }
+        $car_db = $car_db->end();
         $car = $car_db->limit($pageSize, $page*$pageSize)->order_by('publish_time', 'DESC')->get()->result_array();
         $count_all = $this->db->from(self::TABLE_CAR)
                               ->where('user_id', $user_id)
-                              ->where('status', $car_status);
+                              ->group_start()
+                                ->where('status', $car_status);
         if($car_status == 3) {
-            $count_all = $count_all->or_where('status', 4)->or_where('status', 5);
+          $count_all = $count_all->or_where('status', 4)->or_where('status', 5);
         }
+        $count_all = $count_all->end();
         $count_all = $count_all->count_all_results();
 
         for($i = 0;$i < count($car);$i++) {
