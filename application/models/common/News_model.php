@@ -16,13 +16,15 @@ class News_model extends Base_Model
           'title' => '请输入标题',
           'info' => '请输入资讯简介',
           'imageUrl' => '请上传封面图',
-          'content' => '资讯内容不能为空'
+          'content' => '资讯内容不能为空',
+          'from' => '请输入文章来源'
         );
         $k = array(
           'title',
           'info',
           'imageUrl',
-          'content'
+          'content',
+          'from'
         );
         $opt = elements($k, $opt, '');
         foreach($keys as $k => $v){
@@ -40,7 +42,8 @@ class News_model extends Base_Model
             'news_info' => $opt['info'],
             'news_img' => $opt['imageUrl'],
             'news_content' => $opt['content'],
-            'news_time' => time()
+            'news_time' => time(),
+            'from' => $opt['from']
         );
         // 添加数据
         $suc = $this->db->insert(self::TABLE_NAME, $data);
@@ -77,7 +80,7 @@ class News_model extends Base_Model
             return fail_result('文章不存在');
         }
         $news = $this->db->from(self::TABLE_NAME)
-                        ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, see_count as seeCount, news_content as newsContent')
+                        ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, see_count as seeCount, from, news_content as newsContent')
                         ->where('news_id', $news_id)
                         ->get()
                         ->row_array();
