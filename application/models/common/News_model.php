@@ -92,8 +92,6 @@ class News_model extends Base_Model
 
             $news['seeCount'] = intval($news['seeCount']) + 1;
         }
-
-        $news['newsContent'] = str_replace("src=\"", "src=\"http://bearcarapi.codebear.cn/index.php/img?imageUrl=", $news['newsContent']);
         
         return success_result('查询成功', $news);
     }
