@@ -20,6 +20,12 @@ class Image extends Base_Controller
           exit;
         }
         @ header("Content-Type:image/*");
-        echo file_get_contents($opt['imageUrl']);
+
+        $url = '';
+        foreach($param as $k) {
+            $url = $url.$k;
+        }
+
+        echo file_get_contents($url);
     }
 }
