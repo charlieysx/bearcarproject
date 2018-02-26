@@ -37,6 +37,11 @@ class News extends Base_Controller
         $this->return_result($result);
     }
 
+    public function get_hot_news_list() {
+      $result = $this->news->get_hot_news_list();
+      $this->return_result($result);
+    }
+
     public function get_news_info() {
         $param = $this->input->get();
         $news_id = '';

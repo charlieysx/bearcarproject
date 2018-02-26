@@ -74,6 +74,22 @@ class News_model extends Base_Model
         return success_result('查询成功', $result);
     }
 
+    public function get_hot_news_list() {
+        $news_list = $this->db->from(self::TABLE_NAME)
+                              ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, 
+                                        news_img as newsImg, news_info as newsInfo, see_count as seeCount, from')
+                              ->order_by('see_count', 'DESC')
+                              ->limit(8)
+                              ->get()
+                              ->result_array();
+        $count_all = $this->db->from(self::TABLE_NAME)->count_all_results();
+        
+        $result = array(
+          'list'=> $news_list
+        );
+        return success_result('查询成功', $result);
+    }
+
     public function get_news_info($news_id, $is_admin = 'false') {
         $isEx = $this->db->where('news_id', $news_id)->count_all_results(self::TABLE_NAME);
         if ($isEx == 0) {
