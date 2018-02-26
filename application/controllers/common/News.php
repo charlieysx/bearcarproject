@@ -50,7 +50,7 @@ class News extends Base_Controller
     public function delete() {
         $this->isAdmin = 'true';
         $this->check_token();
-        $param = $this->input->get();
+        $param = $this->input->post();
         $news_id = '';
         if(isset($param['newsId'])) {
             $news_id = $param['newsId'];
