@@ -54,19 +54,18 @@ class MyCar_model extends Base_Model
                             ->group_start()
                               ->where('status', $car_status);
         if($car_status == 3) {
-          $car_db = $car_db->or_where('status', 4)->or_where('status', 5);
+          $car_db->or_where('status', 4)->or_where('status', 5);
         }
-        $car_db = $car_db->end();
+        $car_db->group_end();
         $car = $car_db->limit($pageSize, $page*$pageSize)->order_by('publish_time', 'DESC')->get()->result_array();
         $count_all = $this->db->from(self::TABLE_CAR)
                               ->where('user_id', $user_id)
                               ->group_start()
                                 ->where('status', $car_status);
         if($car_status == 3) {
-          $count_all = $count_all->or_where('status', 4)->or_where('status', 5);
+          $count_all->or_where('status', 4)->or_where('status', 5);
         }
-        $count_all = $count_all->end();
-        $count_all = $count_all->count_all_results();
+        $count_all = $count_all->group_end()->count_all_results();
 
         for($i = 0;$i < count($car);$i++) {
           if($car[$i]['modelName'] == null) {
