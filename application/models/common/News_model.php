@@ -79,7 +79,7 @@ class News_model extends Base_Model
                               ->select('news_id as newsId, news_title as newsTitle, news_time as newsTime, 
                                         news_img as newsImg, news_info as newsInfo, see_count as seeCount, from')
                               ->limit(8)
-                              ->order_by('see_count', 'DESC')
+                              ->order_by('seeCount', 'DESC')
                               ->get()
                               ->result_array();
         
