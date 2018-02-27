@@ -77,11 +77,11 @@ class MyCar_model extends Base_Model
                           ->get()
                           ->row_array();
         if(empty($car)) {
-            return fail_result('没有该辆车或您没有权限下架该辆车');
+            return fail('没有该辆车或您没有权限下架该辆车');
         }
 
         if($car['status'] == 3 || $car['status'] == 4 || $car['status'] == 5) {
-            return fail_result('该辆二手车的状态不能下架');
+            return fail('该辆二手车的状态不能下架');
         }
 
         //已经有订单生成，下架需要修改订单状态
@@ -100,6 +100,6 @@ class MyCar_model extends Base_Model
         );
         $this->db->where('car_id', $car_id)->update(TABLE_CAR, $newStatus);
 
-        return success_result('下架成功');
+        return success('下架成功');
     }
 }
