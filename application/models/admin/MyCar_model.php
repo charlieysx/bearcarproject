@@ -49,7 +49,7 @@ class MyCar_model extends Base_Model
             if($car[$i]['status'] != 5) {
                 unset($car[$i]['underReason']);
             }
-            if($car_status != 1 && $car_status != 2 && $car_status == 6) {
+            if($car_status != 1 && $car_status != 2 && $car_status != 6) {
                 unset($car[$i]['inspectAddress']);
                 unset($car[$i]['phone']);
             }
