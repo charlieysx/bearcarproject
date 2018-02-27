@@ -20,10 +20,10 @@ class User extends Base_Controller
         $option = elements($key, $params, '');
         // 数据校验
         if (!is_phone($option['phone'])) {
-            $this->return_result(fail('手机号格式错误'));
+            $this->return_fail('手机号格式错误');
         }
         if (strlen($option['password']) < 6) {
-            $this->return_result(fail('密码不能少于6位'));
+            $this->return_fail('密码不能少于6位');
         }
 
         $result = $this->user->register($option['phone'], $option['password']);
@@ -41,10 +41,10 @@ class User extends Base_Controller
         $option = elements($key, $params, '');
         // 数据校验
         if (!is_phone($option['phone'])) {
-            $this->return_result(fail('手机号格式错误'));
+            $this->return_fail('手机号格式错误');
         }
         if (strlen($option['password']) < 6) {
-            $this->return_result(fail('密码不能少于6位'));
+            $this->return_fail('密码不能少于6位');
         }
 
         $result = $this->user->login($option['phone'], $option['password']);

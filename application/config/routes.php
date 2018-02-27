@@ -65,6 +65,8 @@ $route['sysa/login']['post'] = 'admin/Admin/login';
 $route['sysa/news/publish']['post'] = 'admin/News/publish';
 //获取资讯列表
 $route['sysa/news/list']['get'] = 'admin/News/get_news_list';
+//获取资讯详情
+$route['sysa/news/detail']['get'] = 'admin/News/get_news_info';
 //删除文章
 $route['sysa/news/delete']['post'] = 'admin/News/delete';
 

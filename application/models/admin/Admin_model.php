@@ -81,7 +81,7 @@ class Admin_model extends Base_Model
         }
 
         if (!cb_passwordEqual($adminInfo['password'], $adminInfo['salt'], $password)) {
-            return fail_result('密码错误');
+            return fail('密码错误');
         }
 
         $time = time();
