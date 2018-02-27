@@ -16,7 +16,7 @@ class MyCar_model extends Base_Model
                                     car_condition.condition_name as conditionName, expire_date.expire_date_name as expireDateName, mileage, 
                                     transfer_time as transferTime, car.status as status, publish_time as publishTime, see_count as seeCount, under_reason as underReason,
                                     car.inspect_datetime as checkTimeId, inspect_address as inspectAddress, city.name as cityName,
-                                    province.name as provinceName, district.name as districtName, user.phone as phone')
+                                    province.name as provinceName, district.name as districtName, user.phone as phone, deal_user_id as dealUserId')
                             ->join(TABLE_CITY.' as licensed_city', 'licensed_city.id = car.licensed_city_id')
                             ->join(TABLE_CITY, 'city.id = car.city_id')
                             ->join(TABLE_PROVINCE, 'province.id = car.province_id')
