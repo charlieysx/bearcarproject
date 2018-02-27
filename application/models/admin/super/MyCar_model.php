@@ -74,7 +74,7 @@ class MyCar_model extends Base_Model
         }
 
         $newStatus = array(
-            'status'=> 4,
+            'status'=> 5,
             'under_reason' => $under_reason,
             'under_user_id'=> $user_id
         );

@@ -47,7 +47,7 @@ const TABLE_CAR = 'car';
 //   `inspect_address` text NOT NULL COMMENT '预约地点',
 //   `inspect_lng` text NOT NULL COMMENT '经纬度',
 //   `inspect_lat` text NOT NULL COMMENT '经纬度',
-//   `inspect_datetime` text NOT NULL COMMENT '预约时间',
+//   `inspect_datetime` text NOT NULL COMMENT '预约时间id 0:上午9-12点，1：下午12-18点，2：明天上午9-12点，3：明天下午12-18点，4：客服联系',
 //   `licensed_month` text NOT NULL COMMENT '初次上牌月份',
 //   `province_id` int(11) NOT NULL COMMENT '所在省份id',
 //   `city_id` int(11) NOT NULL COMMENT '所在城市id',
