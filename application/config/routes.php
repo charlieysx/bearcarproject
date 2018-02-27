@@ -79,6 +79,8 @@ $route['sysa/mycar/list']['get'] = 'admin/MyCar/get_car_list';
 $route['sysa/mycar/under']['post'] = 'admin/MyCar/under';
 //预约检测二手车
 $route['sysa/mycar/ordercheck']['post'] = 'admin/MyCar/order_check';
+//获取检测完成步骤
+$route['sysa/mycar/getfillstep']['get'] = 'admin/MyCar/get_fill_step';
 
 //===========================================admin-后台管理-接口-结束===============================
 

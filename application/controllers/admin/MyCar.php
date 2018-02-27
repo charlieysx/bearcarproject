@@ -143,4 +143,14 @@ class MyCar extends Base_Controller
         $result = $this->my_car->order_check($this->token->userInfo['user_id'], $carId);
         $this->return_result($result);
     }
+
+    public function get_fill_step() {
+        $params = $this->input->post();
+        $carId = get_param($params, 'carId', '');
+        if($carId == '') {
+          $this->return_fail('carId错误');
+        }
+        $result = $this->my_car->get_fill_step($this->token->userInfo['user_id'], $carId);
+        $this->return_result($result);
+    }
 }
