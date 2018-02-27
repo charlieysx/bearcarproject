@@ -89,7 +89,7 @@ class CarInfo_model extends Base_Model
                                     ->select('brand_id as brandId, brand_name as brandName, first_char as firstChar')
                                     ->get()
                                     ->result_array();
-            if(!empty($car_info)) {
+            if(!empty($brandList)) {
                 $data[$letter] = $brandList;
             }
         }

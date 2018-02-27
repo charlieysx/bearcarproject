@@ -59,22 +59,22 @@ $route['translate_uri_dashes'] = FALSE;
 //添加管理员
 // $route['sysa/register']['post'] = 'admin/admin/register';
 //登录
-$route['sysa/login']['post'] = 'admin/admin/login';
+$route['sysa/login']['post'] = 'admin/Admin/login';
 
 //发布资讯
-$route['sysa/news/publish']['post'] = 'admin/news/publish';
+$route['sysa/news/publish']['post'] = 'admin/News/publish';
 //获取资讯列表
-$route['sysa/news/list']['get'] = 'admin/news/get_news_list';
+$route['sysa/news/list']['get'] = 'admin/News/get_news_list';
 //删除文章
-$route['sysa/news/delete']['post'] = 'admin/news/delete';
+$route['sysa/news/delete']['post'] = 'admin/News/delete';
 
 //获取七牛上传图片token
-$route['sysa/qiniu/token']['get'] = 'admin/qiniu/get_qiniu_token';
+$route['sysa/qiniu/token']['get'] = 'admin/Qiniu/get_qiniu_token';
 
 //查询与我相关的二手车列表
-$route['sysa/mycar/list']['get'] = 'admin/mycar/get_car_list';
+$route['sysa/mycar/list']['get'] = 'admin/MyCar/get_car_list';
 //下架与我相关的二手车
-$route['sysa/mycar/under']['post'] = 'admin/mycar/under';
+$route['sysa/mycar/under']['post'] = 'admin/MyCar/under';
 
 //===========================================admin-后台管理-接口-结束===============================
 
