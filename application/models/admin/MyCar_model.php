@@ -72,7 +72,7 @@ class MyCar_model extends Base_Model
                           ->group_start()
                             ->where('under_user_id', $user_id)
                             ->or_where('deal_user_id', $user_id)
-                            // ->or_where('status', '0')
+                            ->or_where('status', '0')
                           ->group_end()
                           ->get()
                           ->row_array();
