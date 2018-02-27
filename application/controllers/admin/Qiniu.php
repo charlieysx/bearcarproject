@@ -7,17 +7,15 @@ class Qiniu extends Base_Controller
 {
     public function __construct() {
         parent::__construct();
+        $this->isAdmin = true;
+        $this->check_token();
         $this->load->model('common/Qiniu_model', 'qiniu');
     }
 
     public function get_qiniu_token() {
-        $this->check_token();
-        $param = $this->input->get();
-        $bucket = '';
-        if(isset($param['bucket'])) {
-            $bucket = $param['bucket'];
-        }
-        $result = $this->qiniu->get_upload_token($bucket);
+        $params = $this->input->get();
+        $bucket = get_param($params, 'bucket', 'bearcar');
+        $result = $this->qiniu->get_upload_token($bucket, $this->accessToken);
 
         $this->return_result($result);
     }

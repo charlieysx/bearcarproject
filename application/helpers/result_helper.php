@@ -22,3 +22,17 @@ function fail_result($msg = "fail", $data = array(), $code = -1){
         'data' => $data
     );
 }
+
+function success($msg = 'success') {
+    return array(
+        'success'=> true,
+        'msg'=> $msg
+    );
+}
+
+function fail($msg = 'fail') {
+    return array(
+        'success'=> false,
+        'msg'=> $msg
+    );
+}

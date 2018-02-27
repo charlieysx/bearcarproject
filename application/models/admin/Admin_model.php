@@ -1,60 +1,28 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-// require APPPATH. 'core/Base_Model.php';
-
 class Admin_model extends Base_Model
 {
-    const TABLE_NAME = 'admin_user';
-
     public function __construct()
     {
         parent::__construct();
     }
 
-    /**
-     * 添加一个管理员
-     * @method add_admin
-     * @param  array     $opt [description]
-     */
-    public function add_admin($opt = array())
+    public function register($phone, $userName, $password)
     {
-        $k = array(
-            'phone',
-            'userName',
-            'password',
-        );
-        $opt = elements($k, $opt, '');
-        // 数据校验
-        if ('' == $opt['phone']) {
-            return fail_result('登录名不能为空');
-        }
-
-        if ('' == $opt['userName']) {
-            return fail_result('用户名不能为空');
-        }
-
-        if ('' == $opt['password']) {
-            return fail_result('密码不能为空');
-        }
-
-        if (strlen($opt['password']) < 6) {
-            return fail_result('密码不能少于6位');
-        }
-
         // 检查用户名是否存在
-        $isEx = $this->db->where('phone', $opt['phone'])->count_all_results(self::TABLE_NAME);
+        $isEx = $this->db->where('phone', $phone)->count_all_results(TABLE_ADMIN_USER);
         if ($isEx) {
-            return fail_result('该登录名已经存在，不能重复添加');
+            return fail('该手机号已经注册');
         }
 
-        $encrypt = cb_encrypt($opt['password']);
+        $encrypt = cb_encrypt($password);
 
         $time = time();
 
         $data = array(
-            'phone' => $opt['phone'],
-            'user_name' => $opt['userName'],
+            'phone' => $phone,
+            'user_name' => $userName,
             'password' => $encrypt['password'],
             'salt' => $encrypt['salt'],
             'user_id' => create_id(),
@@ -64,14 +32,14 @@ class Admin_model extends Base_Model
         );
 
         // 添加数据
-        $suc = $this->db->insert(self::TABLE_NAME, $data);
+        $suc = $this->db->insert(TABLE_ADMIN_USER, $data);
 
         if (!$suc) {
-            return fail_result('添加管理员失败');
+            return fail('添加管理员失败');
         }
 
-        $adminInfo = $this->db->where('phone', $opt['phone'])
-                            ->from(self::TABLE_NAME)
+        $adminInfo = $this->db->where('phone', $phone)
+                            ->from(TABLE_ADMIN_USER)
                             ->get()
                             ->row_array();
 
@@ -86,50 +54,33 @@ class Admin_model extends Base_Model
                 'exp' => WEEK
             )
         );
-        return success_result('添加管理员成功', $userResult);
+        return success($userResult);
     }
 
-    /**
-     * 登录接口
-     * @method login
-     * @param  array  $opt [description]
-     * @return [type]      [description]
-     */
-    public function login($opt = array())
+    public function login($phone, $password)
     {
-        $k = array(
-            'phone',
-            'password',
-        );
-        $opt = elements($k, $opt, '');
-        // 数据校验
-        if ('' == $opt['phone']) {
-            return fail_result('用户名不能为空');
+        // 检查用户名是否存在
+        $isEx = $this->db->where('phone', $phone)->count_all_results(TABLE_ADMIN_USER);
+        if ($isEx == 0) {
+            return fail('该手机号不存在');
         }
 
-        if ('' == $opt['password']) {
-            return fail_result('密码不能为空');
-        }
-
-        if (strlen($opt['password']) < 6) {
-            return fail_result('密码不能少于6位');
-        }
-
-        $adminInfo = $this->db->where('phone', $opt['phone'])
-                            ->from(self::TABLE_NAME)
+        $adminInfo = $this->db->where('phone', $phone)
+                            ->from(TABLE_ADMIN_USER)
                             ->select('user_id, password, phone, user_name, salt, login_count, status')
                             ->get()
                             ->row_array();
 
-        if ('' == $adminInfo['user_id']) {
-            return fail_result('该用户不存在');
+        switch($adminInfo['status']) {
+            case '1':
+                break;
+            case '2':
+                return fail('该账号已被删除，请先申请恢复账号');
+            default:
+                return fail('账号异常');
         }
 
-        if(!('1' == $adminInfo['status'])) {
-            return fail_result('该账号已被删除，请先申请恢复账号');
-        }
-
-        if (!cb_passwordEqual($adminInfo['password'], $adminInfo['salt'], $opt['password'])) {
+        if (!cb_passwordEqual($adminInfo['password'], $adminInfo['salt'], $password)) {
             return fail_result('密码错误');
         }
 
@@ -143,10 +94,10 @@ class Admin_model extends Base_Model
         );
 
         // 更新数据
-        $this->db->where('user_id', $adminInfo['user_id'])->update(self::TABLE_NAME, $data);
+        $this->db->where('user_id', $adminInfo['user_id'])->update(TABLE_ADMIN_USER, $data);
 
-        $adminInfo = $this->db->where('phone', $opt['phone'])
-                            ->from(self::TABLE_NAME)
+        $adminInfo = $this->db->where('phone', $phone)
+                            ->from(TABLE_ADMIN_USER)
                             ->get()
                             ->row_array();
 
@@ -162,6 +113,6 @@ class Admin_model extends Base_Model
             )
         );
                             
-        return success_result('登录成功', $userResult);
+        return success($userResult);
     }
 }

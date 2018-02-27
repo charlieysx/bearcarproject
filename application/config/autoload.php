@@ -96,7 +96,8 @@ $autoload['helper'] = array(
     'cb_encrypt',
     'cb_string',
     'cb_time',
-    'database'
+    'database',
+    'cb_params'
 );
 
 /*

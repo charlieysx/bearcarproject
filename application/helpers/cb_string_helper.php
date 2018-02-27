@@ -12,21 +12,23 @@ function is_phone($phone) {
 }
 
 /**
- * 从请求参数中获取page和pageSize的值（列表才有）
+ * 判断是否是数字
  */
-function get_page($params, $maxPageSize = 99, $defaultPageSize = 15) {
-    $k = array(
-        'page',
-        'pageSize'
-    );
-    $opt = elements($k, $params, '');
-    if($opt['page'] == '' || intval($opt['page']) < 0) {
-        $opt['page'] = '0';
+function is_number($number) {
+    if(preg_match("/^\d*$/", $number)) {
+        return true;
+    } else {
+        return false;
     }
-    if($opt['pageSize'] == '' || intval($opt['pageSize']) > $maxPageSize || intval($opt['pageSize']) <= 0) {
-        $opt['pageSize'] = $defaultPageSize;
+}
+
+/**
+ * 判断正整数
+ */
+function is_p_number($number) {
+    if(preg_match("/^\+?[1-9][0-9]*$/", $number)) {
+        return true;
+    } else {
+        return false;
     }
-    $opt['page'] = intval($opt['page']);
-    $opt['pageSize'] = intval($opt['pageSize']);
-    return $opt;
 }

@@ -5,212 +5,170 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class City_model extends Base_Model
 {
-    //省份
-    const TABLE_NAME_PROVINCE = 'province';
-    //城市
-    const TABLE_NAME_CITY = 'city';
-    //地区
-    const TABLE_NAME_DISTRICT = 'district';
-
     public function __construct()
     {
         parent::__construct();
     }
 
     public function get_province($province_id) {
+        $provinceDB = $this->db->from(TABLE_PROVINCE)
+                                ->not_like('name', '特别行政区', 'before')
+                                ->select('id as provinceId, name as provinceName');
         $data = array();
-        if('' == $province_id) {
-            $data = $this->db->from(self::TABLE_NAME_PROVINCE)
-                            ->not_like('name', '特别行政区', 'before')
-                            ->select('id as provinceId, name as provinceName')
-                            ->get()
-                            ->result_array();
-        } else {
-            $data = $this->db->where('id', $province_id)
-                            ->from(self::TABLE_NAME_PROVINCE)
-                            ->select('id as provinceId, name as provinceName')
-                            ->get()
-                            ->result_array();
+        if('' != $province_id) {
+            $data = $provinceDB->where('id', $province_id)->get()->row_array();
             if(empty($data)) {
-                return success_result('无效的 provinceId : '.$province_id);
+                return fail('无效的 provinceId : '.$province_id);
             }
+        } else {
+            $data = array('list'=> $provinceDB->get()->result_array());
         }
-
-        $province_list = array('list' => $data);
         
-        return success_result('查询成功', $province_list);
+        return success($data);
     }
 
-    public function get_city($province_id) {
+    public function get_city($city_id) {
+        $cityDB = $this->db->from(TABLE_CITY)
+                                ->select('id as cityId, name as cityName')
+                                ->not_like('name', '特别行政区', 'before');
         $data = array();
-        if('' == $province_id) {
-            $province_info = $this->db->from(self::TABLE_NAME_PROVINCE)
-                            ->select('id, name')
-                            ->get()
-                            ->result_array();
-            
-            foreach($province_info as $province) {
-                $list = $this->get_city_by_province_id($province['id']);
-                array_push($data, $list);
+        if('' != $city_id) {
+            $data = $cityDB->where('id', $city_id)->get()->row_array();
+            if(empty($data)) {
+                return fail('无效的 cityId : '.$city_id);
             }
         } else {
-            $city = $this->get_city_by_province_id($province_id);
-            if(!isset($city['status'])) {
-                return success_result('查询成功', $city);
-            } else {
-                return $city;
-            }
+            $data = array('list'=> $cityDB->get()->result_array());
         }
-
-        $city_list = array('list' => $data);
         
-        return success_result('查询成功', $city_list);
+        return success($data);
     }
 
     public function get_city_by_province_id($province_id) {
-        $province_info = $this->db->where('id', $province_id)
-                        ->not_like('name', '自治州', 'before')
-                        ->not_like('name', '特别行政区', 'before')
-                        ->from(self::TABLE_NAME_PROVINCE)
-                        ->select('id, name')
-                        ->get()
-                        ->row_array();
-        if(empty($province_info)) {
-            return success_result('无效的 provinceId : '.$province_id);
+        $province = $this->get_province($province_id);
+        if(!$province['success']) {
+            return $province;
         }
-        $city_info = $this->db->where('province_id', $province_id)
-                        ->from(self::TABLE_NAME_CITY)
-                        ->select('id as cityId, name as cityName, first_char as firstChar')
-                        ->get()
-                        ->result_array();
-        foreach($city_info as $k => $v){
+
+        $cityList = $this->db->from(TABLE_CITY)
+                                ->where('province_id', $province_id)
+                                ->not_like('name', '特别行政区', 'before')
+                                ->select('id as cityId, name as cityName, first_char as firstChar')
+                                ->get()
+                                ->result_array();
+        foreach($cityList as $k => $v){
             $pos = strpos($v['cityName'], '市');
             if(!$pos) {
                 $pos = strpos($v['cityName'], '地区');
             }
             if($pos) {
-                $city_info[$k]['cityName'] = substr($v['cityName'], 0, $pos);
+                $cityList[$k]['cityName'] = substr($v['cityName'], 0, $pos);
             }
         }
         $data = array(
-            'provinceId' => $province_id,
-            'provinceName' => $province_info['name'],
-            'list' => $city_info
+            'province' => $province['msg'],
+            'list' => $cityList
         );
 
-        return $data;
+        return success($data);
     }
 
     public function get_district_by_city_id($city_id) {
-        $city_info = $this->db->where('id', $city_id)
-                        ->from(self::TABLE_NAME_CITY)
-                        ->select('id, name')
-                        ->get()
-                        ->row_array();
-        if(empty($city_info)) {
-            return success_result('无效的 cityId : '.$city_id);
+        $city = $this->get_city($city_id);
+        if(!$city['success']) {
+            return $city;
         }
-        $district_info = $this->db->where('city_id', $city_id)
-                        ->from(self::TABLE_NAME_DISTRICT)
+
+        $districtList = $this->db->where('city_id', $city_id)
+                        ->from(TABLE_DISTRICT)
                         ->select('id as districtId, name as districtName')
                         ->get()
                         ->result_array();
         $data = array(
-            'cityId' => $city_id,
-            'cityName' => $city_info['name'],
-            'list' => $district_info
+            'city' => $city['msg'],
+            'list' => $districtList
         );
         
-        return success_result('查询成功', $data);
+        return success($data);
     }
 
     public function get_info_by_city($city_id) {
-        $city_info = $this->db->where('id', $city_id)
-                        ->from(self::TABLE_NAME_CITY)
-                        ->select('id, name')
-                        ->get()
-                        ->row_array();
-        if(empty($city_info)) {
-            return success_result('无效的 cityId : '.$city_id);
+        $city = $this->get_city($city_id);
+        if(!$city['success']) {
+            return $city;
         }
-        $province_info = $this->db->where('id', $city_id)
-                        ->from(self::TABLE_NAME_CITY)
-                        ->not_like('name', '特别行政区', 'before')
-                        ->select('province_id as provinceId, province_name as provinceName')
-                        ->get()
-                        ->row_array();
-        $city_list = $this->db->where('province_id', $province_info['provinceId'])
-                        ->from(self::TABLE_NAME_CITY)
-                        ->select('id as cityId, name as cityName, first_char as firstChar')
-                        ->get()
-                        ->result_array();
-        foreach($city_list as $k => $v){
+        
+        $province = $this->db->from(TABLE_CITY)
+                                ->where('id', $city_id)
+                                ->not_like('name', '特别行政区', 'before')
+                                ->select('province_id as provinceId, province_name as provinceName')
+                                ->get()
+                                ->row_array();
+        $cityList = $this->get_city_by_province_id($province['provinceId'])['msg']['list'];
+        foreach($cityList as $k => $v){
             $pos = strpos($v['cityName'], '市');
             if(!$pos) {
                 $pos = strpos($v['cityName'], '地区');
             }
             if($pos) {
-                $city_list[$k]['cityName'] = substr($v['cityName'], 0, $pos);
+                $cityList[$k]['cityName'] = substr($v['cityName'], 0, $pos);
             }
         }
-        $district_list = $this->db->where('city_id', $city_id)
-                        ->from(self::TABLE_NAME_DISTRICT)
-                        ->select('id as districtId, name as districtName')
-                        ->get()
-                        ->result_array();
+        $districtList = $this->get_district_by_city_id($city_id);
         $data = array(
-            'province' => $province_info,
-            'cityList' => $city_list,
-            'districtList' => $district_list
+            'province' => $province,
+            'city'=> $city['msg'],
+            'cityList' => $cityList,
+            'districtList' => $districtList['msg']['list']
         );
-        return success_result('查询成功', $data);
+        return success($data);
     }
 
     public function get_city_sort() {
         $data = array();
         for($i = ord("A"); $i <= ord("Z"); $i++){
             $letter = chr($i);
-            $city_info = $this->db->where('first_char',  $letter)
-                                ->not_like('name', '自治州', 'before')
+            $cityList = $this->db->where('first_char',  $letter)
                                 ->not_like('name', '特别行政区', 'before')
-                                ->from(self::TABLE_NAME_CITY)
+                                ->from(TABLE_CITY)
                                 ->select('id as cityId, name as cityName, first_char as firstChar')
                                 ->get()
                                 ->result_array();
-            if(!empty($city_info)) {
-                foreach($city_info as $k => $v){
+            if(!empty($cityList)) {
+                foreach($cityList as $k => $v){
                     $pos = strpos($v['cityName'], '市');
                     if(!$pos) {
                         $pos = strpos($v['cityName'], '地区');
                     }
                     if($pos) {
-                        $city_info[$k]['cityName'] = substr($v['cityName'], 0, $pos);
+                        $cityList[$k]['cityName'] = substr($v['cityName'], 0, $pos);
                     }
                 }
-                $data[$letter] = $city_info;
+                $data[$letter] = $cityList;
             }
         }
 
-        return success_result('查询成功', array('list'=>$data));
+        return $data;
     }
 
-    public function get_hot_city() {
-        $city_info = $this->db->order_by('search_count', 'DESC')
-                            ->limit(11)
-                            ->from(self::TABLE_NAME_CITY)
+    public function get_hot_city($count) {
+        $cityList = $this->db->order_by('search_count', 'DESC')
+                            ->limit($count)
+                            ->from(TABLE_CITY)
                             ->select('id as cityId, name as cityName, first_char as firstChar, search_count as searchCount')
                             ->get()
                             ->result_array();
-        foreach($city_info as $k => $v){
+
+        foreach($cityList as $k => $v){
             $pos = strpos($v['cityName'], '市');
             if(!$pos) {
                 $pos = strpos($v['cityName'], '地区');
             }
             if($pos) {
-                $city_info[$k]['cityName'] = substr($v['cityName'], 0, $pos);
+                $cityList[$k]['cityName'] = substr($v['cityName'], 0, $pos);
             }
         }
 
-        return success_result('查询成功', array('list'=>$city_info));
+        return array('list'=> $cityList);
     }
 }

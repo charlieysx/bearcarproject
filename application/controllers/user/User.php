@@ -10,26 +10,52 @@ class User extends Base_Controller
         $this->load->model('user/User_model', 'user');
     }
 
-    public function user_add() {
-        $param = $this->input->post();
-        $result = $this->user->add_user($param);
+    public function register() {
+        $params = $this->input->post();
+
+        $key = array(
+            'phone',
+            'password'
+        );
+        $option = elements($key, $params, '');
+        // 数据校验
+        if (!is_phone($option['phone'])) {
+            $this->return_result(fail('手机号格式错误'));
+        }
+        if (strlen($option['password']) < 6) {
+            $this->return_result(fail('密码不能少于6位'));
+        }
+
+        $result = $this->user->register($option['phone'], $option['password']);
+        
         $this->return_result($result);
     }
 
-    public function user_login() {
-        $param = $this->input->post();
-        $result = $this->user->login($param);
+    public function login() {
+        $params = $this->input->post();
+
+        $key = array(
+            'phone',
+            'password'
+        );
+        $option = elements($key, $params, '');
+        // 数据校验
+        if (!is_phone($option['phone'])) {
+            $this->return_result(fail('手机号格式错误'));
+        }
+        if (strlen($option['password']) < 6) {
+            $this->return_result(fail('密码不能少于6位'));
+        }
+
+        $result = $this->user->login($option['phone'], $option['password']);
+
         $this->return_result($result);
     }
 
     public function add() {
         for($i = 0;$i < 200;$i++) {
-            $param = array(
-                'userName'=> 13000000004 + $i,
-                'password'=> '000000'
-            );
-            $this->user->add($param);
+            $this->user->register(13000000004 + $i, '000000');
         }
-        $this->return_result(success_result('添加完成'));
+        $this->return_success('添加完成');
     }
 }
