@@ -145,7 +145,7 @@ class MyCar extends Base_Controller
     }
 
     public function get_fill_step() {
-        $params = $this->input->post();
+        $params = $this->input->get();
         $carId = get_param($params, 'carId', '');
         if($carId == '') {
           $this->return_fail('carId错误');
