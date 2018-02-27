@@ -140,7 +140,7 @@ class MyCar extends Base_Controller
         if($carId == '') {
           $this->return_fail('carId错误');
         }
-        $result = $this->my_car->check($this->token->userInfo['user_id'], $carId);
+        $result = $this->my_car->order_check($this->token->userInfo['user_id'], $carId);
         $this->return_result($result);
     }
 }
