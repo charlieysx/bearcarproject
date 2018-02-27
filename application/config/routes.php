@@ -77,6 +77,8 @@ $route['sysa/qiniu/token']['get'] = 'admin/Qiniu/get_qiniu_token';
 $route['sysa/mycar/list']['get'] = 'admin/MyCar/get_car_list';
 //下架与我相关的二手车
 $route['sysa/mycar/under']['post'] = 'admin/MyCar/under';
+//预约检测二手车
+$route['sysa/mycar/ordercheck']['post'] = 'admin/MyCar/order_check';
 
 //===========================================admin-后台管理-接口-结束===============================
 

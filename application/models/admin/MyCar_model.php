@@ -16,7 +16,7 @@ class MyCar_model extends Base_Model
                                     car_condition.condition_name as conditionName, expire_date.expire_date_name as expireDateName, mileage, 
                                     transfer_time as transferTime, status, publish_time as publishTime, see_count as seeCount, under_reason as underReason,
                                     car.inspect_datetime as checkTimeId, inspect_address as inspectAddress, city.name as cityName,
-                                    province.name as provinceName, district.name as districtName')
+                                    province.name as provinceName, district.name as districtName, user.phone as phone')
                             ->join(TABLE_CITY.' as licensed_city', 'licensed_city.id = car.licensed_city_id')
                             ->join(TABLE_CITY, 'city.id = car.city_id')
                             ->join(TABLE_PROVINCE, 'province.id = car.province_id')
@@ -26,6 +26,7 @@ class MyCar_model extends Base_Model
                             ->join(TABLE_CAR_MODEL, 'car_model.model_id = car.model_id', 'LEFT')
                             ->join(TABLE_CAR_CONDITION, 'car_condition.condition_id = car.car_condition_id')
                             ->join(TABLE_EXPIRE_DATE, 'expire_date.expire_date_id = car.expire_date_id')
+                            ->join(TABLE_USER, 'user.user_id = car.user_id')
                             ->group_start()
                               ->where('status', $car_status);
         if($car_status == 3) {
@@ -42,12 +43,16 @@ class MyCar_model extends Base_Model
         $car = $carDB->limit($pageSize, $page*$pageSize)->order_by('publish_time', 'DESC')->get()->result_array();
 
         for($i = 0;$i < count($car);$i++) {
-          if($car[$i]['modelName'] == null) {
-            unset($car[$i]['modelName']);
-          }
-          if($car[$i]['status'] != 5) {
-            unset($car[$i]['underReason']);
-          }
+            if($car[$i]['modelName'] == null) {
+                unset($car[$i]['modelName']);
+            }
+            if($car[$i]['status'] != 5) {
+                unset($car[$i]['underReason']);
+            }
+            if($car_status != 1 && $car_status != 2 && $car_status == 6) {
+                unset($car[$i]['inspectAddress']);
+                unset($car[$i]['phone']);
+            }
         }
         return success($car);
     }
@@ -108,7 +113,35 @@ class MyCar_model extends Base_Model
         return success('下架成功');
     }
 
-    public function check($user_id, $car_id) {
+    public function order_check($user_id, $car_id) {
+        $car = $this->db->from(TABLE_CAR)
+                          ->where('car_id', $car_id)
+                          ->get()
+                          ->row_array();
+        if(empty($car)) {
+            return fail('没有该辆车');
+        }
 
+        if($car['status'] != 0) {
+            return fail('该辆二手车已被接或已被下架，您不能预约检测');
+        }
+
+        $newStatus = array(
+            'status'=> 6,
+            'deal_user_id'=> $user_id
+        );
+        $this->db->where('car_id', $car_id)->update(TABLE_CAR, $newStatus);
+
+        $order = array(
+            'order_id'=> create_car_id($car_id),
+            'car_id'=> $car_id,
+            'appraiser_id'=> $user_id,
+            'user_id'=> $car['user_id'],
+            'start_time'=> time()
+        );
+        // 添加数据
+        $this->db->insert(TABLE_ORDER, $order);
+
+        return success('预约成功，您可在 待检测列表 查看更多信息');
     }
 }
