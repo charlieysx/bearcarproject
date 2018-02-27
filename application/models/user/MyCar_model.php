@@ -16,7 +16,7 @@ class MyCar_model extends Base_Model
                                     car_condition.condition_name as conditionName, expire_date.expire_date_name as expireDateName, mileage, 
                                     transfer_time as transferTime, car.status as status, publish_time as publishTime, see_count as seeCount, under_reason as underReason,
                                     car.inspect_datetime as checkTimeId, inspect_address as inspectAddress, city.name as cityName,
-                                    province.name as provinceName, district.name as districtName, user.user_name as appraiserName')
+                                    province.name as provinceName, district.name as districtName, admin_user.user_name as appraiserName')
                             ->join(TABLE_CITY.' as licensed_city', 'licensed_city.id = car.licensed_city_id')
                             ->join(TABLE_CITY, 'city.id = car.city_id')
                             ->join(TABLE_PROVINCE, 'province.id = car.province_id')
@@ -26,7 +26,7 @@ class MyCar_model extends Base_Model
                             ->join(TABLE_CAR_MODEL, 'car_model.model_id = car.model_id', 'LEFT')
                             ->join(TABLE_CAR_CONDITION, 'car_condition.condition_id = car.car_condition_id')
                             ->join(TABLE_EXPIRE_DATE, 'expire_date.expire_date_id = car.expire_date_id')
-                            ->join(TABLE_USER, 'user.user_id = car.deal_user_id', 'LEFT')
+                            ->join(TABLE_ADMIN_USER, 'admin_user.user_id = car.deal_user_id', 'LEFT')
                             ->where('user_id', $user_id)
                             ->group_start()
                               ->where('car.status', $car_status);
