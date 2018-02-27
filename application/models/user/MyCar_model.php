@@ -12,20 +12,26 @@ class MyCar_model extends Base_Model
     {
         $car_db = $this->db->from(TABLE_CAR)
                             ->select('car_id as carId, car_brand.brand_name as brandName, car_series.series_name as seriesName, car_model.model_name as modelName, 
-                                    city.name as cityName, licensed_year as licensedYear, licensed_month as licensedMonth, 
+                                    licensed_city.name as licensedCityName, licensed_year as licensedYear, licensed_month as licensedMonth, 
                                     car_condition.condition_name as conditionName, expire_date.expire_date_name as expireDateName, mileage, 
-                                    transfer_time as transferTime, status, publish_time as publishTime, see_count as seeCount, under_reason as underReason')
-                            ->join(TABLE_CITY, 'city.id = car.licensed_city_id')
+                                    transfer_time as transferTime, car.status as status, publish_time as publishTime, see_count as seeCount, under_reason as underReason,
+                                    car.inspect_datetime as checkTimeId, inspect_address as inspectAddress, city.name as cityName,
+                                    province.name as provinceName, district.name as districtName, user.user_name as appraiserName')
+                            ->join(TABLE_CITY.' as licensed_city', 'licensed_city.id = car.licensed_city_id')
+                            ->join(TABLE_CITY, 'city.id = car.city_id')
+                            ->join(TABLE_PROVINCE, 'province.id = car.province_id')
+                            ->join(TABLE_DISTRICT, 'district.id = car.district_id')
                             ->join(TABLE_CAR_BRAND, 'car_brand.brand_id = car.brand_id')
                             ->join(TABLE_CAR_SERIES, 'car_series.series_id = car.series_id')
                             ->join(TABLE_CAR_MODEL, 'car_model.model_id = car.model_id', 'LEFT')
                             ->join(TABLE_CAR_CONDITION, 'car_condition.condition_id = car.car_condition_id')
                             ->join(TABLE_EXPIRE_DATE, 'expire_date.expire_date_id = car.expire_date_id')
+                            ->join(TABLE_USER, 'user.user_id = car.deal_user_id', 'LEFT')
                             ->where('user_id', $user_id)
                             ->group_start()
-                              ->where('status', $car_status);
+                              ->where('car.status', $car_status);
         if($car_status == 3) {
-          $car_db->or_where('status', 4)->or_where('status', 5);
+          $car_db->or_where('car.status', 4)->or_where('car.status', 5);
         }
         $car_db->group_end();
         $car = $car_db->limit($pageSize, $page*$pageSize)->order_by('publish_time', 'DESC')->get()->result_array();
@@ -36,6 +42,9 @@ class MyCar_model extends Base_Model
           }
           if($car[$i]['status'] != 5) {
             unset($car[$i]['underReason']);
+          }
+          if($car[$i]['status'] == 0 || $car[$i]['status'] == 4 || $car[$i]['status'] == 5) {
+            unset($car[$i]['appraiserName']);
           }
         }
         return success($car);

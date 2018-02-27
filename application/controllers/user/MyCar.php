@@ -21,6 +21,9 @@ class MyCar extends Base_Controller
           case 'waiting':
             $car_status = 0;
             break;
+          case 'checking':
+            $car_status = 6;
+            break;
           case 'selling':
             $car_status = 1;
             break;
