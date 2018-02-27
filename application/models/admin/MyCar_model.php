@@ -14,7 +14,7 @@ class MyCar_model extends Base_Model
                             ->select('car_id as carId, car_brand.brand_name as brandName, car_series.series_name as seriesName, car_model.model_name as modelName, 
                                     licensed_city.name as licensedCityName, licensed_year as licensedYear, licensed_month as licensedMonth, 
                                     car_condition.condition_name as conditionName, expire_date.expire_date_name as expireDateName, mileage, 
-                                    transfer_time as transferTime, car.status as carStatus, publish_time as publishTime, see_count as seeCount, under_reason as underReason,
+                                    transfer_time as transferTime, car.status as status, publish_time as publishTime, see_count as seeCount, under_reason as underReason,
                                     car.inspect_datetime as checkTimeId, inspect_address as inspectAddress, city.name as cityName,
                                     province.name as provinceName, district.name as districtName, user.phone as phone')
                             ->join(TABLE_CITY.' as licensed_city', 'licensed_city.id = car.licensed_city_id')
@@ -28,9 +28,9 @@ class MyCar_model extends Base_Model
                             ->join(TABLE_EXPIRE_DATE, 'expire_date.expire_date_id = car.expire_date_id')
                             ->join(TABLE_USER, 'user.user_id = car.user_id')
                             ->group_start()
-                              ->where('status', $car_status);
+                              ->where('car.status', $car_status);
         if($car_status == 3) {
-          $carDB->or_where('status', 4)->or_where('status', 5);
+          $carDB->or_where('car.status', 4)->or_where('car.status', 5);
         }
         $carDB->group_end();
         //查的不是待上架的，就需要附带userid
