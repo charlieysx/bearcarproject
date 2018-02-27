@@ -73,7 +73,9 @@ class MyCar_model extends Base_Model
                             ->where('under_user_id', $user_id)
                             ->or_where('deal_user_id', $user_id)
                             // ->or_where('status', '0')
-                          ->group_end();
+                          ->group_end()
+                          ->get()
+                          ->row_array();
         if(empty($car)) {
             return fail_result('没有该辆车或您没有权限下架该辆车');
         }
