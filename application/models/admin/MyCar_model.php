@@ -15,7 +15,7 @@ class MyCar_model extends Base_Model
                                     licensed_city.name as licensedCityName, licensed_year as licensedYear, licensed_month as licensedMonth, 
                                     car_condition.condition_name as conditionName, expire_date.expire_date_name as expireDateName, mileage, 
                                     transfer_time as transferTime, status, publish_time as publishTime, see_count as seeCount, under_reason as underReason,
-                                    check_time.id as checkTimeId, inspect_address as inspectAddress, city.name as cityName,
+                                    car.inspect_datetime as checkTimeId, inspect_address as inspectAddress, city.name as cityName,
                                     province.name as provinceName, district.name as districtName')
                             ->join(TABLE_CITY.' as licensed_city', 'licensed_city.id = car.licensed_city_id')
                             ->join(TABLE_CITY, 'city.id = car.city_id')
@@ -26,7 +26,6 @@ class MyCar_model extends Base_Model
                             ->join(TABLE_CAR_MODEL, 'car_model.model_id = car.model_id', 'LEFT')
                             ->join(TABLE_CAR_CONDITION, 'car_condition.condition_id = car.car_condition_id')
                             ->join(TABLE_EXPIRE_DATE, 'expire_date.expire_date_id = car.expire_date_id')
-                            ->join(TABLE_CHECK_TIME, 'check_time.check_time_id = car.inspect_datetime')
                             ->group_start()
                               ->where('status', $car_status);
         if($car_status == 3) {
