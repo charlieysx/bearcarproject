@@ -38,6 +38,9 @@ class MyCar extends Base_Controller
               case 'under':
                 $car_status = 3;
                 break;
+              case 'checking':
+                $car_status = 6;
+                break;
               default:
                 $type = 'waiting';
                 $car_status = 0;
@@ -76,6 +79,9 @@ class MyCar extends Base_Controller
           break;
         case 'under':
           $car_status = 3;
+          break;
+        case 'checking':
+          $car_status = 6;
           break;
         default:
           $type = 'waiting';
