@@ -86,25 +86,25 @@ $route['sysa/mycar/under']['post'] = 'admin/mycar/under';
 //===========================================user-前端-接口===================================
 
 //注册
-$route['u/register']['post'] = 'user/user/register';
+$route['u/register']['post'] = 'user/User/register';
 //登录
-$route['u/login']['post'] = 'user/user/login';
+$route['u/login']['post'] = 'user/User/login';
 //批量添加用户
-//  $route['u/add']['post'] = 'user/user/add';
+//  $route['u/add']['post'] = 'user/User/add';
 
 //获取资讯列表
-$route['u/news/list']['get'] = 'user/news/get_news_list';
+$route['u/news/list']['get'] = 'user/News/get_news_list';
 //获取热门资讯
-$route['u/news/list/hot']['get'] = 'user/news/get_hot_news_list';
+$route['u/news/list/hot']['get'] = 'user/News/get_hot_news_list';
 //获取资讯详情
-$route['u/news/detail']['get'] = 'user/news/get_news_info';
+$route['u/news/detail']['get'] = 'user/News/get_news_info';
 
 //发布二手车
-$route['u/sellcar']['post'] = 'user/sellcar/sell_car';
+$route['u/sellcar']['post'] = 'user/SellCar/sell_car';
 //获取发布二手车数据
-$route['u/sellcar/sellinfo']['get'] = 'user/sellcar/get_sell_info';
+$route['u/sellcar/sellinfo']['get'] = 'user/SellCar/get_sell_info';
 //获取预约检测二手车时间
-$route['u/sellcar/checktime']['get'] = 'user/sellcar/get_check_time';
+$route['u/sellcar/checktime']['get'] = 'user/SellCar/get_check_time';
 
 //查询我的二手车列表
 $route['u/mycar/list']['get'] = 'user/MyCar/get_my_car';
@@ -112,7 +112,7 @@ $route['u/mycar/list']['get'] = 'user/MyCar/get_my_car';
 $route['u/mycar/under']['post'] = 'user/MyCar/under';
 
 //获取七牛上传图片token
-$route['u/qiniu/token']['get'] = 'user/qiniu/get_qiniu_token';
+$route['u/qiniu/token']['get'] = 'user/Qiniu/get_qiniu_token';
 
 //===========================================user-前端-接口-结束===============================
 
@@ -124,31 +124,31 @@ $route['u/qiniu/token']['get'] = 'user/qiniu/get_qiniu_token';
 //===========================================common-共用-接口===================================
 
 //获取车brand
-$route['c/carinfo/brand']['get'] = 'common/carinfo/get_brand';
+$route['c/carinfo/brand']['get'] = 'common/CarInfo/get_brand';
 //获取车series
-$route['c/carinfo/series']['get'] = 'common/carinfo/get_series_by_brand_id';
+$route['c/carinfo/series']['get'] = 'common/CarInfo/get_series_by_brand_id';
 //获取车model
-$route['c/carinfo/model']['get'] = 'common/carinfo/get_model_by_series_id';
+$route['c/carinfo/model']['get'] = 'common/CarInfo/get_model_by_series_id';
 //获取按首字母排序的车brand
-$route['c/carinfo/brand/sort']['get'] = 'common/carinfo/get_brand_sort';
+$route['c/carinfo/brand/sort']['get'] = 'common/CarInfo/get_brand_sort';
 //获取热门的车brand
-$route['c/carinfo/brand/hot']['get'] = 'common/carinfo/get_hot_brand';
+$route['c/carinfo/brand/hot']['get'] = 'common/CarInfo/get_hot_brand';
 //获取热门的车series
-$route['c/carinfo/series/hot']['get'] = 'common/carinfo/get_hot_series';
+$route['c/carinfo/series/hot']['get'] = 'common/CarInfo/get_hot_series';
 
 //获取省份
-$route['c/city/province']['get'] = 'common/city/get_province';
+$route['c/city/province']['get'] = 'common/City/get_province';
 //获取城市
-$route['c/city']['get'] = 'common/city/get_city';
+$route['c/city']['get'] = 'common/City/get_city';
 //获取省份对应的城市
-$route['c/city/by_province']['get'] = 'common/city/get_city_by_province_id';
+$route['c/city/by_province']['get'] = 'common/City/get_city_by_province_id';
 //获取城市对应的地区
-$route['c/city/district/by_city']['get'] = 'common/city/get_district_by_city_id';
+$route['c/city/district/by_city']['get'] = 'common/City/get_district_by_city_id';
 //获取城市关联的省份、城市列表、地区列表信息
-$route['c/city/info']['get'] = 'common/city/get_info_by_city';
+$route['c/city/info']['get'] = 'common/City/get_info_by_city';
 //获取按首字母排序的城市
-$route['c/city/sort']['get'] = 'common/city/get_city_sort';
+$route['c/city/sort']['get'] = 'common/City/get_city_sort';
 //获取热门的城市
-$route['c/city/hot']['get'] = 'common/city/get_hot_city';
+$route['c/city/hot']['get'] = 'common/City/get_hot_city';
 
 //===========================================common-共用-接口-结束===============================

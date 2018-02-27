@@ -71,7 +71,7 @@ class Base_Controller extends CI_Controller
             $this->return_fail('无效的token', TOKEN_INVALID);
         }
         $this->userId = $this->token->userInfo['user_id'];
-        if($this->token->userInfo['type'] == '1') {
+        if($this->isAdmin && $this->token->userInfo['type'] == '1') {
             $this->super = true;
         }
     }
