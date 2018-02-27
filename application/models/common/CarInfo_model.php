@@ -85,10 +85,10 @@ class CarInfo_model extends Base_Model
         for($i = ord("A"); $i <= ord("Z"); $i++){
             $letter = chr($i);
             $brandList = $this->db->where('first_char',  $letter)
-                                ->from(TABLE_CAR_BRAND)
-                                ->select('brand_id as brandId, brand_name as brandName, first_char as firstChar')
-                                ->get()
-                                ->result_array();
+                                    ->from(TABLE_CAR_BRAND)
+                                    ->select('brand_id as brandId, brand_name as brandName, first_char as firstChar')
+                                    ->get()
+                                    ->result_array();
             if(!empty($car_info)) {
                 $data[$letter] = $brandList;
             }
