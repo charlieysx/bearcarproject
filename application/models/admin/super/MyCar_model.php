@@ -51,7 +51,7 @@ class MyCar_model extends Base_Model
         return success($count_all);
     }
 
-    public function under($car_id, $under_reason) {
+    public function under($user_id, $car_id, $under_reason) {
         $car = $this->db->from(TABLE_CAR)
                           ->where('car_id', $car_id)
                           ->get()
@@ -75,7 +75,8 @@ class MyCar_model extends Base_Model
 
         $newStatus = array(
             'status'=> 4,
-            'under_reason' => $under_reason
+            'under_reason' => $under_reason,
+            'under_user_id'=> $user_id
         );
         $this->db->where('car_id', $car_id)->update(TABLE_CAR, $newStatus);
 

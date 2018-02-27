@@ -128,9 +128,9 @@ class MyCar extends Base_Controller
             $this->return_fail('carId错误');
         }
         if($underReason == '') {
-            $this->return_fail('请天下下架原因');
+            $this->return_fail('请填写下架原因');
         }
-        $result = $this->my_car->under($carId, $underReason);
+        $result = $this->my_car->under($this->token->userInfo['user_id'], $carId, $underReason);
         $this->return_result($result);
     }
 }

@@ -72,6 +72,7 @@ class MyCar_model extends Base_Model
                           ->group_start()
                             ->where('under_user_id', $user_id)
                             ->or_where('deal_user_id', $user_id)
+                            // ->or_where('status', '0')
                           ->group_end();
         if(empty($car)) {
             return fail_result('没有该辆车或您没有权限下架该辆车');
@@ -92,7 +93,8 @@ class MyCar_model extends Base_Model
 
         $newStatus = array(
             'status'=> 4,
-            'under_reason' => $under_reason
+            'under_reason'=> $under_reason,
+            'under_user_id'=> $user_id
         );
         $this->db->where('car_id', $car_id)->update(TABLE_CAR, $newStatus);
 
