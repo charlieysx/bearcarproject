@@ -27,7 +27,7 @@ class MyCar_model extends Base_Model
                             ->join(TABLE_CAR_CONDITION, 'car_condition.condition_id = car.car_condition_id')
                             ->join(TABLE_EXPIRE_DATE, 'expire_date.expire_date_id = car.expire_date_id')
                             ->join(TABLE_ADMIN_USER, 'admin_user.user_id = car.deal_user_id', 'LEFT')
-                            ->where('user_id', $user_id)
+                            ->where('car.user_id', $user_id)
                             ->group_start()
                               ->where('car.status', $car_status);
         if($car_status == 3) {
