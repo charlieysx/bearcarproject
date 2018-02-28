@@ -83,6 +83,8 @@ $route['sysa/mycar/ordercheck']['post'] = 'admin/MyCar/order_check';
 $route['sysa/fillcar/getfillstep']['get'] = 'admin/FillCarInfo/get_fill_step';
 //获取上牌年月列表
 $route['sysa/fillcar/getym']['get'] = 'admin/FillCarInfo/get_year_month';
+//获取检测中的二手车的基本信息(客户填写的)
+$route['sysa/fillcar/getfillcarinfo']['get'] = 'admin/FillCarInfo/get_fill_car_info';
 
 //===========================================admin-后台管理-接口-结束===============================
 

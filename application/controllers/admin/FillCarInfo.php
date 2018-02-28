@@ -26,4 +26,14 @@ class FillCarInfo extends Base_Controller
         $result = $this->fillcar->get_year_month();
         $this->return_success($result);
     }
+
+    public function get_fill_car_info() {
+        $params = $this->input->get();
+        $carId = get_param($params, 'carId', '');
+        if($carId == '') {
+          $this->return_fail('carId错误');
+        }
+        $result = $this->fillcar->get_fill_car_info($this->token->userInfo['user_id'], $carId);
+        $this->return_result($result);
+    }
 }
