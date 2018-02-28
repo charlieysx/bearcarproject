@@ -80,7 +80,9 @@ $route['sysa/mycar/under']['post'] = 'admin/MyCar/under';
 //预约检测二手车
 $route['sysa/mycar/ordercheck']['post'] = 'admin/MyCar/order_check';
 //获取检测完成步骤
-$route['sysa/mycar/getfillstep']['get'] = 'admin/MyCar/get_fill_step';
+$route['sysa/fillcar/getfillstep']['get'] = 'admin/FillCarInfo/get_fill_step';
+//获取上牌年月列表
+$route['sysa/fillcar/getym']['get'] = 'admin/FillCarInfo/get_year_month';
 
 //===========================================admin-后台管理-接口-结束===============================
 

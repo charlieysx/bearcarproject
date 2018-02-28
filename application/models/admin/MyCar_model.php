@@ -143,17 +143,4 @@ class MyCar_model extends Base_Model
 
         return success('预约成功，您可在 待检测列表 查看更多信息');
     }
-
-    public function get_fill_step($user_id, $car_id) {
-        $order = $this->db->from(TABLE_ORDER)
-                          ->where('car_id', $car_id)
-                          ->where('appraiser_id', $user_id)
-                          ->get()
-                          ->row_array();
-        if(empty($order)) {
-            return fail('没有该辆车或您没有权限查看该辆车');
-        }
-
-        return success(array('step'=> $order['step']));
-    }
 }
