@@ -50,7 +50,7 @@ class FillCarInfo extends Base_Controller
           'configIn'
         );
         $option = elements($key, $params, '');
-        if($option[carId] == '') {
+        if($option['carId'] == '') {
           $this->return_fail('carId错误');
         }
         $this->resutn_success($option);
