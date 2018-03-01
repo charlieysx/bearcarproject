@@ -301,19 +301,14 @@ class FillCarInfo_model extends Base_Model
         //更新车状态
         $this->db->where('car_id', $params['carId'])->update(TABLE_CAR, $car);
 
-        // $item = array(
-        //     'car_id'=> $params['carId'],
-        //     'img_out'=> json_encode($params['outImgUrl']),
-        //     'img_in'=> json_encode($params['inImgUrl']),
-        //     'img_engine_chassis'=> json_encode($params['engineChassisImgUrl']),
-        //     'img'=> $params['coverImgUrl']
-        // );
-        // $this->db->insert(TABLE_CAR_IMAGE, $item);
-        $img = array(
-            'img_engine_chassis'=> json_encode($params['engineChassisImgUrl'])
+        $item = array(
+            'car_id'=> $params['carId'],
+            'img_out'=> json_encode($params['outImgUrl']),
+            'img_in'=> json_encode($params['inImgUrl']),
+            'img_engine_chassis'=> json_encode($params['engineChassisImgUrl']),
+            'img'=> $params['coverImgUrl']
         );
-        $this->db->where('car_id', $params['carId'])->update(TABLE_CAR_IMAGE, $img);
-
+        $this->db->insert(TABLE_CAR_IMAGE, $item);
 
         return success('添加完成');
     }
