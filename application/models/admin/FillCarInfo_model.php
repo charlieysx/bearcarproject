@@ -259,7 +259,7 @@ class FillCarInfo_model extends Base_Model
         foreach($tables as $k => $v) {
             $item = array(
                 'car_id'=> $params['carId'],
-                'value'=> $params[$k]['list'],
+                'value'=> json_encode($params[$k]['list']),
                 'abnormal'=> $params[$k]['abnormal']
             );
             $this->db->insert($v, $item);
