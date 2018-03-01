@@ -70,8 +70,8 @@ class FillCarInfo_model extends Base_Model
         $info = $this->db->from(TABLE_ORDER)
                             ->select('car.status as carStatus, order_id, order.status as orderStatus, order.step as orderStep,')
                             ->join(TABLE_CAR, 'car.car_id = order.car_id')
-                            ->where('car_id', $params['car_id'])
-                            ->where('appraiser_id', $params['user_id'])
+                            ->where('order.car_id', $params['car_id'])
+                            ->where('appraiser_id', $user_id)
                             ->get()->row_array();
         if(empty($info)) {
             return fail('查无改二手车信息或您无权上传该二手车信息');
