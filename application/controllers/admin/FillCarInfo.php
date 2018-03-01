@@ -53,6 +53,6 @@ class FillCarInfo extends Base_Controller
         if($option['carId'] == '') {
           $this->return_fail('carId错误');
         }
-        $this->resutn_success($option);
+        $this->return_success($option);
     }
 }
