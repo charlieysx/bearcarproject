@@ -299,7 +299,7 @@ class FillCarInfo_model extends Base_Model
             'img_in'=> json_encode($params['inImgUrl']),
             'img'=> $params['coverImgUrl']
         );
-        $this->db->insert($v, $item);
+        $this->db->insert(TABLE_CAR_IMAGE, $item);
 
         return success('添加完成');
     }
