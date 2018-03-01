@@ -90,6 +90,8 @@ $route['sysa/fillcar/getfillcarinfo']['get'] = 'admin/FillCarInfo/get_fill_car_i
 $route['sysa/fillcar/first']['post'] = 'admin/FillCarInfo/fill_car_first_step';
 //提交检测信息-第二步
 $route['sysa/fillcar/second']['post'] = 'admin/FillCarInfo/fill_car_second_step';
+//提交检测信息-第三步
+$route['sysa/fillcar/third']['post'] = 'admin/FillCarInfo/fill_car_third_step';
 
 //===========================================admin-后台管理-接口-结束===============================
 

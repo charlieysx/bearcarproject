@@ -82,7 +82,7 @@ class FillCarInfo_model extends Base_Model
         }
 
         if($info['orderStep'] != '1') {
-            return fail('该辆二手车的配置信息已上传，不能再上传');
+            return fail('不能上传该辆二手车的配置信息');
         }
 
         $order = array(
@@ -229,8 +229,8 @@ class FillCarInfo_model extends Base_Model
             return fail('该辆二手车的信息不能修改');
         }
 
-        if($info['orderStep'] != '2' && $info['orderStep'] != '1') {
-            return fail('该辆二手车的检测信息已上传，不能再上传');
+        if($info['orderStep'] != '2') {
+            return fail('不能上传该辆二手车的检测信息');
         }
 
         $order = array(
@@ -264,6 +264,42 @@ class FillCarInfo_model extends Base_Model
             );
             $this->db->insert($v, $item);
         }
+
+        return success('添加完成');
+    }
+
+    public function fill_car_third_step($user_id, $params) {
+        $info = $this->db->from(TABLE_ORDER)
+                            ->select('car.status as carStatus, order_id, order.status as orderStatus, order.step as orderStep,')
+                            ->join(TABLE_CAR, 'car.car_id = order.car_id')
+                            ->where('order.car_id', $params['carId'])
+                            ->where('appraiser_id', $user_id)
+                            ->get()->row_array();
+        if(empty($info)) {
+            return fail('查无改二手车信息或您无权上传该二手车信息');
+        }
+
+        if($info['carStatus'] != '6' || $info['orderStatus'] != '1') {
+            return fail('该辆二手车的信息不能修改');
+        }
+
+        if($info['orderStep'] != '3') {
+            return fail('不能上传该辆二手车的图片信息已上传');
+        }
+
+        $order = array(
+            'step'=> '4'
+        );
+        //更新订单的检测完成步骤
+        $this->db->where('order_id', $info['order_id'])->update(TABLE_ORDER, $order);
+
+        $item = array(
+            'car_id'=> $params['carId'],
+            'img_out'=> json_encode($params['outImgUrl']),
+            'img_in'=> json_encode($params['inImgUrl']),
+            'img'=> $params['coverImgUrl']
+        );
+        $this->db->insert($v, $item);
 
         return success('添加完成');
     }

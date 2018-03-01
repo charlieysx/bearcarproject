@@ -96,4 +96,23 @@ class FillCarInfo extends Base_Controller
         $result = $this->fillcar->fill_car_second_step($this->token->userInfo['user_id'], $option);
         $this->return_result($result);
     }
+
+    public function fill_car_third_step() {
+        $params = $this->input->post();
+        $key = array(
+          'carId',
+          'coverImgUrl',
+          'outImgUrl',
+          'inImgUrl',
+          'engineChassisImgUrl'
+        );
+        $option = elements($key, $params, '');
+        foreach($option as $k => $v) {
+          if('' == $v) {
+            return $this->return_fail($k.'错误');
+          }
+        }
+        $result = $this->fillcar->fill_car_third_step($this->token->userInfo['user_id'], $option);
+        $this->return_result($result);
+    }
 }
