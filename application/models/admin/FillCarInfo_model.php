@@ -288,18 +288,32 @@ class FillCarInfo_model extends Base_Model
         }
 
         $order = array(
-            'step'=> '4'
+            'step'=> '4',
+            'check_time'=> time(),
+            'status'=> '2'
         );
-        //更新订单的检测完成步骤
+        //更新订单
         $this->db->where('order_id', $info['order_id'])->update(TABLE_ORDER, $order);
 
-        $item = array(
-            'car_id'=> $params['carId'],
-            'img_out'=> json_encode($params['outImgUrl']),
-            'img_in'=> json_encode($params['inImgUrl']),
-            'img'=> $params['coverImgUrl']
+        $car = array(
+            'status'=> '1'
         );
-        $this->db->insert(TABLE_CAR_IMAGE, $item);
+        //更新车状态
+        $this->db->where('car_id', $params['carId'])->update(TABLE_CAR, $car);
+
+        // $item = array(
+        //     'car_id'=> $params['carId'],
+        //     'img_out'=> json_encode($params['outImgUrl']),
+        //     'img_in'=> json_encode($params['inImgUrl']),
+        //     'img_engine_chassis'=> json_encode($params['engineChassisImgUrl']),
+        //     'img'=> $params['coverImgUrl']
+        // );
+        // $this->db->insert(TABLE_CAR_IMAGE, $item);
+        $img = array(
+            'img_engine_chassis'=> json_encode($params['engineChassisImgUrl'])
+        );
+        $this->db->where('car_id', $params['carId'])->update(TABLE_CAR_IMAGE, $img);
+
 
         return success('添加完成');
     }
