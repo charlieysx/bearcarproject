@@ -65,4 +65,151 @@ class FillCarInfo_model extends Base_Model
 
         return success($car);
     }
+
+    public function fill_car_first_step($user_id, $params) {
+        $info = $this->db->from(TABLE_ORDER)
+                            ->select('car.status as carStatus, order_id, order.status as orderStatus, order.step as orderStep,')
+                            ->join(TABLE_CAR, 'car.car_id = order.car_id')
+                            ->where('car_id', $params['car_id'])
+                            ->where('appraiser_id', $params['user_id'])
+                            ->get()->row_array();
+        if(empty($info)) {
+            return fail('查无改二手车信息或您无权上传该二手车信息');
+        }
+
+        if($info['carStatus'] != '6' || $info['orderStatus'] != '1') {
+            return fail('该辆二手车的信息不能修改');
+        }
+
+        if($info['orderStep'] != '1') {
+            return fail('该辆二手车的配置信息已上传，不能再上传');
+        }
+
+        $order = array(
+            'step'=> '2'
+        );
+        
+        //更新订单的检测完成步骤
+        $this->db->where('order_id', $info['order_id'])->update(TABLE_ORDER, $order);
+
+        $infoBase = array(
+            'car_id'=> $params['car_id'],
+            'price'=> $params['baseInfo']['ownerPrice'],
+            'new_car_price'=> $params['baseInfo']['newCarPrice'],
+            'tax'=> $params['baseInfo']['tax'],
+            'licensed_year'=> $params['baseInfo']['licensedYear'],
+            'licensed_month'=> $params['baseInfo']['licensedMonth'],
+            'mileage'=> $params['baseInfo']['mileage'],
+            'licensed_city_id'=> $params['baseInfo']['licensedCity'],
+            'user_name'=> $params['baseInfo']['userName'],
+            'look_city_id'=> $params['baseInfo']['lookCity'],
+            'year_check'=> $params['baseInfo']['checkYear'],
+            'strong_risk'=> $params['baseInfo']['strongRiskYear'],
+            'business_rish'=> $params['baseInfo']['businessRiskYear'],
+            'car_options'=> $params['baseInfo']['carOptions'],
+            'transfer_time'=> $params['baseInfo']['transferTime']
+        );
+        // 基础信息
+        $this->db->insert(TABLE_INFO_BASE, $infoBase);
+
+        $configBase = array(
+            'car_id'=> $params['car_id'],
+            'credentials'=> $params['configBase']['credentials'],
+            'vendor'=> $params['configBase']['vendor'],
+            'level'=> $params['configBase']['level'],
+            'engine'=> $params['configBase']['engine'],
+            'speed'=> $params['configBase']['speed'],
+            'structure'=> $params['configBase']['structure'],
+            'length'=> $params['configBase']['length'],
+            'width'=> $params['configBase']['width'],
+            'height'=> $params['configBase']['height'],
+            'wheelbase'=> $params['configBase']['wheelbase'],
+            'trunk'=> $params['configBase']['trunk'],
+            'quality'=> $params['configBase']['quality']
+        );
+        // 基础参数
+        $this->db->insert(TABLE_CONFIG_BASE, $configBase);
+
+        $configEngine = array(
+            'car_id'=> $params['car_id'],
+            'displacement'=> $params['configEngine']['displacement'],
+            'air_intake'=> $params['configEngine']['airIntake'],
+            'cylinder'=> $params['configEngine']['cylinder'],
+            'max_horsepower'=> $params['configEngine']['maxHorsepower'],
+            'max_torque'=> $params['configEngine']['maxTorque'],
+            'fuel_type'=> $params['configEngine']['fuelType'],
+            'fuel_label'=> $params['configEngine']['fuelLabel'],
+            'oil_supply_way'=> $params['configEngine']['oilSupplyWay'],
+            'emission_standards'=> $params['configEngine']['emissionStandards']
+        );
+        // 发动机参数
+        $this->db->insert(TABLE_CONFIG_ENGINE, $configEngine);
+
+        $configChassisBrake = array(
+            'car_id'=> $params['car_id'],
+            'drive_mode'=> $params['configChassisBrake']['driveMode'],
+            'power_type'=> $params['configChassisBrake']['powerType'],
+            'suspension_front'=> $params['configChassisBrake']['suspensionFront'],
+            'suspension_behind'=> $params['configChassisBrake']['suspensionBehind'],
+            'brake_front'=> $params['configChassisBrake']['brakeFront'],
+            'brake_behind'=> $params['configChassisBrake']['brakeBehind'],
+            'parking_brake'=> $params['configChassisBrake']['parkingBrake'],
+            'tire_size_front'=> $params['configChassisBrake']['tireSizeFront'],
+            'tire_size_behind'=> $params['configChassisBrake']['tireSizeBehind']
+        );
+        // 底盘与制动参数
+        $this->db->insert(TABLE_CONFIG_CHASSIS_BRAKE, $configChassisBrake);
+
+        $configSafety = array(
+            'car_id'=> $params['car_id'],
+            'safety_airbag_main'=> $params['configSafety']['safetyAirbagMain']['value'],
+            'safety_airbag_vice'=> $params['configSafety']['safetyAirbagVice']['value'],
+            'side_airbag_front'=> $params['configSafety']['sideAirbagFront']['value'],
+            'side_airbag_behind'=> $params['configSafety']['sideAirbagBehind']['value'],
+            'head_airbag_front'=> $params['configSafety']['headAirbagFront']['value'],
+            'head_airbag_behind'=> $params['configSafety']['headAirbagBehind']['value'],
+            'tire_pressure_monitoring'=> $params['configSafety']['tirePressureMonitoring']['value'],
+            'in_control_lock'=> $params['configSafety']['inControlLock']['value'],
+            'child_seat_interface'=> $params['configSafety']['childSeatInterface']['value'],
+            'keyless_start'=> $params['configSafety']['keylessStart']['value'],
+            'abs'=> $params['configSafety']['abs']['value'],
+            'esp'=> $params['configSafety']['esp']['value']
+        );
+        // 安全配置参数
+        $this->db->insert(TABLE_CONFIG_SAFETY, $configSafety);
+
+        $configOut = array(
+            'car_id'=> $params['car_id'],
+            'skylight_electric'=> $params['configOut']['skylightElectric']['value'],
+            'skylight_full_view'=> $params['configOut']['skylightFullView']['value'],
+            'electric_suction_door'=> $params['configOut']['electricSuctionDoor']['value'],
+            'induction_trunk'=> $params['configOut']['inductionTrunk']['value'],
+            'windshield_wiper_sensing'=> $params['configOut']['windshieldWiperSensing']['value'],
+            'windshield_wiper_behind'=> $params['configOut']['windshieldWiperBehind']['value'],
+            'electric_window_front'=> $params['configOut']['electricWindowFront']['value'],
+            'electric_window_behind'=> $params['configOut']['electricWindowBehind']['value'],
+            'rear_view_mirror_electric'=> $params['configOut']['rearViewMirrorElectric']['value'],
+            'rear_view_mirror_hot'=> $params['configOut']['rearViewMirrorHot']['value']
+        );
+        // 外部配置参数
+        $this->db->insert(TABLE_CONFIG_OUT, $configOut);
+
+        $configIn = array(
+            'car_id'=> $params['car_id'],
+            'multi_steering_wheel'=> $params['configIn']['multiSteeringWheel']['value'],
+            'cruise_control'=> $params['configIn']['cruiseControl']['value'],
+            'air_conditioner'=> $params['configIn']['airConditioner']['value'],
+            'air_conditioner_auto'=> $params['configIn']['airConditionerAuto']['value'],
+            'gps'=> $params['configIn']['gps']['value'],
+            'reversing_radar'=> $params['configIn']['reversingRadar']['value'],
+            'reversing_image_system'=> $params['configIn']['reversingImageSystem']['value'],
+            'leather_seat'=> $params['configIn']['leatherSeat']['value'],
+            'seat_hot_front'=> $params['configIn']['seatHotFront']['value'],
+            'sear_hot_behind'=> $params['configIn']['searHotBehind']['value']
+        );
+        // 内部配置参数
+        $this->db->insert(TABLE_CONFIG_IN, $configIn);
+
+        return success('添加完成');
+    }
 }

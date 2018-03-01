@@ -39,6 +39,15 @@ class FillCarInfo extends Base_Controller
 
     public function fill_car_first_step() {
         $params = $this->input->post();
+        $keyv = array(
+          'carId'=> 'carId错误',
+          'baseInfo'=> 'baseInfo错误',
+          'configBase'=> 'configBase错误',
+          'configEngine'=> 'configEngine错误',
+          'configChassisBrake'=> 'configChassisBrake错误',
+          'configSafety'=> 'configSafety错误',
+          'configOut'=> 'configOut错误'
+        );
         $key = array(
           'carId',
           'baseInfo',
@@ -50,9 +59,12 @@ class FillCarInfo extends Base_Controller
           'configIn'
         );
         $option = elements($key, $params, '');
-        if($option['carId'] == '') {
-          $this->return_fail('carId错误');
+        foreach($option as $k => $v) {
+          if('' == $option[$k]) {
+            return return_fail($keyv[$k]);
+          }
         }
-        $this->return_success($option);
+        $result = $this->fillcar->fill_car_first_step($this->token->userInfo['user_id'], $option);
+        $this->return_result($result);
     }
 }
