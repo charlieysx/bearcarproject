@@ -36,4 +36,23 @@ class FillCarInfo extends Base_Controller
         $result = $this->fillcar->get_fill_car_info($this->token->userInfo['user_id'], $carId);
         $this->return_result($result);
     }
+
+    public function fill_car_first_step() {
+        $params = $this->input->post();
+        $key = array(
+          'carId',
+          'baseInfo',
+          'configBase',
+          'configEngine',
+          'configChassisBrake',
+          'configSafety',
+          'configOut',
+          'configIn'
+        );
+        $option = elements($key, $params, '');
+        if($option[carId] == '') {
+          $this->return_fail('carId错误');
+        }
+        $this->resutn_success($option);
+    }
 }
