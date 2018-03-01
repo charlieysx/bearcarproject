@@ -213,4 +213,58 @@ class FillCarInfo_model extends Base_Model
 
         return success('添加完成');
     }
+
+    public function fill_car_second_step($user_id, $params) {
+        $info = $this->db->from(TABLE_ORDER)
+                            ->select('car.status as carStatus, order_id, order.status as orderStatus, order.step as orderStep,')
+                            ->join(TABLE_CAR, 'car.car_id = order.car_id')
+                            ->where('order.car_id', $params['carId'])
+                            ->where('appraiser_id', $user_id)
+                            ->get()->row_array();
+        if(empty($info)) {
+            return fail('查无改二手车信息或您无权上传该二手车信息');
+        }
+
+        if($info['carStatus'] != '6' || $info['orderStatus'] != '1') {
+            return fail('该辆二手车的信息不能修改');
+        }
+
+        if($info['orderStep'] != '2' && $info['orderStep'] != '1') {
+            return fail('该辆二手车的检测信息已上传，不能再上传');
+        }
+
+        $order = array(
+            'step'=> '3'
+        );
+        //更新订单的检测完成步骤
+        $this->db->where('order_id', $info['order_id'])->update(TABLE_ORDER, $order);
+
+        $tables = array(
+            'checkAccident'=> TABLE_CHECK_ACCIDENT,
+            'checkWaterFire'=> TABLE_CHECK_WATER_FIRE,
+            'checkCrash'=> TABLE_CHECK_CRASH,
+            'checkBreakablePart'=> TABLE_CHECK_BREAKABLE_PART,
+            'checkSafetySystem'=> TABLE_CHECK_SAFETY_SYSTEM,
+            'checkOutConfig'=> TABLE_CHECK_OUT_CONFIG,
+            'checkInConfig'=> TABLE_CHECK_IN_CONFIG,
+            'checkLightSystem'=> TABLE_CHECK_LIGHT_SYSTEM,
+            'checkHighTech'=> TABLE_CHECK_HIGH_TECH,
+            'checkTool'=> TABLE_CHECK_TOOL,
+            'checkInstrumentDesk'=> TABLE_CHECK_INSTRUMENT_DESK,
+            'checkEngineStatus'=> TABLE_CHECK_ENGINE_STATUS,
+            'checkSpeed'=> TABLE_CHECK_SPEED,
+            'checkAppearance'=> TABLE_CHECK_APPEARANCE
+        );
+
+        foreach($tables as $k => $v) {
+            $item = array(
+                'car_id'=> $params['carId'],
+                'value'=> $params[$k]['list'],
+                'abnormal'=> $params[$k]['abnormal']
+            );
+            $this->db->insert($v, $item);
+        }
+
+        return success('添加完成');
+    }
 }

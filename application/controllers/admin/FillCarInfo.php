@@ -60,11 +60,40 @@ class FillCarInfo extends Base_Controller
         );
         $option = elements($key, $params, '');
         foreach($option as $k => $v) {
-          if('' == $option[$k]) {
+          if('' == $v) {
             return return_fail($keyv[$k]);
           }
         }
         $result = $this->fillcar->fill_car_first_step($this->token->userInfo['user_id'], $option);
+        $this->return_result($result);
+    }
+
+    public function fill_car_second_step() {
+        $params = $this->input->post();
+        $key = array(
+          'carId',
+          'checkAccident',
+          'checkWaterFire',
+          'checkCrash',
+          'checkBreakablePart',
+          'checkSafetySystem',
+          'checkOutConfig',
+          'checkInConfig',
+          'checkLightSystem',
+          'checkHighTech',
+          'checkTool',
+          'checkInstrumentDesk',
+          'checkEngineStatus',
+          'checkSpeed',
+          'checkAppearance'
+        );
+        $option = elements($key, $params, '');
+        foreach($option as $k => $v) {
+          if('' == $v) {
+            return return_fail($k.'错误');
+          }
+        }
+        $result = $this->fillcar->fill_car_second_step($this->token->userInfo['user_id'], $option);
         $this->return_result($result);
     }
 }

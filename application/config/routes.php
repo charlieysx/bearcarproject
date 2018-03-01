@@ -88,6 +88,8 @@ $route['sysa/fillcar/getym']['get'] = 'admin/FillCarInfo/get_year_month';
 $route['sysa/fillcar/getfillcarinfo']['get'] = 'admin/FillCarInfo/get_fill_car_info';
 //提交检测信息-第一步
 $route['sysa/fillcar/first']['post'] = 'admin/FillCarInfo/fill_car_first_step';
+//提交检测信息-第二步
+$route['sysa/fillcar/second']['post'] = 'admin/FillCarInfo/fill_car_second_step';
 
 //===========================================admin-后台管理-接口-结束===============================
 
