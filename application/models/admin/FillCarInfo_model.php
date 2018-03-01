@@ -88,7 +88,6 @@ class FillCarInfo_model extends Base_Model
         $order = array(
             'step'=> '2'
         );
-        return fail($params['baseInfo']['ownerPrice']);
         //更新订单的检测完成步骤
         $this->db->where('order_id', $info['order_id'])->update(TABLE_ORDER, $order);
 
