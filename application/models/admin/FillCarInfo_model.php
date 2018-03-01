@@ -70,7 +70,7 @@ class FillCarInfo_model extends Base_Model
         $info = $this->db->from(TABLE_ORDER)
                             ->select('car.status as carStatus, order_id, order.status as orderStatus, order.step as orderStep,')
                             ->join(TABLE_CAR, 'car.car_id = order.car_id')
-                            ->where('order.car_id', $params['car_id'])
+                            ->where('order.car_id', $params['carId'])
                             ->where('appraiser_id', $user_id)
                             ->get()->row_array();
         if(empty($info)) {
@@ -93,7 +93,7 @@ class FillCarInfo_model extends Base_Model
         $this->db->where('order_id', $info['order_id'])->update(TABLE_ORDER, $order);
 
         $infoBase = array(
-            'car_id'=> $params['car_id'],
+            'car_id'=> $params['carId'],
             'price'=> $params['baseInfo']['ownerPrice'],
             'new_car_price'=> $params['baseInfo']['newCarPrice'],
             'tax'=> $params['baseInfo']['tax'],
@@ -113,7 +113,7 @@ class FillCarInfo_model extends Base_Model
         $this->db->insert(TABLE_INFO_BASE, $infoBase);
 
         $configBase = array(
-            'car_id'=> $params['car_id'],
+            'car_id'=> $params['carId'],
             'credentials'=> $params['configBase']['credentials'],
             'vendor'=> $params['configBase']['vendor'],
             'level'=> $params['configBase']['level'],
@@ -131,7 +131,7 @@ class FillCarInfo_model extends Base_Model
         $this->db->insert(TABLE_CONFIG_BASE, $configBase);
 
         $configEngine = array(
-            'car_id'=> $params['car_id'],
+            'car_id'=> $params['carId'],
             'displacement'=> $params['configEngine']['displacement'],
             'air_intake'=> $params['configEngine']['airIntake'],
             'cylinder'=> $params['configEngine']['cylinder'],
@@ -146,7 +146,7 @@ class FillCarInfo_model extends Base_Model
         $this->db->insert(TABLE_CONFIG_ENGINE, $configEngine);
 
         $configChassisBrake = array(
-            'car_id'=> $params['car_id'],
+            'car_id'=> $params['carId'],
             'drive_mode'=> $params['configChassisBrake']['driveMode'],
             'power_type'=> $params['configChassisBrake']['powerType'],
             'suspension_front'=> $params['configChassisBrake']['suspensionFront'],
@@ -161,7 +161,7 @@ class FillCarInfo_model extends Base_Model
         $this->db->insert(TABLE_CONFIG_CHASSIS_BRAKE, $configChassisBrake);
 
         $configSafety = array(
-            'car_id'=> $params['car_id'],
+            'car_id'=> $params['carId'],
             'safety_airbag_main'=> $params['configSafety']['safetyAirbagMain']['value'],
             'safety_airbag_vice'=> $params['configSafety']['safetyAirbagVice']['value'],
             'side_airbag_front'=> $params['configSafety']['sideAirbagFront']['value'],
@@ -179,7 +179,7 @@ class FillCarInfo_model extends Base_Model
         $this->db->insert(TABLE_CONFIG_SAFETY, $configSafety);
 
         $configOut = array(
-            'car_id'=> $params['car_id'],
+            'car_id'=> $params['carId'],
             'skylight_electric'=> $params['configOut']['skylightElectric']['value'],
             'skylight_full_view'=> $params['configOut']['skylightFullView']['value'],
             'electric_suction_door'=> $params['configOut']['electricSuctionDoor']['value'],
@@ -195,7 +195,7 @@ class FillCarInfo_model extends Base_Model
         $this->db->insert(TABLE_CONFIG_OUT, $configOut);
 
         $configIn = array(
-            'car_id'=> $params['car_id'],
+            'car_id'=> $params['carId'],
             'multi_steering_wheel'=> $params['configIn']['multiSteeringWheel']['value'],
             'cruise_control'=> $params['configIn']['cruiseControl']['value'],
             'air_conditioner'=> $params['configIn']['airConditioner']['value'],
