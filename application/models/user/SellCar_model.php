@@ -85,7 +85,7 @@ class SellCar_model extends Base_Model
         $year = intval(date( "Y"));
         $month = intval(date( "n"));
         $license_time = array();
-        for($i = 0;$i < 10;$i++) {
+        for($i = 0;$i < 30;$i++) {
             $m = array();
             for($j = 1;$j <= ($i == 0 ? $month : 12);$j++) {
                 array_push($m, array('value' => $j.'月' ));

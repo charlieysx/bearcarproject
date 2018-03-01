@@ -26,7 +26,7 @@ class FillCarInfo_model extends Base_Model
         $year = intval(date( "Y"));
         $month = intval(date( "n"));
         $license_time = array();
-        for($i = 0;$i < 10;$i++) {
+        for($i = 0;$i < 30;$i++) {
             $m = array();
             for($j = 1;$j <= ($i == 0 ? $month : 12);$j++) {
                 array_push($m, array('value' => $j.'月' ));
@@ -103,7 +103,7 @@ class FillCarInfo_model extends Base_Model
             'mileage'=> $params['baseInfo']['mileage'],
             'licensed_city_id'=> $params['baseInfo']['licensedCity'],
             'user_name'=> $params['baseInfo']['userName'],
-            'look_city_id'=> $params['baseInfo']['lookCity'],
+            'look_district_id'=> $params['baseInfo']['lookDistrict'],
             'year_check'=> $params['baseInfo']['checkYear'],
             'strong_risk'=> $params['baseInfo']['strongRiskYear'],
             'business_risk'=> $params['baseInfo']['businessRiskYear'],
