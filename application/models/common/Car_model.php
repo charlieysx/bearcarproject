@@ -12,7 +12,13 @@ class Car_model extends Base_Model
 
     public function get_car_info($car_id) {
         $order = $this->db->from(TABLE_ORDER)
-                            ->where('car_id', $car_id)
+                            ->select('step, order.check_time as checkTime, car_brand.brand_name as brandName,
+                                    car_series.series_name as seriesName, car_model.model_name as modelName')
+                            ->where('order.car_id', $car_id)
+                            ->join(TABLE_CAR, 'car.car_id = order.car_id')
+                            ->join(TABLE_CAR_BRAND, 'car_brand.brand_id = car.brand_id')
+                            ->join(TABLE_CAR_SERIES, 'car_series.series_id = car.series_id')
+                            ->join(TABLE_CAR_MODEL, 'car_model.model_id = car.model_id', 'LEFT')
                             ->get()
                             ->row_array();
         if(empty($order)) {
@@ -37,6 +43,10 @@ class Car_model extends Base_Model
                                 ->row_array();
         
         $data['carBaseInfo'] = $carBaseInfo;
+        $data['carBaseInfo']['checkTime'] = $order['checkTime'];
+        $data['carBaseInfo']['brandName'] = $order['brandName'];
+        $data['carBaseInfo']['seriesName'] = $order['seriesName'];
+        $data['carBaseInfo']['modelName'] = $order['modelName'];
 
         $configTable = array(
             TABLE_CONFIG_BASE=> array(
