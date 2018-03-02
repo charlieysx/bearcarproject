@@ -81,8 +81,6 @@ $route['sysa/mycar/list']['get'] = 'admin/MyCar/get_car_list';
 $route['sysa/mycar/under']['post'] = 'admin/MyCar/under';
 //预约检测二手车
 $route['sysa/mycar/ordercheck']['post'] = 'admin/MyCar/order_check';
-//获取二手车信息
-$route['sysa/mycar/getinfo']['get'] = 'admin/MyCar/get_mycar_info';
 
 //获取检测完成步骤
 $route['sysa/fillcar/getfillstep']['get'] = 'admin/FillCarInfo/get_fill_step';
@@ -171,5 +169,8 @@ $route['c/city/info']['get'] = 'common/City/get_info_by_city';
 $route['c/city/sort']['get'] = 'common/City/get_city_sort';
 //获取热门的城市
 $route['c/city/hot']['get'] = 'common/City/get_hot_city';
+
+//获取二手车信息
+$route['c/car/getinfo']['get'] = 'common/Car/get_car_info';
 
 //===========================================common-共用-接口-结束===============================
