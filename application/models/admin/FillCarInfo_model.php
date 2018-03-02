@@ -206,7 +206,7 @@ class FillCarInfo_model extends Base_Model
             'reversing_image_system'=> $params['configIn']['reversingImageSystem']['value'],
             'leather_seat'=> $params['configIn']['leatherSeat']['value'],
             'seat_hot_front'=> $params['configIn']['seatHotFront']['value'],
-            'sear_hot_behind'=> $params['configIn']['searHotBehind']['value']
+            'seat_hot_behind'=> $params['configIn']['seatHotBehind']['value']
         );
         // 内部配置参数
         $this->db->insert(TABLE_CONFIG_IN, $configIn);
