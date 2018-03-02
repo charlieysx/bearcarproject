@@ -53,6 +53,8 @@ $route['default_controller'] = 'welcome';
 $route['404_override'] = 'notfound';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['test'] = 'common/Test/test';
+
 
 //===========================================admin-后台管理-接口===================================
 

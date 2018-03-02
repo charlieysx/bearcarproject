@@ -132,14 +132,28 @@ class MyCar_model extends Base_Model
         );
         $this->db->where('car_id', $car_id)->update(TABLE_CAR, $newStatus);
 
-        $order = array(
-            'order_id'=> create_car_id($car_id),
+        $orderId = create_car_id($car_id);
+        $orderParam = array(
+            'order_id'=> $orderId,
             'car_id'=> $car_id,
             'appraiser_id'=> $user_id,
-            'start_time'=> time()
+            'start_time'=> time(),
+            'order_number'=> $orderId
         );
         // 添加数据
-        $this->db->insert(TABLE_ORDER, $order);
+        $this->db->insert(TABLE_ORDER, $orderParam);
+
+        $order = $this->db->from(TABLE_ORDER)
+                          ->where('order_id', $orderId)
+                          ->get()
+                          ->row_array();
+
+        $orderNumber = 'BC'.date("YmdHis", $order['start_timme']).$order[id];
+
+        $number = array(
+            'order_number'=> $orderNumber
+        );
+        $this->db->where('order_id', $orderId)->update(TABLE_ORDER, $number);
 
         return success('预约成功，您可在 待检测列表 查看更多信息');
     }
