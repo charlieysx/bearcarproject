@@ -148,7 +148,7 @@ class MyCar_model extends Base_Model
                           ->get()
                           ->row_array();
 
-        $orderNumber = 'BC'.date("YmdHis", $order['start_timme']).$order[id];
+        $orderNumber = 'BC'.date("YmdHis", $order['start_time']).$order[id];
 
         $number = array(
             'order_number'=> $orderNumber

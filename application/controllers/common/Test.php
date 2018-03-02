@@ -10,7 +10,7 @@ class test extends Base_Controller
     }
 
     public function test() {
-        $orderNumber = 'BC'.date("YmdHis", time()).'0000000001';
+        $orderNumber = 'BC'.date("YmdHis", '1519956174').'0000000001';
         $this->return_success($orderNumber);
     }
 }
