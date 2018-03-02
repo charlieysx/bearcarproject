@@ -115,6 +115,10 @@ class Car_model extends Base_Model
                                         ->where('car_id', $car_id)
                                         ->get()
                                         ->row_array();
+        
+        $data['carImage']['imgEngineChassis'] = json_decode($data['carImage']['imgEngineChassis']);
+        $data['carImage']['imgOut'] = json_decode($data['carImage']['imgOut']);
+        $data['carImage']['imgIn'] = json_decode($data['carImage']['imgIn']);
 
         
         return success($data);
