@@ -66,7 +66,7 @@ class Car_model extends Base_Model
             ),
             TABLE_CONFIG_IN=> array(
                 'value'=> 'multi_steering_wheel as multiSteeringWheel, cruise_control as cruiseControl, air_conditioner as airConditioner,
-                            air_conditioner_auto as airConditioner, gps, reversing_radar as reversingRadar, reversing_image_system as reversingImageSystem,
+                            air_conditioner_auto as airConditionerAuto, gps, reversing_radar as reversingRadar, reversing_image_system as reversingImageSystem,
                             leather_seat as leatherSeat, seat_hot_front as seatHotFront, seat_hot_behind as seatHotBehind',
                 'name'=> 'configIn'
             ),
