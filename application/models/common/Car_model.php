@@ -456,4 +456,8 @@ class Car_model extends Base_Model
 
         return success($data);
     }
+
+    public function get_car_count() {
+        return $this->db->from(TABLE_CAR)->count_all_results();
+    }
 }

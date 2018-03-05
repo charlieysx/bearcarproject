@@ -174,5 +174,7 @@ $route['c/city/hot']['get'] = 'common/City/get_hot_city';
 $route['c/car/getinfo']['get'] = 'common/Car/get_car_info';
 //获取车列表
 $route['c/car/list']['post'] = 'common/Car/get_car_list';
+//获取数据库中车的总数量
+$route['c/car/count']['get'] = 'common/Car/get_car_count';
 
 //===========================================common-共用-接口-结束===============================

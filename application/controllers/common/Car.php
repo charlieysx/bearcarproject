@@ -26,4 +26,8 @@ class Car extends Base_Controller
         $result = $this->car->get_car_list($params, $pageOpt['page'], $pageOpt['pageSize']);
         $this->return_result($result);
     }
+
+    public function get_car_count() {
+        $this->return_success($this->car->get_car_count());
+    }
 }
