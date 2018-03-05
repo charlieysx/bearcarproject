@@ -187,8 +187,7 @@ class Car_model extends Base_Model
                             ->join(TABLE_CONFIG_BASE, 'car.car_id = config_base.car_id')
                             ->join(TABLE_CONFIG_ENGINE, 'car.car_id = config_engine.car_id')
                             ->join(TABLE_CONFIG_CHASSIS_BRAKE, 'car.car_id = config_chassis_brake.car_id')
-                            ->join(TABLE_CAR_IMAGE, 'car_image.car_id = car.car_id')
-                            ->limit($pageSize, $page*$pageSize);
+                            ->join(TABLE_CAR_IMAGE, 'car_image.car_id = car.car_id');
         
         if($filter[$this->CITY_ID] != '') {
             $carDB->where('car.licensed_city_id', $filter[$this->CITY_ID]);
@@ -448,7 +447,7 @@ class Car_model extends Base_Model
             'page'=> $page,
             'pageSize'=> $pageSize,
             'count'=> $carDB->count_all_results(TABLE_CAR, FALSE),
-            'list'=> $carDB->get()->result_array()
+            'list'=> $carDB->limit($pageSize, $page*$pageSize)->get()->result_array()
         );
 
         return success($data);
