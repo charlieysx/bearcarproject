@@ -174,10 +174,9 @@ class Car_model extends Base_Model
         );
         $filter = elements($keys, $params, '');
 
-        $carDB = $this->db
-                            ->select('car.car_id as carId, car_brand.brand_name as brandName, car_series.series_name as seriesName, car_model.model_name as modelName,
+        $carDB = $this->db->select('car.car_id as carId, car_brand.brand_name as brandName, car_series.series_name as seriesName, car_model.model_name as modelName,
                                     info_base.licensed_year as licensedYear, info_base.mileage, info_base.new_car_price as newCarPrice, city.name as cityName,
-                                    info_base.price as price, car_image.img as coverImg')
+                                    info_base.price as price, car_image.img as coverImg, car.expire_date_id as expireDateId, order.check_time as time')
                             ->where('car.status', '1')
                             ->join(TABLE_ORDER, 'car.car_id = order.car_id')
                             ->join(TABLE_CAR_BRAND, 'car.brand_id = car_brand.brand_id')
