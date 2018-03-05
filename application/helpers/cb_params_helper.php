@@ -11,6 +11,8 @@ function get_page($params, $maxPageSize = 99, $defaultPageSize = 15) {
     $page = elements($key, $params, '');
     if(!is_p_number($page['page'])) {
         $page['page'] = '0';
+    } else {
+        $page['page'] = intval($page['page'] - 1);
     }
     if(!is_p_number($page['pageSize']) || intval($page['pageSize']) > $maxPageSize) {
         $page['pageSize'] = $defaultPageSize;
