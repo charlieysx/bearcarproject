@@ -136,45 +136,314 @@ class Car_model extends Base_Model
         return success($data);
     }
 
-    const CITY_ID = 'cityId';
+    private $CITY_ID = 'cityId';
 
-    const SEARCH_VALUE = 'searchValue';
-    const BRAND_ID = 'brandId';
-    const SERIES_ID = 'seeriesId';
-    const PRICE = 'price';
-    const CAR_AGE = 'carAge';
-    const SPEED = 'speed';
-    const MODEL = 'model';
-    const MILEAGE = 'mileage';
-    const DISPLACEMENT = 'displacement';
-    const EMISSION_STANDARDS = 'emissionStandards';
-    const SEATING = 'seating';
-    const FUEL_TYPE = 'fuelType';
-    const DRIVING_TYPE = 'drivingType';
+    private $SEARCH_VALUE = 'searchValue';
+    private $BRAND_ID = 'brandId';
+    private $SERIES_ID = 'seriesId';
+    private $PRICE = 'price';
+    private $CAR_AGE = 'carAge';
+    private $SPEED = 'speed';
+    private $MODEL = 'model';
+    private $MILEAGE = 'mileage';
+    private $DISPLACEMENT = 'displacement';
+    private $EMISSION_STANDARDS = 'emissionStandards';
+    private $SEATING = 'seating';
+    private $FUEL_TYPE = 'fuelType';
+    private $DRIVING_TYPE = 'drivingType';
 
-    const SORT = 'sort';
+    private $SORT = 'sort';
 
-    public function get_car_list($params) {
+    public function get_car_list($params, $page = 0, $pageSize = 15) {
         $keys = array(
-            CITY_ID,
-            SEARCH_VALUE,
-            BRAND_ID,
-            SERIES_ID,
-            PRICE,
-            CAR_AGE,
-            SPEED,
-            MODEL,
-            MILEAGE,
-            DISPLACEMENT,
-            EMISSION_STANDARDS,
-            SEATING,
-            FUEL_TYPE,
-            DRIVING_TYPE,
-            SORT
+            $this->CITY_ID,
+            $this->SEARCH_VALUE,
+            $this->BRAND_ID,
+            $this->SERIES_ID,
+            $this->PRICE,
+            $this->CAR_AGE,
+            $this->SPEED,
+            $this->MODEL,
+            $this->MILEAGE,
+            $this->DISPLACEMENT,
+            $this->EMISSION_STANDARDS,
+            $this->SEATING,
+            $this->FUEL_TYPE,
+            $this->DRIVING_TYPE,
+            $this->SORT
         );
         $filter = elements($keys, $params, '');
 
         $carDB = $this->db->from(TABLE_CAR)
-                            ->where('car.status', '1');
+                            ->select('car.car_id as carId, car_brand.brand_name as brandName, car_series.series_name as seriesName, car_model.model_name as modelName,
+                                    info_base.licensed_year as licensedYear, info_base.mileage, info_base.new_car_price as newCarPrice, city.name as cityName,
+                                    info_base.price as price, car_image.img as coverImg')
+                            ->where('car.status', '1')
+                            ->join(TABLE_ORDER, 'car.car_id = order.car_id')
+                            ->join(TABLE_CAR_BRAND, 'car.brand_id = car_brand.brand_id')
+                            ->join(TABLE_CAR_SERIES, 'car_series.series_id = car.series_id')
+                            ->join(TABLE_CAR_MODEL, 'car_model.model_id = car.model_id', 'LEFT')
+                            ->join(TABLE_CITY, 'car.licensed_city_id = city.id')
+                            ->join(TABLE_INFO_BASE, 'car.car_id = info_base.car_id')
+                            ->join(TABLE_CONFIG_BASE, 'car.car_id = config_base.car_id')
+                            ->join(TABLE_CONFIG_ENGINE, 'car.car_id = config_engine.car_id')
+                            ->join(TABLE_CONFIG_CHASSIS_BRAKE, 'car.car_id = config_chassis_brake.car_id')
+                            ->join(TABLE_CAR_IMAGE, 'car_image.car_id = car.car_id');
+        
+        if($filter[$this->CITY_ID] != '') {
+            $carDB->where('car.licensed_city_id', $filter[$this->CITY_ID]);
+        }
+
+        if($filter[$this->SEARCH_VALUE] != '') {
+            $value = $filter[$this->SEARCH_VALUE];
+            $carDB->group_start()
+                        ->like('car_brand.brand_name', $value, 'both')
+                        ->or_like('car_series.series_name', $value, 'both')
+                        ->or_like('car_model.model_name', $value, 'both')
+                    ->group_end();
+        }
+
+        if($filter[$this->BRAND_ID] != '') {
+            $carDB->where('car.brand_id', $filter[$this->BRAND_ID]);
+        }
+
+        if($filter[$this->SERIES_ID] != '') {
+            $carDB->where('car.series_id', $filter[$this->SERIES_ID]);
+        }
+
+        if($filter[$this->PRICE] != '' && $filter[$this->PRICE]['from'] != '' && $filter[$this->PRICE]['to'] != '') {
+            $from = floatval($filter[$this->PRICE]['from']);
+            $to = floatval($filter[$this->PRICE]['to']);
+            $carDB->where('info_base.price >= ', $from)->where('info_base.price <= ', $to);
+        }
+
+        if($filter[$this->CAR_AGE] != '') {
+            $year = intval(date('Y'));
+            $month = intval(date('m'));
+            switch($filter[$this->CAR_AGE]) {
+                case '1':
+                    $year -= 1;
+                    break;
+                case '2':
+                    $year -= 3;
+                    break;
+                case '3':
+                    $year -= 5;
+                    break;
+                case '4':
+                    $year -= 8;
+                    break;
+                case '5':
+                    $year -= 100;
+                    break;
+            }
+            $carDB->group_start()
+                        ->where('year(str_to_date(info_base.licensed_year, \'%Y年\')) > ', $year)
+                        ->or_group_start()
+                            ->where('year(str_to_date(info_base.licensed_year, \'%Y年\')) = ', $year)
+                            ->where('month(str_to_date(info_base.licensed_month, \'%m月\')) >= ', $month)
+                        ->group_end()
+                    ->group_end();
+        }
+
+        if($filter[$this->SPEED] != '') {
+            $v = $filter[$this->SPEED] == '0' ? '手' : '';
+            $carDB->like('config_base.speed', $v, 'both');
+        }
+
+        if($filter[$this->MODEL] != '') {
+            $v = '';
+            switch($filter[$this->MODEL]) {
+                case '1':
+                    $v = '两';
+                    break;
+                case '2':
+                    $v = '三';
+                    break;
+                case '3':
+                    $v = '跑车';
+                    break;
+                case '4':
+                    $v = '客车';
+                    break;
+                case '5':
+                    $v = 'SUV';
+                    break;
+                case '6':
+                    $v = 'MPV';
+                    break;
+            }
+            $carDB->like('config_base.structure', $v, 'both');
+        }
+
+        if($filter[$this->MILEAGE] != '') {
+            $v = '';
+            switch($filter[$this->MILEAGE]) {
+                case '1':
+                    $v = 1;
+                    break;
+                case '2':
+                    $v = 3;
+                    break;
+                case '3':
+                    $v = 5;
+                    break;
+                case '4':
+                    $v = 8;
+                    break;
+                case '5':
+                    $v = 10;
+                    break;
+                case '6':
+                    $v = 10000;
+                    break;
+            }
+            $carDB->where('info_base.mileage <= ', $v);
+        }
+
+        if($filter[$this->DISPLACEMENT] != '') {
+            $from = 0;
+            $to = 100;
+            switch($filter[$this->DISPLACEMENT]) {
+                case '1':
+                    $from = 0;
+                    $to = 1;
+                    break;
+                case '2':
+                    $from = 1;
+                    $to = 1.6;
+                    break;
+                case '3':
+                    $from = 1.6;
+                    $to = 2.0;
+                    break;
+                case '4':
+                    $from = 2.0;
+                    $to = 3.0;
+                    break;
+                case '5':
+                    $from = 3.0;
+                    $to = 4.0;
+                    break;
+                case '6':
+                    $from = 4.0;
+                    $to = 100;
+                    break;
+            }
+            $carDB->where('config_engine.displacement >= ', $from)
+                    ->where('config_engine.displacement <= ', $to);
+        }
+
+        if($filter[$this->EMISSION_STANDARDS] != '') {
+            switch($filter[$this->DISPLACEMENT]) {
+                case '1':
+                    $carDB->or_group_start()
+                            ->where('config_engine.emission_standards = ', '国二')
+                            ->or_where('config_engine.emission_standards = ', '国三')
+                            ->or_where('config_engine.emission_standards = ', '国四')
+                            ->or_where('config_engine.emission_standards = ', '国五')
+                            ->group_end();
+                    break;
+                case '2':
+                    $carDB->or_group_start()
+                            ->where('config_engine.emission_standards = ', '国三')
+                            ->or_where('config_engine.emission_standards = ', '国四')
+                            ->or_where('config_engine.emission_standards = ', '国五')
+                            ->group_end();
+                    break;
+                case '3':
+                    $carDB->or_group_start()
+                            ->where('config_engine.emission_standards = ', '国四')
+                            ->or_where('config_engine.emission_standards = ', '国五')
+                            ->group_end();
+                    break;
+                case '4':
+                    $carDB->where('config_engine.emission_standards = ', '国五');
+                    break;
+            }
+        }
+
+        if($filter[$this->SEATING] != '') {
+            $v = '';
+            switch($filter[$this->SEATING]) {
+                case '1':
+                    $v = '2';
+                    break;
+                case '2':
+                    $v = '4';
+                    break;
+                case '3':
+                    $v = '5';
+                    break;
+                case '4':
+                    $v = '6';
+                    break;
+                case '5':
+                    $v = '7';
+                    break;
+            }
+            $carDB->like('config_base.structure', $v, 'both');
+        }
+
+        if($filter[$this->FUEL_TYPE] != '') {
+            $v = '';
+            switch($filter[$this->FUEL_TYPE]) {
+                case '1':
+                    $v = '汽';
+                    break;
+                case '2':
+                    $v = '柴';
+                    break;
+                case '3':
+                    $v = '电';
+                    break;
+                case '4':
+                    $v = '混';
+                    break;
+            }
+            $carDB->like('config_engine.fuel_type', $v, 'both');
+        }
+
+        if($filter[$this->DRIVING_TYPE] != '') {
+            $v = '';
+            switch($filter[$this->DRIVING_TYPE]) {
+                case '1':
+                    $carDB->not_like('config_chassis_brake.drive_mode', '四');
+                    break;
+                case '2':
+                    $carDB->like('config_chassis_brake.drive_mode', '四', 'both');
+                    break;
+            }
+        }
+
+        if($filter[$this->SORT] != '') {
+            $type = $filter[$this->SORT]['type'];
+            switch($type) {
+                case 'default':
+                    $carDB->order_by('car.expire_date_id', 'ASC')
+                            ->order_by('order.check_time', 'DESC');
+                    break;
+                case 'new':
+                    $carDB->order_by('order.check_time', 'DESC');
+                    break;
+                case 'price':
+                    $v = $filter[$this->SORT]['value'] == '0' ? 'ASC' : 'DESC';
+                    $carDB->order_by('info_base.price', $v);
+                    break;
+                case 'age':
+                    $v = $filter[$this->SORT]['value'] == '0' ? 'ASC' : 'DESC';
+                    $carDB->order_by('info_base.licensed_year', $v);
+                    break;
+                case 'mileage':
+                    $v = $filter[$this->SORT]['value'] == '0' ? 'ASC' : 'DESC';
+                    $carDB->order_by('info_base.mileage', $v);
+                    break;
+            }
+        } else {
+            $carDB->order_by('car.expire_date_id', 'ASC')
+                    ->order_by('order.check_time', 'DESC');
+        }
+
+        return success($carDB->get()->result_array());
     }
 }

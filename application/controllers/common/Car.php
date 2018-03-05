@@ -19,4 +19,11 @@ class Car extends Base_Controller
         $result = $this->car->get_car_info($carId);
         $this->return_result($result);
     }
+
+    public function get_car_list() {
+        $params = $this->input->post();
+        $pageOpt = get_page($params);
+        $result = $this->car->get_car_list($params, $pageOpt['page'], $pageOpt['pageSize']);
+        $this->return_result($result);
+    }
 }
