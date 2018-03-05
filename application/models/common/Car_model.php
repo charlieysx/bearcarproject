@@ -131,7 +131,19 @@ class Car_model extends Base_Model
         $data['carImage']['imgEngineChassis'] = json_decode($data['carImage']['imgEngineChassis']);
         $data['carImage']['imgOut'] = json_decode($data['carImage']['imgOut']);
         $data['carImage']['imgIn'] = json_decode($data['carImage']['imgIn']);
+        
+        $car = $this->db->from(TABLE_CAR)
+                            ->select('see_count')
+                            ->where('car_id', $car_id)
+                            ->get()
+                            ->row_array();
+        
+        $updateCount = array(
+            'see_count' => intval($car['see_count']) + 1
+        );
 
+        // 更新数据
+        $this->db->where('car_id', $car_id)->update(TABLE_CAR, $updateCount);
         
         return success($data);
     }
