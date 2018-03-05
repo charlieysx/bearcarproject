@@ -294,10 +294,14 @@ class Car_model extends Base_Model
                     $v = 10;
                     break;
                 case '6':
-                    $v = 10000;
+                    $v = 10;
                     break;
             }
-            $carDB->where('info_base.mileage <= ', $v);
+            if ($filter[$this->MILEAGE] == '6') {
+                $carDB->where('info_base.mileage > ', $v);
+            } else {
+                $carDB->where('info_base.mileage <= ', $v);
+            }
         }
 
         if($filter[$this->DISPLACEMENT] != '') {
