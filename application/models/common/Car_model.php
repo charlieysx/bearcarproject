@@ -174,7 +174,7 @@ class Car_model extends Base_Model
         );
         $filter = elements($keys, $params, '');
 
-        $carDB = $this->db->from(TABLE_CAR)
+        $carDB = $this->db
                             ->select('car.car_id as carId, car_brand.brand_name as brandName, car_series.series_name as seriesName, car_model.model_name as modelName,
                                     info_base.licensed_year as licensedYear, info_base.mileage, info_base.new_car_price as newCarPrice, city.name as cityName,
                                     info_base.price as price, car_image.img as coverImg')
@@ -188,7 +188,8 @@ class Car_model extends Base_Model
                             ->join(TABLE_CONFIG_BASE, 'car.car_id = config_base.car_id')
                             ->join(TABLE_CONFIG_ENGINE, 'car.car_id = config_engine.car_id')
                             ->join(TABLE_CONFIG_CHASSIS_BRAKE, 'car.car_id = config_chassis_brake.car_id')
-                            ->join(TABLE_CAR_IMAGE, 'car_image.car_id = car.car_id');
+                            ->join(TABLE_CAR_IMAGE, 'car_image.car_id = car.car_id')
+                            ->limit($pageSize, $page*$pageSize);
         
         if($filter[$this->CITY_ID] != '') {
             $carDB->where('car.licensed_city_id', $filter[$this->CITY_ID]);
@@ -443,7 +444,14 @@ class Car_model extends Base_Model
             $carDB->order_by('car.expire_date_id', 'ASC')
                     ->order_by('order.check_time', 'DESC');
         }
+    
+        $data = array(
+            'page'=> $page,
+            'pageSize'=> $pageSize,
+            'count'=> $carDB->count_all_results(TABLE_CAR, FALSE),
+            'list'=> $carDB->get()->result_array()
+        );
 
-        return success($carDB->get()->result_array());
+        return success($data);
     }
 }
