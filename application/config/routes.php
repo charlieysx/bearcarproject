@@ -172,5 +172,7 @@ $route['c/city/hot']['get'] = 'common/City/get_hot_city';
 
 //获取二手车信息
 $route['c/car/getinfo']['get'] = 'common/Car/get_car_info';
+//获取车列表
+$route['c/car/list']['post'] = 'common/Car/get_car_list';
 
 //===========================================common-共用-接口-结束===============================

@@ -13,7 +13,8 @@ class Car_model extends Base_Model
     public function get_car_info($car_id) {
         $order = $this->db->from(TABLE_ORDER)
                             ->select('step, order.check_time as checkTime, car_brand.brand_name as brandName,
-                                    car_series.series_name as seriesName, car_model.model_name as modelName')
+                                    car_series.series_name as seriesName, car_model.model_name as modelName,
+                                    car.status as carStatus')
                             ->where('order.car_id', $car_id)
                             ->join(TABLE_CAR, 'car.car_id = order.car_id')
                             ->join(TABLE_CAR_BRAND, 'car_brand.brand_id = car.brand_id')
@@ -47,6 +48,7 @@ class Car_model extends Base_Model
         $data['carBaseInfo']['brandName'] = $order['brandName'];
         $data['carBaseInfo']['seriesName'] = $order['seriesName'];
         $data['carBaseInfo']['modelName'] = $order['modelName'];
+        $data['carBaseInfo']['carStatus'] = $order['carStatus'];
 
         $configTable = array(
             TABLE_CONFIG_BASE=> array(
@@ -132,5 +134,47 @@ class Car_model extends Base_Model
 
         
         return success($data);
+    }
+
+    const CITY_ID = 'cityId';
+
+    const SEARCH_VALUE = 'searchValue';
+    const BRAND_ID = 'brandId';
+    const SERIES_ID = 'seeriesId';
+    const PRICE = 'price';
+    const CAR_AGE = 'carAge';
+    const SPEED = 'speed';
+    const MODEL = 'model';
+    const MILEAGE = 'mileage';
+    const DISPLACEMENT = 'displacement';
+    const EMISSION_STANDARDS = 'emissionStandards';
+    const SEATING = 'seating';
+    const FUEL_TYPE = 'fuelType';
+    const DRIVING_TYPE = 'drivingType';
+
+    const SORT = 'sort';
+
+    public function get_car_list($params) {
+        $keys = array(
+            CITY_ID,
+            SEARCH_VALUE,
+            BRAND_ID,
+            SERIES_ID,
+            PRICE,
+            CAR_AGE,
+            SPEED,
+            MODEL,
+            MILEAGE,
+            DISPLACEMENT,
+            EMISSION_STANDARDS,
+            SEATING,
+            FUEL_TYPE,
+            DRIVING_TYPE,
+            SORT
+        );
+        $filter = elements($keys, $params, '');
+
+        $carDB = $this->db->from(TABLE_CAR)
+                            ->where('car.status', '1');
     }
 }
