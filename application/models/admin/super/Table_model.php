@@ -57,7 +57,7 @@ class Table_model extends Base_Model
                         ->result_array();
 
         foreach($adminList as $k => $v){
-            $userId = $userList[$k]['userId'];
+            $userId = $adminList[$k]['userId'];
             $orderCount = $this->db->from(TABLE_ORDER)
                                     ->where('appraiser_id', $userId)
                                     ->count_all_results();
