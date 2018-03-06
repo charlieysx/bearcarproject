@@ -29,7 +29,7 @@ class MyCar_model extends Base_Model
                             ->join(TABLE_USER, 'user.user_id = car.user_id')
                             ->group_start()
                               ->where('car.status', $car_status);
-        if($car_status == 3) {
+        if($car_status == 2) {
           $carDB->or_where('car.status', 4)->or_where('car.status', 5);
         }
         $carDB->group_end();
