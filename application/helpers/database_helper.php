@@ -551,7 +551,7 @@ const TABLE_ORDER = 'order';
 //   `check_time` text COMMENT '检测时间',
 //   `finish_time` text COMMENT '订单结束时间',
 //   `price` text COMMENT '交易价格',
-//   `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态，1：检测中，2：交易中，3：交易结束，4：系统下架结束，默认1',
+//   `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态，1：检测中，2：销售中，3：交易结束，4：系统下架结束，默认1',
 //   PRIMARY KEY (`id`,`order_id`(11))
 // ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='订单';
 
@@ -586,3 +586,7 @@ const TABLE_USER = 'user';
 // ) ENGINE=InnoDB AUTO_INCREMENT=216 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 // SET FOREIGN_KEY_CHECKS = 1;
+
+
+const TABLE_SEARCH_RECORD = 'search_record';
+const TABLE_USER_ORDER = 'user_order';

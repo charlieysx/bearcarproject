@@ -32,11 +32,8 @@ class MyCar extends Base_Controller
               case 'selling':
                 $car_status = 1;
                 break;
-              case 'ordering':
-                $car_status = 2;
-                break;
               case 'under':
-                $car_status = 3;
+                $car_status = 2;
                 break;
               case 'checking':
                 $car_status = 6;
@@ -74,11 +71,8 @@ class MyCar extends Base_Controller
         case 'selling':
           $car_status = 1;
           break;
-        case 'ordering':
-          $car_status = 2;
-          break;
         case 'under':
-          $car_status = 3;
+          $car_status = 2;
           break;
         case 'checking':
           $car_status = 6;

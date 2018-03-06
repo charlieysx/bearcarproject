@@ -28,7 +28,8 @@ class Admin_model extends Base_Model
             'user_id' => create_id(),
             'last_login_time' => $time,
             'access_token' => create_id(),
-            'token_expiresIn' => $time + WEEK
+            'token_expiresIn' => $time + WEEK,
+            'register_time'=> $time
         );
 
         // 添加数据

@@ -126,12 +126,15 @@ $route['u/sellcar/sellinfo']['get'] = 'user/SellCar/get_sell_info';
 $route['u/sellcar/checktime']['get'] = 'user/SellCar/get_check_time';
 
 //查询我的二手车列表
-$route['u/mycar/list']['get'] = 'user/Car/get_my_car';
+$route['u/mycar/list']['get'] = 'user/MyCar/get_my_car';
 //下架我的二手车
-$route['u/mycar/under']['post'] = 'user/Car/under';
+$route['u/mycar/under']['post'] = 'user/MyCar/under';
 
 //获取七牛上传图片token
 $route['u/qiniu/token']['get'] = 'user/Qiniu/get_qiniu_token';
+
+//用户预约看车
+$route['u/car/ordercar']['post'] = 'user/Car/order_car';
 
 //===========================================user-前端-接口-结束===============================
 
