@@ -47,7 +47,7 @@ class Table_model extends Base_Model
     }
 
     public function get_table_admin($page, $pageSize, $sort) {
-        $userList = $this->db->from(TABLE_ADMIN_USER)
+        $adminList = $this->db->from(TABLE_ADMIN_USER)
                         ->select('user_id as userId, phone, last_login_time as lastLoginTime, login_count as loginCount,
                                 status, register_time as registerTime, type, user_name as userName')
                         ->limit($pageSize, $page*$pageSize)
@@ -56,19 +56,19 @@ class Table_model extends Base_Model
                         ->get()
                         ->result_array();
 
-        foreach($userList as $k => $v){
+        foreach($adminList as $k => $v){
             $userId = $userList[$k]['userId'];
             $orderCount = $this->db->from(TABLE_ORDER)
                                     ->where('appraiser_id', $userId)
                                     ->count_all_results();
-            $userList[$k]['orderCount'] = $orderCount;
+            $adminList[$k]['orderCount'] = $orderCount;
         }
                         
         $data = array(
             'page'=> $page,
             'pageSize'=> $pageSize,
-            'count'=> $this->get_user_count(),
-            'list'=> $userList
+            'count'=> $this->get_admin_count(),
+            'list'=> $adminList
         );
         return $data;
     }
