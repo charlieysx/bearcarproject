@@ -24,6 +24,10 @@ class Car_model extends Base_Model
             return fail('该辆车不在销售中');
         }
 
+        if ($car['user_id'] == $user_id) {
+            return fail('不能预约自己的车哦~')
+        }
+
         $isE = $this->db->where('car_id', $car_id)
                             ->where('user_id', $user_id)
                             ->count_all_results(TABLE_USER_ORDER);
