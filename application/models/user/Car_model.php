@@ -25,7 +25,7 @@ class Car_model extends Base_Model
         }
 
         if ($car['user_id'] == $user_id) {
-            return fail('不能预约自己的车哦~')
+            return fail('不能预约自己的车哦~');
         }
 
         $isE = $this->db->where('car_id', $car_id)
