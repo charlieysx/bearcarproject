@@ -753,7 +753,7 @@ class Car_model extends Base_Model
                     break;
                 case 'price':
                     $v = $filter[$this->SORT]['value'] == '1' ? 'ASC' : 'DESC';
-                    $carDB->order_by('cast(info_base.price as DECIMAL)', $v);
+                    $carDB->order_by('info_base.price', $v);
                     break;
                 case 'age':
                     $v = $filter[$this->SORT]['value'] == '1' ? 'ASC' : 'DESC';
@@ -761,7 +761,7 @@ class Car_model extends Base_Model
                     break;
                 case 'mileage':
                     $v = $filter[$this->SORT]['value'] == '1' ? 'ASC' : 'DESC';
-                    $carDB->order_by('cast(info_base.mileage as DECIMAL)', $v);
+                    $carDB->order_by('info_base.mileage', $v);
                     break;
             }
         } else {
