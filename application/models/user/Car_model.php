@@ -39,7 +39,7 @@ class Car_model extends Base_Model
         $userOrder = array(
             'car_id'=> $car_id,
             'user_id'=> $user_id,
-            'time'=> $time,
+            'time'=> time(),
             'user_name'=> $userName
         );
 
