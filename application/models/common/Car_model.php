@@ -443,7 +443,7 @@ class Car_model extends Base_Model
                     $carDB->order_by('order.check_time', 'DESC');
                     break;
                 case 'price':
-                    $v = $filter[$this->SORT]['value'] == '1' ? 'ASC' : 'DESC';
+                    $v = $filter[$this->SORT]['value'] == '0' ? 'ASC' : 'DESC';
                     $carDB->order_by('info_base.price', $v);
                     break;
                 case 'age':
@@ -451,7 +451,7 @@ class Car_model extends Base_Model
                     $carDB->order_by('info_base.licensed_year', $v);
                     break;
                 case 'mileage':
-                    $v = $filter[$this->SORT]['value'] == '1' ? 'ASC' : 'DESC';
+                    $v = $filter[$this->SORT]['value'] == '0' ? 'ASC' : 'DESC';
                     $carDB->order_by('info_base.mileage', $v);
                     break;
             }
@@ -741,7 +741,6 @@ class Car_model extends Base_Model
             }
         }
 
-        $so = '';
         if($filter[$this->SORT] != '') {
             $type = $filter[$this->SORT]['type'];
             switch($type) {
@@ -754,7 +753,6 @@ class Car_model extends Base_Model
                     break;
                 case 'price':
                     $v = $filter[$this->SORT]['value'] == '0' ? 'ASC' : 'DESC';
-                    $so = $v;
                     $carDB->order_by('info_base.price', $v);
                     break;
                 case 'age':
@@ -775,7 +773,6 @@ class Car_model extends Base_Model
             'page'=> $page,
             'pageSize'=> $pageSize,
             'count'=> $carDB->count_all_results(TABLE_CAR, FALSE),
-            'so'=> $so,
             'list'=> $carDB->limit($pageSize, $page*$pageSize)->get()->result_array()
         );
 
