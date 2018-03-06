@@ -95,6 +95,11 @@ $route['sysa/fillcar/second']['post'] = 'admin/FillCarInfo/fill_car_second_step'
 //提交检测信息-第三步
 $route['sysa/fillcar/third']['post'] = 'admin/FillCarInfo/fill_car_third_step';
 
+//获取用户列表
+$route['sysa/table/user']['get'] = 'admin/Table/get_table_user';
+//获取管理员列表
+$route['sysa/table/admin']['get'] = 'admin/Table/get_table_admin';
+
 //===========================================admin-后台管理-接口-结束===============================
 
 
