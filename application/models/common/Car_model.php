@@ -354,27 +354,27 @@ class Car_model extends Base_Model
             switch($filter[$this->DISPLACEMENT]) {
                 case '1':
                     $carDB->or_group_start()
-                            ->where('config_engine.emission_standards = ', '国二')
-                            ->or_where('config_engine.emission_standards = ', '国三')
-                            ->or_where('config_engine.emission_standards = ', '国四')
-                            ->or_where('config_engine.emission_standards = ', '国五')
+                            ->where('config_engine.emission_standards', '国二')
+                            ->or_where('config_engine.emission_standards', '国三')
+                            ->or_where('config_engine.emission_standards', '国四')
+                            ->or_where('config_engine.emission_standards', '国五')
                             ->group_end();
                     break;
                 case '2':
                     $carDB->or_group_start()
-                            ->where('config_engine.emission_standards = ', '国三')
-                            ->or_where('config_engine.emission_standards = ', '国四')
-                            ->or_where('config_engine.emission_standards = ', '国五')
+                            ->where('config_engine.emission_standards', '国三')
+                            ->or_where('config_engine.emission_standards', '国四')
+                            ->or_where('config_engine.emission_standards', '国五')
                             ->group_end();
                     break;
                 case '3':
                     $carDB->or_group_start()
-                            ->where('config_engine.emission_standards = ', '国四')
-                            ->or_where('config_engine.emission_standards = ', '国五')
+                            ->where('config_engine.emission_standards', '国四')
+                            ->or_where('config_engine.emission_standards', '国五')
                             ->group_end();
                     break;
                 case '4':
-                    $carDB->where('config_engine.emission_standards = ', '国五');
+                    $carDB->where('config_engine.emission_standards', '国五');
                     break;
             }
         }
@@ -663,27 +663,27 @@ class Car_model extends Base_Model
             switch($filter[$this->DISPLACEMENT]) {
                 case '1':
                     $carDB->or_group_start()
-                            ->where('config_engine.emission_standards = ', '国二')
-                            ->or_where('config_engine.emission_standards = ', '国三')
-                            ->or_where('config_engine.emission_standards = ', '国四')
-                            ->or_where('config_engine.emission_standards = ', '国五')
+                            ->where('config_engine.emission_standards', '国二')
+                            ->or_where('config_engine.emission_standards', '国三')
+                            ->or_where('config_engine.emission_standards', '国四')
+                            ->or_where('config_engine.emission_standards', '国五')
                             ->group_end();
                     break;
                 case '2':
                     $carDB->or_group_start()
-                            ->where('config_engine.emission_standards = ', '国三')
-                            ->or_where('config_engine.emission_standards = ', '国四')
-                            ->or_where('config_engine.emission_standards = ', '国五')
+                            ->where('config_engine.emission_standards', '国三')
+                            ->or_where('config_engine.emission_standards', '国四')
+                            ->or_where('config_engine.emission_standards', '国五')
                             ->group_end();
                     break;
                 case '3':
                     $carDB->or_group_start()
-                            ->where('config_engine.emission_standards = ', '国四')
-                            ->or_where('config_engine.emission_standards = ', '国五')
+                            ->where('config_engine.emission_standards', '国四')
+                            ->or_where('config_engine.emission_standards', '国五')
                             ->group_end();
                     break;
                 case '4':
-                    $carDB->where('config_engine.emission_standards = ', '国五');
+                    $carDB->where('config_engine.emission_standards', '国五');
                     break;
             }
         }
