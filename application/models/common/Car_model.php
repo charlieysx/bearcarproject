@@ -351,7 +351,7 @@ class Car_model extends Base_Model
         }
 
         if($filter[$this->EMISSION_STANDARDS] != '') {
-            switch($filter[$this->DISPLACEMENT]) {
+            switch($filter[$this->EMISSION_STANDARDS]) {
                 case '1':
                     $carDB->or_group_start()
                             ->where('config_engine.emission_standards', '国二')
@@ -660,7 +660,7 @@ class Car_model extends Base_Model
         }
 
         if($filter[$this->EMISSION_STANDARDS] != '') {
-            switch($filter[$this->DISPLACEMENT]) {
+            switch($filter[$this->EMISSION_STANDARDS]) {
                 case '1':
                     $carDB->or_group_start()
                             ->where('config_engine.emission_standards', '国二')
