@@ -21,7 +21,7 @@ class Car extends Base_Controller
       if ($userName == '') {
         $this->return_fail('userName不能为空');
       }
-      $result = $this->car->order_car($this->token->userInfo['user_id'], $$userName, $carId);
+      $result = $this->car->order_car($this->token->userInfo['user_id'], $userName, $carId);
       $this->return_result($result);
     }
 }

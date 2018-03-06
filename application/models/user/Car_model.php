@@ -36,7 +36,6 @@ class Car_model extends Base_Model
             return fail('您已经预约过了，请等待客服联系');
         }
 
-        return fail($userName);
         $userOrder = array(
             'car_id'=> $car_id,
             'user_id'=> $user_id,
