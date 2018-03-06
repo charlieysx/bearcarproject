@@ -49,7 +49,7 @@ class Table_model extends Base_Model
     public function get_table_admin($page, $pageSize, $sort) {
         $userList = $this->db->from(TABLE_ADMIN_USER)
                         ->select('user_id as userId, phone, last_login_time as lastLoginTime, login_count as loginCount,
-                                status, register_time as registerTime, type')
+                                status, register_time as registerTime, type, user_name as userName')
                         ->limit($pageSize, $page*$pageSize)
                         ->order_by('type', 'ASC')
                         ->order_by('register_time', 'DESC')
