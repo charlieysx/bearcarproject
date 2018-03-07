@@ -36,7 +36,8 @@ class Common_model extends Base_Model
     }
 
     public function edit_banner($id, $banner, $url, $position, $title) {
-        $banner = $this->db->where('id', $id)
+        $banner = $this->db->from(TABLE_BANNER)
+                            ->where('id', $id)
                             ->get()
                             ->row_array();
         if(empty($banner)) {
