@@ -590,3 +590,4 @@ const TABLE_USER = 'user';
 
 const TABLE_SEARCH_RECORD = 'search_record';
 const TABLE_USER_ORDER = 'user_order';
+const TABLE_BANNER = 'banner';

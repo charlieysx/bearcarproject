@@ -100,6 +100,11 @@ $route['sysa/table/user']['get'] = 'admin/Table/get_table_user';
 //获取管理员列表
 $route['sysa/table/admin']['get'] = 'admin/Table/get_table_admin';
 
+//添加banner
+$route['sysa/banner/add']['post'] = 'admin/Common/add_banner';
+//获取banner列表
+$route['sysa/banner/list']['get'] = 'admin/Common/get_banner_list';
+
 //===========================================admin-后台管理-接口-结束===============================
 
 
@@ -186,5 +191,8 @@ $route['c/car/list']['post'] = 'common/Car/get_car_list';
 $route['c/car/likelist']['post'] = 'common/Car/get_like_list';
 //获取数据库中车的总数量
 $route['c/car/count']['get'] = 'common/Car/get_car_count';
+
+//获取banner
+$route['c/banner']['get'] = 'common/Common/get_banner';
 
 //===========================================common-共用-接口-结束===============================
