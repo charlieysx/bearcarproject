@@ -26,7 +26,7 @@ class Common_model extends Base_Model
         $data = array(
             'time'=> time(),
             'banner'=> $banner,
-            'url'=> $url,
+            'link'=> $url,
             'position'=> $position,
             'title'=> $title
         );
@@ -48,7 +48,7 @@ class Common_model extends Base_Model
 
         $data = array(
             'banner'=> $banner,
-            'url'=> $url,
+            'link'=> $url,
             'position'=> $position,
             'title'=> $title
         );
