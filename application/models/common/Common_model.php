@@ -42,7 +42,7 @@ class Common_model extends Base_Model
         if(empty($banner)) {
             return fail('没有该banner');
         }
-        if($banner['status'] == '2') {
+        if($banner['status'] == '1') {
             return fail('下架的banner不能再修改');
         }
 
@@ -65,11 +65,11 @@ class Common_model extends Base_Model
         if(empty($banner)) {
             return fail('没有该banner');
         }
-        if($banner['status'] == '2') {
+        if($banner['status'] == '1') {
             return fail('该banner已经是下架状态');
         }
 
-        $data['status'] = '2';
+        $data['status'] = '1';
         $data['under_time'] = time();
 
         $this->db->where('id', $id)->update(TABLE_BANNER, $data);
