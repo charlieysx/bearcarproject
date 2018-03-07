@@ -13,9 +13,4 @@ class Common extends Base_Controller
     public function get_banner() {
         $this->return_success($this->common->get_banner());
     }
-
-    public function add_banner() {
-        $params = $this->get();
-        $this->return_success($this->common->add_banner());
-    }
 }

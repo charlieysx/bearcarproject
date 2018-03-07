@@ -102,6 +102,10 @@ $route['sysa/table/admin']['get'] = 'admin/Table/get_table_admin';
 
 //添加banner
 $route['sysa/banner/add']['post'] = 'admin/Common/add_banner';
+//下架banner
+$route['sysa/banner/under']['post'] = 'admin/Common/under_banner';
+//编辑banner
+$route['sysa/banner/edit']['post'] = 'admin/Common/edit_banner';
 //获取banner列表
 $route['sysa/banner/list']['get'] = 'admin/Common/get_banner_list';
 

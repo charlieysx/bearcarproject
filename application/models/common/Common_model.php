@@ -11,36 +11,81 @@ class Common_model extends Base_Model
     }
 
     public function get_banner() {
-        $banner =  $this->db->from(TABLE_BANNER)
-                        ->select('banner')
-                        ->order_by('time', 'DESC')
-                        ->get()
-                        ->row_array();
+        $list =  $this->db->from(TABLE_BANNER)
+                            ->select('banner, link')
+                            ->order_by('position', 'ASC')
+                            ->order_by('time', 'DESC')
+                            ->where('status', 1)
+                            ->get()
+                            ->result_array();
 
-        return json_decode($banner['banner']);
+        return $list;
     }
 
-    public function add_banner($banner) {
+    public function add_banner($banner, $url, $position, $title) {
         $data = array(
             'time'=> time(),
-            'banner'=> json_encode($banner)
+            'banner'=> $banner,
+            'url'=> $url,
+            'position'=> $position,
+            'title'=> $title
         );
         $this->db->insert(TABLE_BANNER, $data);
 
         return '添加完成';
     }
 
-    public function get_banner_list($page, $pageSize) {
+    public function edit_banner($id, $banner, $url, $position, $title) {
+        $banner = $this->db->where('id', $id)
+                            ->get()
+                            ->row_array();
+        if(empty($banner)) {
+            return fail('没有该banner');
+        }
+        if($banner['status'] == '2') {
+            return fail('下架的banner不能再修改');
+        }
+
+        $data = array(
+            'banner'=> $banner,
+            'url'=> $url,
+            'position'=> $position,
+            'title'=> $title
+        );
+        $this->db->where('id', $id)->update(TABLE_BANNER, $data);
+
+        return success('修改完成');
+    }
+
+    public function under_banner($id) {
+        $banner = $this->db->from(TABLE_BANNER)
+                            ->where('id', $id)
+                            ->get()
+                            ->row_array();
+        if(empty($banner)) {
+            return fail('没有该banner');
+        }
+        if($banner['status'] == '2') {
+            return fail('该banner已经是下架状态');
+        }
+
+        $data['status'] = '2';
+        $data['under_time'] = time();
+
+        $this->db->where('id', $id)->update(TABLE_BANNER, $data);
+
+        return success('下架成功');
+    }
+
+    public function get_banner_list() {
         $list =  $this->db->from(TABLE_BANNER)
-                            ->select('banner')
+                            ->select('id, banner, time, link, position, status, under_time as underTime, title')
+                            ->order_by('status', 'ASC')
+                            ->order_by('position', 'DESC')
                             ->order_by('time', 'DESC')
-                            ->limit($pageSize, $page*$pageSize)
                             ->get()
                             ->result_array();
 
-        foreach($list as $k => $v) {
-            $list[$k] = json_decode($v['banner']);
-        }
         return $list;
     }
 }
