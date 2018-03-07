@@ -204,7 +204,11 @@ class Car_model extends Base_Model
         
         if($filter[$this->CITY_ID] != '') {
             $carDB->where('car.licensed_city_id', $filter[$this->CITY_ID]);
-            $c = $this->db->from(TABLE_CITY)->select('search_count')->where('id', $filter[$this->CITY_ID]);
+            $c = $this->db->from(TABLE_CITY)
+                            ->select('search_count')
+                            ->where('id', $filter[$this->CITY_ID])
+                            ->get()
+                            ->row_array();
             $d = array(
                 'search_count'=> intval($c['search_count']) + 1
             );
@@ -222,7 +226,11 @@ class Car_model extends Base_Model
 
         if($filter[$this->BRAND_ID] != '') {
             $carDB->where('car.brand_id', $filter[$this->BRAND_ID]);
-            $c = $this->db->from(TABLE_CAR_BRAND)->select('search_count')->where('brand_id', $filter[$this->BRAND_ID]);
+            $c = $this->db->from(TABLE_CAR_BRAND)
+                            ->select('search_count')
+                            ->where('brand_id', $filter[$this->BRAND_ID])
+                            ->get()
+                            ->row_array();
             $d = array(
                 'search_count'=> intval($c['search_count']) + 1
             );
@@ -231,7 +239,11 @@ class Car_model extends Base_Model
 
         if($filter[$this->SERIES_ID] != '') {
             $carDB->where('car.series_id', $filter[$this->SERIES_ID]);
-            $c = $this->db->from(TABLE_CAR_SERIES)->select('search_count')->where('series_id', $filter[$this->SERIES_ID]);
+            $c = $this->db->from(TABLE_CAR_SERIES)
+                            ->select('search_count')
+                            ->where('series_id', $filter[$this->SERIES_ID])
+                            ->get()
+                            ->row_array();
             $d = array(
                 'search_count'=> intval($c['search_count']) + 1
             );
