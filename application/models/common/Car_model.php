@@ -494,9 +494,48 @@ class Car_model extends Base_Model
             'list'=> $carDB->limit($pageSize, $page*$pageSize)->get()->result_array()
         );
 
+        $this->record($filter);
+
         return success($data);
     }
 
+    private function record($filter) {
+        if($filter[$this->CITY_ID] != '') {
+            $c = $this->db->from(TABLE_CITY)
+                            ->select('search_count')
+                            ->where('id', $filter[$this->CITY_ID])
+                            ->get()
+                            ->row_array();
+            $d = array(
+                'search_count'=> intval($c['search_count']) + 1
+            );
+            $this->db->where('id', $filter[$this->CITY_ID])->update(TABLE_CITY, $d);
+        }
+
+        if($filter[$this->BRAND_ID] != '') {
+            $c = $this->db->from(TABLE_CAR_BRAND)
+                            ->select('search_count')
+                            ->where('brand_id', $filter[$this->BRAND_ID])
+                            ->get()
+                            ->row_array();
+            $d = array(
+                'search_count'=> intval($c['search_count']) + 1
+            );
+            $this->db->where('id', $filter[$this->BRAND_ID])->update(TABLE_CAR_BRAND, $d);
+        }
+
+        if($filter[$this->SERIES_ID] != '') {
+            $c = $this->db->from(TABLE_CAR_SERIES)
+                            ->select('search_count')
+                            ->where('series_id', $filter[$this->SERIES_ID])
+                            ->get()
+                            ->row_array();
+            $d = array(
+                'search_count'=> intval($c['search_count']) + 1
+            );
+            $this->db->where('id', $filter[$this->SERIES_ID])->update(TABLE_CAR_SERIES, $d);
+        }
+    }
 
     public function get_like_list($params, $page = 0, $pageSize = 15) {
         $keys = array(
