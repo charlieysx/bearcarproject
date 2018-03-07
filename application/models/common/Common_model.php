@@ -35,7 +35,7 @@ class Common_model extends Base_Model
         return '添加完成';
     }
 
-    public function edit_banner($id, $banner, $url, $position, $title) {
+    public function edit_banner($id, $bannerImg, $url, $position, $title) {
         $banner = $this->db->from(TABLE_BANNER)
                             ->where('id', $id)
                             ->get()
@@ -48,7 +48,7 @@ class Common_model extends Base_Model
         }
 
         $data = array(
-            'banner'=> $banner,
+            'banner'=> $bannerImg,
             'link'=> $url,
             'position'=> $position,
             'title'=> $title
