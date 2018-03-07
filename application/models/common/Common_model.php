@@ -15,7 +15,7 @@ class Common_model extends Base_Model
                             ->select('banner, link')
                             ->order_by('position', 'ASC')
                             ->order_by('time', 'DESC')
-                            ->where('status', 1)
+                            ->where('status', 0)
                             ->get()
                             ->result_array();
 
