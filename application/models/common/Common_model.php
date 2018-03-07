@@ -82,7 +82,7 @@ class Common_model extends Base_Model
         $list =  $this->db->from(TABLE_BANNER)
                             ->select('id, banner, time, link, position, status, under_time as underTime, title')
                             ->order_by('status', 'ASC')
-                            ->order_by('position', 'DESC')
+                            ->order_by('position', 'ASC')
                             ->order_by('time', 'DESC')
                             ->get()
                             ->result_array();
