@@ -467,9 +467,9 @@ class Car_model extends Base_Model
             'list'=> $carDB->limit($pageSize, $page*$pageSize)->get()->result_array()
         );
 
-        $this->record($filter);
+        return success($this->record($filter));
 
-        return success($data);
+        // return success($data);
     }
 
     private function record($filter) {
@@ -491,11 +491,14 @@ class Car_model extends Base_Model
                             ->where('brand_id', $filter[$this->BRAND_ID])
                             ->get()
                             ->row_array();
+
+            return $c;
             $d = array(
                 'search_count'=> intval($c['search_count']) + 1
             );
             $this->db->where('id', $filter[$this->BRAND_ID])->update(TABLE_CAR_BRAND, $d);
         }
+        return '111';
 
         if($filter[$this->SERIES_ID] != '') {
             $c = $this->db->from(TABLE_CAR_SERIES)
