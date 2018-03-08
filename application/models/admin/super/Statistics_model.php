@@ -27,6 +27,8 @@ class Statistics_model extends Base_Model
                         ->result_array();
 
         $apply = $this->get_apply($today);
+        $sell = $this->get_sell($today);
+        $user = $this->get_user($today);
 
         return success(array(
             'allCount'=> $allCount,
@@ -34,7 +36,9 @@ class Statistics_model extends Base_Model
             'successCount'=> $successCount,
             'userCount'=> $userCount,
             'cityData'=> $cityData,
-            'apply'=> $apply
+            'apply'=> $apply,
+            'sell'=> $sell,
+            'user'=> $user
         ));
     }
 
@@ -50,6 +54,49 @@ class Statistics_model extends Base_Model
         array_push($data, array(
           $d,
           $count
+        ));
+        $today = $today - DAY;
+      }
+      return array_reverse($data);
+    }
+
+    private function get_sell($today) {
+      $data = array();
+      for($i = 0;$i < 7;++$i) {
+        $d = date('Y-m-d', $today);
+        $lastDay = $today - DAY;
+        $count = $this->db->from(TABLE_CAR)
+                              ->where('publish_time <=', $today)
+                              ->where('publish_time >', $lastDay)
+                              ->join(TABLE_ORDER, 'order.car_id = car.car_id')
+                              ->where('order.step', '4')
+                              ->count_all_results();
+        array_push($data, array(
+          $d,
+          $count
+        ));
+        $today = $today - DAY;
+      }
+      return array_reverse($data);
+    }
+
+    private function get_user($today) {
+      $data = array();
+      for($i = 0;$i < 7;++$i) {
+        $d = date('Y-m-d', $today);
+        $lastDay = $today - DAY;
+        $count = $this->db->from(TABLE_USER)
+                              ->where('register_time <=', $today)
+                              ->where('register_time >', $lastDay)
+                              ->count_all_results();
+        $activeCount = $this->db->from(TABLE_USER)
+                              ->where('last_login_time <=', $today)
+                              ->where('last_login_time >', $lastDay)
+                              ->count_all_results();
+        array_push($data, array(
+          $d,
+          $count,
+          $activeCount
         ));
         $today = $today - DAY;
       }
