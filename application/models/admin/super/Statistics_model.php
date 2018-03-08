@@ -53,6 +53,6 @@ class Statistics_model extends Base_Model
         ));
         $today = $today - DAY;
       }
-      return $data;
+      return array_reverse($data);
     }
 }
