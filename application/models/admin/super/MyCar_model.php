@@ -22,7 +22,7 @@ class MyCar_model extends Base_Model
                             ->join(TABLE_PROVINCE, 'province.id = car.province_id')
                             ->join(TABLE_DISTRICT, 'district.id = car.district_id')
                             ->join(TABLE_CAR_BRAND, 'car_brand.brand_id = car.brand_id')
-                            ->join(TABLE_CAR_SERIES, 'car_series.series_id = car.series_id')
+                            ->join(TABLE_CAR_SERIES, 'car_series.series_id = car.series_id', 'LEFT')
                             ->join(TABLE_CAR_MODEL, 'car_model.model_id = car.model_id', 'LEFT')
                             ->join(TABLE_CAR_CONDITION, 'car_condition.condition_id = car.car_condition_id')
                             ->join(TABLE_EXPIRE_DATE, 'expire_date.expire_date_id = car.expire_date_id')
@@ -39,8 +39,14 @@ class MyCar_model extends Base_Model
           if($car[$i]['modelName'] == null) {
             unset($car[$i]['modelName']);
           }
+          if($car[$i]['seriesName'] == null) {
+              $car[$i]['seriesName'] = '';
+          }
           if($car[$i]['status'] != 5) {
-            unset($car[$i]['underReason']);
+              unset($car[$i]['underReason']);
+          }
+          if($car[$i]['dealUserId'] == null) {
+              unset($car[$i]['dealUserId']);
           }
           if($car_status != 1 && $car_status != 2 && $car_status != 6) {
               unset($car[$i]['inspectAddress']);
