@@ -109,6 +109,9 @@ $route['sysa/banner/edit']['post'] = 'admin/Common/edit_banner';
 //获取banner列表
 $route['sysa/banner/list']['get'] = 'admin/Common/get_banner_list';
 
+//获取统计数据
+$route['sysa/statistics']['get'] = 'admin/Statistics/get_statistics';
+
 //===========================================admin-后台管理-接口-结束===============================
 
 

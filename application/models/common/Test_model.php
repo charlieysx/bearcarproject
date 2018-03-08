@@ -11,33 +11,12 @@ class Test_model extends Base_Model
     }
 
     public function test() {
-        // $car = $this->db->from(TABLE_CAR)
-        //                     ->select('licensed_month, car_id')
-        //                     ->where('month(str_to_date(licensed_month, \'%m月\')) = ', '2')
-        //                     ->get()
-        //                     ->result_array();
-
-
-        // $year = intval(date('Y', strtotime('-1year')));
-        // $month = intval(date('m'));
-
-        // $data = array($year, $month);
-
-        // $car = $this->db->from(TABLE_CAR)
-        //                 ->select('licensed_month, licensed_year, car_id')
-        //                 ->group_start()
-        //                     ->where('year(str_to_date(licensed_year, \'%Y年\')) > ', 2017)
-        //                     ->or_group_start()
-        //                         ->where('year(str_to_date(licensed_year, \'%Y年\')) = ', 2017)
-        //                         ->where('month(str_to_date(licensed_month, \'%m月\')) >= ', 3)
-        //                     ->group_end()
-        //                 ->group_end()
-        //                 ->get()
-        //                 ->result_array();
-
-        $car = $this->db->from(TABLE_CONFIG_BASE)
-                        ->select('speed, car_id')
-                        ->like('config_base.speed', '', 'both')
+        $car = $this->db->from(TABLE_CAR)
+                        ->select('city.name as cityName, count(*) as count')
+                        ->join(TABLE_CITY, 'city.id = car.licensed_city_id')
+                        ->join(TABLE_CAR_BRAND, 'car_brand.brand_id = car.brand_id')
+                        ->group_by('car.licensed_city_id')
+                        ->order_by('count(*)', 'DESC')
                         ->get()
                         ->result_array();
         
