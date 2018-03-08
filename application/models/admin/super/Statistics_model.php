@@ -95,8 +95,8 @@ class Statistics_model extends Base_Model
                               ->count_all_results();
         array_push($data, array(
           'product'=> $d,
-          'count'=> $count,
-          'activeCount'=> $activeCount
+          '新增用户'=> $count,
+          '活跃用户'=> $activeCount
         ));
         $today = $today - DAY;
       }
