@@ -81,7 +81,11 @@ class Statistics_model extends Base_Model
     }
 
     private function get_user($today) {
-      $data = array();
+      $data = array(
+        array(),
+        array(),
+        array()
+      );
       for($i = 0;$i < 7;++$i) {
         $d = date('Y-m-d', $today);
         $lastDay = $today - DAY;
@@ -93,13 +97,32 @@ class Statistics_model extends Base_Model
                               ->where('last_login_time <=', $today)
                               ->where('last_login_time >', $lastDay)
                               ->count_all_results();
-        array_push($data, array(
-          $d,
-          $count,
+        array_push($data[0], array(
+          $d
+        ));
+        array_push($data[1], array(
+          $count
+        ));
+        array_push($data[2], array(
           $activeCount
         ));
         $today = $today - DAY;
       }
-      return array_reverse($data);
+
+      array_push($data[0], array(
+        'product'
+      ));
+      array_push($data[1], array(
+        '新增用户'
+      ));
+      array_push($data[2], array(
+        '活跃用户'
+      ));
+
+      $data[0] = array_reverse($data[0]);
+      $data[1] = array_reverse($data[1]);
+      $data[2] = array_reverse($data[2]);
+
+      return $data;
     }
 }
