@@ -18,11 +18,20 @@ class Statistics_model extends Base_Model
         $successCount = intval($this->db->from(TABLE_ORDER)->where('status', '3')->count_all_results());
         $userCount = intval($this->db->from(TABLE_USER)->count_all_results());
 
+        $cityData = $this->db->from(TABLE_CAR)
+                        ->select('city.name as cityName, lng, lat, count(*) as count')
+                        ->join(TABLE_CITY, 'city.id = car.licensed_city_id')
+                        ->group_by('car.licensed_city_id')
+                        ->order_by('count(*)', 'DESC')
+                        ->get()
+                        ->result_array();
+
         return success(array(
             'allCount'=> $allCount,
             'sellCount'=> $sellCount,
             'successCount'=> $successCount,
-            'userCount'=> $userCount
+            'userCount'=> $userCount,
+            'cityData'=> $cityData
         ));
     }
 }
