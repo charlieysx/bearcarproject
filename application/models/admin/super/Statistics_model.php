@@ -11,7 +11,7 @@ class Statistics_model extends Base_Model
     }
 
     public function get_statistics() {
-        $thisTime = time();
+        $today = strtotime('today') + 24 *  60 * 60 - 1;
 
         $allCount = intval($this->db->from(TABLE_CAR)->count_all_results());
         $sellCount = intval($this->db->from(TABLE_ORDER)->where('step', '4')->count_all_results());
@@ -26,12 +26,33 @@ class Statistics_model extends Base_Model
                         ->get()
                         ->result_array();
 
+        $apply = $this->get_apply($today);
+
         return success(array(
             'allCount'=> $allCount,
             'sellCount'=> $sellCount,
             'successCount'=> $successCount,
             'userCount'=> $userCount,
-            'cityData'=> $cityData
+            'cityData'=> $cityData,
+            'apply'=> $apply
         ));
+    }
+
+    private function get_apply($today) {
+      $data = array();
+      for($i = 0;$i < 7;++$i) {
+        $d = date('Y-m-d', $today);
+        $lastDay = $today - DAY;
+        $count = $this->db->from(TABLE_CAR)
+                              ->where('publish_time <=', $today)
+                              ->where('publish_time >', $lastDay)
+                              ->count_all_results();
+        array_push($data, array(
+          $d,
+          $count
+        ));
+        $today = $today - DAY;
+      }
+      return $data;
     }
 }
