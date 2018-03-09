@@ -259,8 +259,7 @@ class Car_model extends Base_Model
         }
 
         if($filter[$this->SPEED] != '') {
-            $v = $filter[$this->SPEED] == '0' ? '手' : '';
-            return success($filter[$this->SPEED]);
+            $v = $filter[$this->SPEED] == '1' ? '手' : '';
             $carDB->like('config_base.speed', $v, 'both');
         }
 
@@ -609,7 +608,7 @@ class Car_model extends Base_Model
         }
 
         if($filter[$this->SPEED] != '') {
-            $v = $filter[$this->SPEED] == '0' ? '手' : '';
+            $v = $filter[$this->SPEED] == '1' ? '手' : '';
             $carDB->like('config_base.speed', $v, 'both');
         }
 
