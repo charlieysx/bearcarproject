@@ -5,7 +5,7 @@
 
 #### admin-后台管理-接口
 |接口名称|接口地址|请求方式|
-| :- | -: | -: | :- |
+| :- | -: | -: |
 | 登录 | sysa/login | post |
 | 发布资讯 | sysa/news/publish | post |
 | 获取资讯列表 | sysa/news/list | get |
@@ -30,7 +30,7 @@
 | 获取统计数据 | sysa/statistics | get |
 #### user-前端-接口
 |接口名称|接口地址|请求方式|
-| :- | -: | -: | :- |
+| :- | -: | -: |
 | 注册 | u/register | post |
 | 登录 | u/login | post |
 | 获取资讯列表 | u/news/list | get |
@@ -45,7 +45,7 @@
 | 用户预约看车 | u/car/ordercar | post |
 #### common-共用-接口
 |接口名称|接口地址|请求方式|
-| :- | -: | -: | :- |
+| :- | -: | -: |
 | 获取车brand | c/carinfo/brand | get |
 | 获取车series | c/carinfo/series | get |
 | 获取车model | c/carinfo/model | get |
